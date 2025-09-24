@@ -4,9 +4,8 @@ import { create } from 'storybook/internal/theming';
 addons.setConfig({
   theme: create({
     base: 'light',
-    brandTitle: 'cmp-library',
-    brandUrl: 'https://github.com/pranavwaykar/nsm-component-library',
-    brandImage: '/vite.svg'
+    brandTitle: 'NSM COMPONENT LIBRARY',
+    brandUrl: 'https://github.com/pranavwaykar/nsm-component-library'
   })
 });
 
