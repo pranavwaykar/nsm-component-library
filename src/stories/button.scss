@@ -1,5 +1,6 @@
 .storybook-button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 3em;
@@ -98,12 +99,39 @@
   display: inline-block;
   margin-right: 8px;
   animation: sbspin 700ms linear infinite;
+  flex-shrink: 0;
 }
 
 @keyframes sbspin { to { transform: rotate(360deg); } }
 
-.storybook-button__icon { display: inline-flex; align-items: center; }
+.storybook-button__icon { display: inline-flex; align-items: center; flex-shrink: 0; }
 .storybook-button__icon--left { margin-right: 8px; }
 .storybook-button__icon--right { margin-left: 8px; }
 
 .storybook-button__label { display: inline-block; }
+
+/* badge / indicator */
+.storybook-button__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  padding: 0 6px;
+  border-radius: 9px;
+  background: #111827;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.storybook-button__indicator {
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 999px;
+  background: #ef4444;
+  flex-shrink: 0;
+}

@@ -20,6 +20,8 @@ export const Button = ({
   leftIcon = '',
   rightIcon = '',
   type = 'button',
+  indicator = false,
+  count,
   label,
   ...props
 }) => {
@@ -51,13 +53,18 @@ export const Button = ({
       aria-busy={loading ? 'true' : undefined}
       {...props}
     >
-      {loading && <span className="storybook-button__spinner" aria-hidden="true" />}
+      {loading && <span className="storybook-button__spinner" role="progressbar" aria-label="loading" />}
       {leftIcon ? (
         <span className="storybook-button__icon storybook-button__icon--left" aria-hidden="true">{leftIcon}</span>
       ) : null}
       {label && <span className="storybook-button__label">{label}</span>}
       {rightIcon ? (
         <span className="storybook-button__icon storybook-button__icon--right" aria-hidden="true">{rightIcon}</span>
+      ) : null}
+      {typeof count === 'number' ? (
+        <span className="storybook-button__badge" aria-label={`count ${count}`}>{count}</span>
+      ) : indicator ? (
+        <span className="storybook-button__indicator" aria-hidden="true" />
       ) : null}
     </button>
   );
@@ -104,4 +111,8 @@ Button.propTypes = {
   rightIcon: PropTypes.node,
   /** Button type */
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  /** Show a small notification dot when true (ignored if count is set) */
+  indicator: PropTypes.bool,
+  /** Small numeric badge shown to the right side */
+  count: PropTypes.number,
 };
