@@ -5,7 +5,7 @@ import { Button as ButtonComponent } from './Button';
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
   id: 'example-button',
-  title: 'Button Module',
+  title: 'Button Component',
   component: ButtonComponent,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
@@ -20,9 +20,10 @@ export default {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
+    primary: { control: false, table: { disable: true } },
     variant: {
       control: 'select',
-      options: ['primary','secondary','outline','ghost','link','destructive','success','warning']
+      options: ['primary','secondary','ghost','link','destructive','success','warning']
     },
     backgroundColor: { control: 'color' },
     textColor: { control: 'color' },
@@ -54,9 +55,8 @@ export default {
 export const Primary = {
   name: 'Button',
   args: {
-    primary: true,
     label: 'Button',
     variant: 'primary',
-    backgroundColor: "#029CFD"
+    // leave backgroundColor undefined so variant styles apply
   },
 };

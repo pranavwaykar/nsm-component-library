@@ -70,7 +70,6 @@ Button.propTypes = {
   variant: PropTypes.oneOf([
     'primary',
     'secondary',
-    'outline',
     'ghost',
     'link',
     'destructive',
