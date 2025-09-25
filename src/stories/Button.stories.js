@@ -12,6 +12,28 @@ export default {
     docs: {
       description: {
         component: 'Explain what Button is for, usage guidance, accessibility notes.'
+      },
+      source: {
+        type: 'code',
+        code: `
+<Button
+  label="Button"
+  onClick={() => {}}
+  variant="primary"
+  backgroundColor="#555ab9"
+  textColor="#ffffff"
+  size="medium"
+  radius="pill"
+  shadow="none"
+  disabled={false}
+  loading={false}
+  fullWidth={false}
+  uppercase={false}
+  leftIcon=""
+  rightIcon=""
+  type="button"
+/>
+        `
       }
     }
   },
@@ -19,7 +41,31 @@ export default {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
+    variant: {
+      control: 'select',
+      options: ['primary','secondary','outline','ghost','link','destructive','success','warning']
+    },
     backgroundColor: { control: 'color' },
+    textColor: { control: 'color' },
+    size: {
+      control: 'select',
+      options: ['xsmall','small','medium','large','xlarge']
+    },
+    radius: {
+      control: 'select',
+      options: ['none','sm','md','lg','pill']
+    },
+    shadow: {
+      control: 'select',
+      options: ['none','sm','md','lg']
+    },
+    fullWidth: { control: 'boolean' },
+    uppercase: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    leftIcon: { control: 'text' },
+    rightIcon: { control: 'text' },
+    type: { control: 'radio', options: ['button','submit','reset'] },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
@@ -30,12 +76,14 @@ export const Primary = {
   args: {
     primary: true,
     label: 'Button',
+    variant: 'primary',
   },
 };
 
 export const Secondary = {
   args: {
     label: 'Button',
+    variant: 'secondary',
   },
 };
 
@@ -50,5 +98,21 @@ export const Small = {
   args: {
     size: "small",
     label: 'Button',
+  },
+};
+
+export const Outline = {
+  args: {
+    label: 'Button',
+    variant: 'outline',
+  },
+};
+
+export const WithIconAndLoading = {
+  args: {
+    label: 'Save',
+    leftIcon: '💾',
+    loading: true,
+    variant: 'primary',
   },
 };
