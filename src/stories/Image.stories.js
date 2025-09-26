@@ -18,8 +18,6 @@ export default {
   argTypes: {
     fit: { control: 'select', options: ['cover', 'contain', 'fill', 'none', 'scale-down'] },
     radius: { control: 'select', options: ['none', 'sm', 'md', 'lg', 'pill'] },
-    size: { control: 'select', options: ['sm','md','lg'] },
-    ring: { control: 'boolean' },
     width: { control: 'text' },
     height: { control: 'text' },
     threshold: { control: 'number' },
@@ -35,10 +33,8 @@ export const Primary = {
   args: {
     src: sampleImage,
     alt: 'Sample',
-    size: 'md',
     fit: 'cover',
-    radius: 'pill',
-    ring: true,
+    radius: 'md',
     fallback: 'Loading…',
     errorFallback: 'Failed to load',
     threshold: 0.1,

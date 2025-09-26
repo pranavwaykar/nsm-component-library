@@ -8,9 +8,7 @@ export const Image = ({
   width,
   height,
   fit = 'cover',
-  radius = 'pill',
-  size = 'md',
-  ring = false,
+  radius = 'md',
   fallback,
   errorFallback,
   threshold = 0.1,
@@ -48,8 +46,6 @@ export const Image = ({
   const classNames = [
     'sb-image',
     `sb-image--radius-${radius}`,
-    `sb-image--size-${size}`,
-    ring ? 'sb-image--ring' : null,
     loaded ? 'is-loaded' : null,
     hasError ? 'is-error' : null,
   ].filter(Boolean).join(' ');
@@ -58,19 +54,12 @@ export const Image = ({
   if (width) style.width = width;
   if (height) style.height = height;
 
-  function getInitials(text) {
-    if (!text) return '?';
-    const parts = String(text).trim().split(/\s+/);
-    const a = parts[0]?.[0] || '';
-    const b = parts[1]?.[0] || '';
-    return (a + b).toUpperCase() || a.toUpperCase() || '?';
-  }
 
   return (
     <div ref={containerRef} className={classNames} style={style}>
-      {!isVisible && (
-        <div className="sb-image__fallback" aria-hidden="true">{fallback ?? getInitials(alt)}</div>
-      )}
+      {!isVisible && fallback ? (
+        <div className="sb-image__fallback" aria-hidden="true">{fallback}</div>
+      ) : null}
 
       {isVisible && !hasError && (
         <img
@@ -87,7 +76,7 @@ export const Image = ({
         errorFallback ? (
           <div className="sb-image__error" role="img" aria-label="image failed">{errorFallback}</div>
         ) : (
-          <div className="sb-image__error" role="img" aria-label="image failed">{getInitials(alt)}</div>
+          <div className="sb-image__error" role="img" aria-label="image failed">⚠️</div>
         )
       )}
     </div>

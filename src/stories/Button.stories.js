@@ -16,6 +16,7 @@ export default {
       }
     }
   },
+  
   // Autodocs enabled so you have a Docs page plus one story
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
