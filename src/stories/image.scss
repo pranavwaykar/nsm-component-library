@@ -1,0 +1,19 @@
+.sb-image { position: relative; background: #f3f4f6; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #374151; }
+.sb-image.is-loaded { background: transparent; }
+
+/* preset sizes */
+.sb-image--size-sm { width: 32px; height: 32px; font-size: 12px; }
+.sb-image--size-md { width: 40px; height: 40px; font-size: 13px; }
+.sb-image--size-lg { width: 56px; height: 56px; font-size: 14px; }
+
+/* ring */
+.sb-image--ring { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e5e7eb; }
+
+.sb-image__fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 700; }
+.sb-image__error { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #e5e7eb; color: #374151; font-weight: 700; }
+
+.sb-image--radius-none { border-radius: 0; }
+.sb-image--radius-sm { border-radius: 6px; }
+.sb-image--radius-md { border-radius: 10px; }
+.sb-image--radius-lg { border-radius: 14px; }
+.sb-image--radius-pill { border-radius: 999px; }
