@@ -2,13 +2,11 @@ import { fn } from 'storybook/test';
 
 import { Button as ButtonComponent } from './Button';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
   id: 'example-button',
   title: 'Button Component',
   component: ButtonComponent,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
     docs: {
       description: {
@@ -17,9 +15,7 @@ export default {
     }
   },
   
-  // Autodocs enabled so you have a Docs page plus one story
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     primary: { control: false, table: { disable: true } },
     variant: {
@@ -50,11 +46,9 @@ export default {
     count: { control: 'number' },
     type: { control: 'radio', options: ['button','submit','reset'] },
   },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
 };
 
-// Single playground story with all controls
 export const Primary = {
   name: 'Button',
   args: {
@@ -62,6 +56,5 @@ export const Primary = {
     variant: 'primary',
     indicator: false,
     count: undefined,
-    // leave backgroundColor undefined so variant styles apply
   },
 };
