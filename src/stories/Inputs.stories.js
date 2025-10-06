@@ -45,19 +45,34 @@ export const SelectMulti = {
   args: { label: 'Tags', value: ['alpha'], options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }, { value: 'gamma', label: 'Gamma' }] },
 };
 
-export const ChecksTogglesRadios = {
-  name: 'Checkbox / Toggle / Radio',
-  render: () => {
-    const [c, setC] = useState(true);
-    const [t, setT] = useState(false);
-    const [r, setR] = useState('a');
-    return React.createElement('div', { style: { display: 'grid', gap: 12 } },
-      React.createElement(Checkbox, { label: 'Accept', checked: c, onChange: setC }),
-      React.createElement(Toggle, { label: 'Enable', checked: t, onChange: setT }),
-      React.createElement(RadioGroup, { name: 'grp', value: r, onChange: setR, options: [{ value: 'a', label: 'Option A' }, { value: 'b', label: 'Option B' }] }),
-    );
-  }
+export const Check = {
+  name: 'Checkbox',
+  render: (args) => {
+    const [c, setC] = useState(args.checked ?? true);
+    return React.createElement(Checkbox, { ...args, checked: c, onChange: setC });
+  },
+  args: { label: 'Accept', checked: true },
 };
+
+export const ToggleSwitch = {
+  name: 'Toggle',
+  render: (args) => {
+    const [t, setT] = useState(args.checked ?? false);
+    return React.createElement(Toggle, { ...args, checked: t, onChange: setT });
+  },
+  args: { label: 'Enable', checked: false },
+};
+
+export const Radio = {
+  name: 'Radio Group',
+  render: (args) => {
+    const [r, setR] = useState(args.value ?? 'a');
+    return React.createElement(RadioGroup, { ...args, value: r, onChange: setR });
+  },
+  args: { name: 'grp', value: 'a', options: [{ value: 'a', label: 'Option A' }, { value: 'b', label: 'Option B' }] },
+};
+
+export const ChecksTogglesRadios = Check;
 
 export const Range = {
   name: 'Range',

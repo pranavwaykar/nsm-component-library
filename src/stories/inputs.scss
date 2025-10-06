@@ -9,9 +9,11 @@
 
 .sb-check { display: inline-flex; gap: 8px; align-items: center; }
 
-.sb-toggle { display: inline-flex; gap: 8px; align-items: center; }
+.sb-toggle { display: inline-flex; gap: 8px; align-items: center; position: relative; }
+.sb-toggle input { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; }
 .sb-toggle__track { width: 40px; height: 22px; border-radius: 999px; background: #e5e7eb; position: relative; transition: background .15s; }
 .sb-toggle input:checked + .sb-toggle__track { background: #111827; }
+.sb-toggle input:focus-visible + .sb-toggle__track { outline: 2px solid #3b82f6; outline-offset: 2px; }
 .sb-toggle__thumb { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 999px; background: #fff; transition: left .15s; }
 .sb-toggle input:checked + .sb-toggle__track .sb-toggle__thumb { left: 20px; }
 .sb-toggle__label { font-size: 14px; }
