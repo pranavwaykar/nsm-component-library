@@ -3,46 +3,105 @@ import { addons, types, useStorybookApi, useStorybookState } from 'storybook/int
 import { IconButton } from 'storybook/internal/components';
 import { create } from 'storybook/internal/theming';
 
+
 const EXPAND_ADDON_ID = 'toolbar-expand-all';
 const EXPAND_TOOL_ID = `${EXPAND_ADDON_ID}/tool`;
+const SET_CURRENT_STORY = 'setCurrentStory';
 
 function SidebarExpandTool() {
   const api = useStorybookApi();
   useStorybookState();
 
-  const getToggles = useCallback(() => {
-    const container = document.querySelector('#storybook-explorer-tree') || document.body;
-    return Array.from(container.querySelectorAll('button[aria-expanded]'));
-  }, []);
+  const query = (sel, root = document) => Array.from((root || document).querySelectorAll(sel));
+  const getTree = () => document.querySelector('#storybook-explorer-tree') || document.body;
+  const getToggles = useCallback(() => query('button[aria-expanded]', getTree()), []);
 
-  const anyCollapsed = useCallback(() => {
-    return getToggles().some((b) => b.getAttribute('aria-expanded') === 'false');
-  }, [getToggles]);
+  const anyCollapsed = useCallback(() => getToggles().some((b) => b.getAttribute('aria-expanded') === 'false'), [getToggles]);
 
   const expandAll = useCallback(async () => {
-    for (let i = 0; i < 6; i++) {
-      const buttons = getToggles();
-      let changed = 0;
-      buttons.forEach((btn) => {
-        if (btn.getAttribute('aria-expanded') === 'false') {
-          btn.click();
-          changed++;
-        }
-      });
-      if (!changed) break;
-      await new Promise((r) => setTimeout(r, 50));
+    let pass = 0;
+    while (pass++ < 6) {
+      const collapsed = getToggles().filter((b) => b.getAttribute('aria-expanded') === 'false');
+      if (!collapsed.length) break;
+      for (const b of collapsed) b.click();
+      await new Promise((r) => setTimeout(r, 32));
     }
   }, [getToggles]);
 
-  const collapseAll = useCallback(() => {
-    getToggles().forEach((btn) => {
-      if (btn.getAttribute('aria-expanded') === 'true') btn.click();
-    });
+  const collapseAll = useCallback((skip = new Set()) => {
+    const open = getToggles().filter((b) => b.getAttribute('aria-expanded') === 'true');
+    open.forEach((btn) => { if (!skip.has(btn)) btn.click(); });
   }, [getToggles]);
 
-  const handleClick = useCallback(() => {
-    if (anyCollapsed()) expandAll(); else collapseAll();
-    api.setOptions({});
+  const handleClick = useCallback(async () => {
+    const urlState = (api.getUrlState && api.getUrlState()) || {};
+    const currentId = urlState.storyId || (api.getCurrentStoryData && api.getCurrentStoryData()?.id);
+    const currentSearch = window.location.search;
+    const savedUrl = window.location.pathname + window.location.search + window.location.hash;
+    const activeLink = getTree().querySelector('a[aria-current="page"], a[aria-selected="true"], [data-selected="true"], a[data-item-id][data-selected="true"]');
+    const activeHref = activeLink?.getAttribute('href');
+    const skipSet = new Set();
+    if (activeLink) {
+
+      let el = activeLink.parentElement;
+      while (el && el.id !== 'storybook-explorer-tree') {
+        const toggle = el.querySelector(':scope > button[aria-expanded]');
+        if (toggle) skipSet.add(toggle);
+        el = el.parentElement;
+      }
+    }
+
+    const targetUrl = currentSearch + (window.location.hash || '');
+    let block = true;
+    const channel = addons.getChannel();
+    const preventStoryChange = ({ storyId }) => {
+      if (!block) return;
+      if (currentId && storyId !== currentId) {
+        try {
+          if (urlState.viewMode) api.selectStory(currentId, urlState.viewMode);
+          else api.selectStory(currentId);
+        } catch (_) {}
+      }
+    };
+    channel.on(SET_CURRENT_STORY, preventStoryChange);
+    const guard = () => { if (block) try { history.replaceState(null, '', targetUrl); } catch (_) {} };
+    const onHash = () => guard();
+    const onPop = () => guard();
+    window.addEventListener('hashchange', onHash, true);
+    window.addEventListener('popstate', onPop, true);
+
+    const origPush = history.pushState.bind(history);
+    const origReplace = history.replaceState.bind(history);
+    history.pushState = function(...args) { if (!block) return origPush(...args); };
+    history.replaceState = function(...args) { if (!block) return origReplace(...args); };
+
+    if (anyCollapsed()) await expandAll(); else collapseAll(skipSet);
+
+    const restore = (attempts = 4) => {
+      try {
+        if (activeHref) getTree().querySelector(`a[href='${activeHref}']`)?.click();
+        if (currentId && api.selectStory) {
+          if (urlState.viewMode) api.selectStory(currentId, urlState.viewMode);
+          else api.selectStory(currentId);
+        }
+        if (window.location.search !== currentSearch) try { history.replaceState(null, '', currentSearch); } catch (_) {}
+
+        const currentFull = window.location.pathname + window.location.search + window.location.hash;
+        if (currentFull !== savedUrl) {
+          try { history.replaceState(null, '', savedUrl); } catch (_) { window.location.hash = savedUrl.split('#')[1] || ''; }
+        }
+      } catch (_) {}
+      if (attempts === 1) {
+        block = false;
+        window.removeEventListener('hashchange', onHash, true);
+        window.removeEventListener('popstate', onPop, true);
+        channel.off(SET_CURRENT_STORY, preventStoryChange);
+        history.pushState = origPush;
+        history.replaceState = origReplace;
+      }
+      if (attempts > 1) setTimeout(() => restore(attempts - 1), 32);
+    };
+    requestAnimationFrame(() => restore());
   }, [anyCollapsed, expandAll, collapseAll, api]);
 
   return (
