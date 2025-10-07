@@ -42,7 +42,7 @@ export const SelectMulti = {
     const [v, setV] = useState(args.value);
     return React.createElement(MultiSelect, { ...args, value: v, onChange: setV });
   },
-  args: { label: 'Tags', value: ['alpha'], placeholder: 'Pick values', options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }, { value: 'gamma', label: 'Gamma' }] },
+  args: { label: 'Tags', value: [], placeholder: 'Pick values', options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }, { value: 'gamma', label: 'Gamma' }] },
 };
 
 export const Check = {

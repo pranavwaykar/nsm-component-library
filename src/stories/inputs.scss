@@ -8,6 +8,7 @@
 .sb-input--area { min-height: 96px; }
 
 .sb-check { display: inline-flex; gap: 8px; align-items: center; }
+.sb-check input { margin: 3px; }
 
 .sb-toggle { display: inline-flex; gap: 8px; align-items: center; position: relative; }
 .sb-toggle input { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; }
@@ -18,7 +19,10 @@
 .sb-toggle input:checked + .sb-toggle__track .sb-toggle__thumb { left: 20px; }
 .sb-toggle__label { font-size: 14px; }
 
-.sb-radio { display: grid; gap: 6px; }
+.sb-radio { display: grid; gap: 10px; }
+
+.sb-radio label { display: flex ; align-content: center; flex-wrap: wrap; }
+.sb-radio label input { margin: 0px 10px 0px 0px; }
 
 .sb-range { width: 240px; }
 
@@ -27,7 +31,7 @@
 .sb-file__btn { border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 10px; background: #fff; cursor: pointer; }
 .sb-file__hint { font-size: 12px; color: #6b7280; }
 
-.sb-color { width: 40px; height: 32px; padding: 0; border: 1px solid #d1d5db; border-radius: 6px; }
+.sb-color { width: 40px; height: 32px; padding: 3px 5px; border: 1px solid #d1d5db; border-radius: 6px; }
 
 /* MultiSelect */
 .sb-ms { position: relative; min-width: 320px; }
