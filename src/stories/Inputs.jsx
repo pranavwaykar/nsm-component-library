@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import './inputs.scss';
 
@@ -142,4 +142,87 @@ export const DateInput = ({ label, value, onChange }) => (
 
 DateInput.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func };
 
+
+export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pick values', onChange, disabled = false, error, helper }) => {
+  const rootRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    function handleDocumentClick(e) {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleDocumentClick);
+    return () => document.removeEventListener('mousedown', handleDocumentClick);
+  }, []);
+
+  function isSelected(v) {
+    return value.includes(v);
+  }
+
+  function toggleValue(v) {
+    if (disabled) return;
+    const next = isSelected(v) ? value.filter((x) => x !== v) : [...value, v];
+    onChange?.(next);
+  }
+
+  function removeValue(v) {
+    if (disabled) return;
+    onChange?.(value.filter((x) => x !== v));
+  }
+
+  const selectedOptions = options.filter((o) => value.includes(o.value));
+
+  return (
+    <label ref={rootRef} className={`sb-field ${error ? 'is-error' : ''}`}>
+      {label ? <span className="sb-field__label">{label}</span> : null}
+      <div className={`sb-ms ${disabled ? 'is-disabled' : ''}`}>
+        <button
+          type="button"
+          className="sb-ms-trigger"
+          onClick={() => setOpen((o) => !o)}
+          disabled={disabled}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+        >
+          {selectedOptions.length === 0 ? (
+            <span className="sb-ms-placeholder">{placeholder}</span>
+          ) : (
+            selectedOptions.map((opt) => (
+              <span key={opt.value} className="sb-ms-chip">
+                <span className="sb-ms-chip__label">{opt.label}</span>
+                <button type="button" className="sb-ms-chip__x" aria-label={`Remove ${opt.label}`} onClick={(e) => { e.stopPropagation(); removeValue(opt.value); }}>×</button>
+              </span>
+            ))
+          )}
+          <span className="sb-ms-caret">▾</span>
+        </button>
+
+        {open ? (
+          <div className="sb-ms-menu" role="listbox" aria-multiselectable="true">
+            {options.map((opt) => (
+              <div key={opt.value} className="sb-ms-item" role="option" aria-selected={isSelected(opt.value)} onClick={() => toggleValue(opt.value)}>
+                <input type="checkbox" readOnly checked={isSelected(opt.value)} />
+                <span>{opt.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      {helper ? <span className="sb-field__help">{helper}</span> : null}
+      {error ? <span className="sb-field__error">{error}</span> : null}
+    </label>
+  );
+};
+
+MultiSelect.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string.isRequired, label: PropTypes.string.isRequired })),
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  helper: PropTypes.string,
+};
 

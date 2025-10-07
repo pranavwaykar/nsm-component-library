@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, TextArea, Select, Checkbox, Toggle, RadioGroup, RangeInput, FileInput, ColorPicker, DateInput } from './Inputs';
+import { TextInput, TextArea, Select, Checkbox, Toggle, RadioGroup, RangeInput, FileInput, ColorPicker, DateInput, MultiSelect } from './Inputs';
 
 export default {
   id: 'example-inputs',
@@ -40,9 +40,9 @@ export const SelectMulti = {
   name: 'Multi-Select',
   render: (args) => {
     const [v, setV] = useState(args.value);
-    return React.createElement(Select, { ...args, value: v, onChange: setV, multiple: true });
+    return React.createElement(MultiSelect, { ...args, value: v, onChange: setV });
   },
-  args: { label: 'Tags', value: ['alpha'], options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }, { value: 'gamma', label: 'Gamma' }] },
+  args: { label: 'Tags', value: ['alpha'], placeholder: 'Pick values', options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }, { value: 'gamma', label: 'Gamma' }] },
 };
 
 export const Check = {

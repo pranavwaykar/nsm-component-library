@@ -28,3 +28,18 @@
 .sb-file__hint { font-size: 12px; color: #6b7280; }
 
 .sb-color { width: 40px; height: 32px; padding: 0; border: 1px solid #d1d5db; border-radius: 6px; }
+
+/* MultiSelect */
+.sb-ms { position: relative; min-width: 320px; }
+.sb-ms-trigger { width: 100%; min-height: 40px; border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 32px 6px 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #fff; cursor: pointer; text-align: left; }
+.sb-ms-trigger:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+.sb-ms-placeholder { color: #9ca3af; }
+.sb-ms-caret { position: absolute; right: 10px; color: #6b7280; pointer-events: none; }
+
+.sb-ms-chip { display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; padding: 4px 8px; border-radius: 999px; font-size: 14px; }
+.sb-ms-chip__x { border: 0; background: transparent; cursor: pointer; color: #374151; font-size: 16px; line-height: 1; padding: 0; }
+
+.sb-ms-menu { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,.08); max-height: 240px; overflow: auto; padding: 6px; }
+.sb-ms-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.sb-ms-item:hover { background: #f9fafb; }
+.sb-ms.is-disabled .sb-ms-trigger { background: #f9fafb; color: #9ca3af; cursor: not-allowed; }
