@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, TextArea, Select, Checkbox, Toggle, RadioGroup, RangeInput, FileInput, ColorPicker, DateInput, MultiSelect } from './Inputs';
+import { TextInput, TextArea, Select, Checkbox, Toggle, RadioGroup, RangeInput, FileInput, ColorPicker, DateInput, MultiSelect, SingleSelect } from './Inputs';
 
 export default {
   id: 'example-inputs',
@@ -31,7 +31,7 @@ export const SelectSingle = {
   name: 'Select',
   render: (args) => {
     const [v, setV] = useState(args.value);
-    return React.createElement(Select, { ...args, value: v, onChange: setV });
+    return React.createElement(SingleSelect, { ...args, value: v, onChange: setV });
   },
   args: { label: 'Role', value: '', placeholder: 'Choose…', options: [{ value: 'admin', label: 'Admin' }, { value: 'editor', label: 'Editor' }, { value: 'viewer', label: 'Viewer' }] },
 };

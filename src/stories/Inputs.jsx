@@ -143,7 +143,7 @@ export const DateInput = ({ label, value, onChange }) => (
 DateInput.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func };
 
 
-export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pick values', onChange, disabled = false, error, helper }) => {
+export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pick values', onChange, disabled = false, error, helper, closeOnSelect = true }) => {
   const rootRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -164,6 +164,7 @@ export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pi
     if (disabled) return;
     const next = isSelected(v) ? value.filter((x) => x !== v) : [...value, v];
     onChange?.(next);
+    if (closeOnSelect) setOpen(false);
   }
 
   function removeValue(v) {
@@ -199,9 +200,9 @@ export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pi
         </button>
 
         {open ? (
-          <div className="sb-ms-menu" role="listbox" aria-multiselectable="true">
+          <div className="sb-ms-menu" role="listbox" aria-multiselectable="true" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}>
             {options.map((opt) => (
-              <div key={opt.value} className="sb-ms-item" role="option" aria-selected={isSelected(opt.value)} onClick={() => toggleValue(opt.value)}>
+              <div key={opt.value} className="sb-ms-item" role="option" aria-selected={isSelected(opt.value)} onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleValue(opt.value); }}>
                 <input type="checkbox" readOnly checked={isSelected(opt.value)} />
                 <span>{opt.label}</span>
               </div>
@@ -218,6 +219,77 @@ export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pi
 MultiSelect.propTypes = {
   label: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string.isRequired, label: PropTypes.string.isRequired })),
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  helper: PropTypes.string,
+  closeOnSelect: PropTypes.bool,
+};
+
+
+export const SingleSelect = ({ label, value = '', options = [], placeholder = 'Choose…', onChange, disabled = false, error, helper }) => {
+  const rootRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    function handleDocumentClick(e) {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleDocumentClick);
+    return () => document.removeEventListener('mousedown', handleDocumentClick);
+  }, []);
+
+  const selected = options.find((o) => o.value === value);
+
+  function selectValue(v) {
+    if (disabled) return;
+    onChange?.(v);
+    setOpen(false);
+  }
+
+  return (
+    <label ref={rootRef} className={`sb-field ${error ? 'is-error' : ''}`}>
+      {label ? <span className="sb-field__label">{label}</span> : null}
+      <div className={`sb-ms ${disabled ? 'is-disabled' : ''}`}>
+        <button
+          type="button"
+          className="sb-ms-trigger"
+          onClick={() => setOpen((o) => !o)}
+          disabled={disabled}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+        >
+          {selected ? (
+            <span>{selected.label}</span>
+          ) : (
+            <span className="sb-ms-placeholder">{placeholder}</span>
+          )}
+          <span className="sb-ms-caret">▾</span>
+        </button>
+
+        {open ? (
+          <div className="sb-ms-menu" role="listbox" aria-multiselectable="false" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+            {options.map((opt) => (
+              <div key={opt.value} className="sb-ms-item" role="option" aria-selected={opt.value === value} onClick={(e) => { e.preventDefault(); e.stopPropagation(); selectValue(opt.value); }}>
+                <input type="radio" readOnly checked={opt.value === value} />
+                <span>{opt.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      {helper ? <span className="sb-field__help">{helper}</span> : null}
+      {error ? <span className="sb-field__error">{error}</span> : null}
+    </label>
+  );
+};
+
+SingleSelect.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string.isRequired, label: PropTypes.string.isRequired })),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
