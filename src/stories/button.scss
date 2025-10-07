@@ -45,23 +45,23 @@
 }
 .storybook-button--small {
   padding: 10px 16px;
-  font-size: 12px;
+  font-size: var(--sb-font-size-sm);
 }
 .storybook-button--medium {
   padding: 11px 20px;
-  font-size: 14px;
+  font-size: var(--sb-font-size-base);
 }
 .storybook-button--large {
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: var(--sb-font-size-lg);
 }
 .storybook-button--xsmall {
   padding: 8px 12px;
-  font-size: 11px;
+  font-size: var(--sb-font-size-xs);
 }
 .storybook-button--xlarge {
   padding: 14px 28px;
-  font-size: 18px;
+  font-size: var(--sb-font-size-xl);
 }
 
 /* radius */

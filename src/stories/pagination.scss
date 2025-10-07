@@ -1,6 +1,6 @@
 .sb-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 8px 0; }
-.sb-pagination__sizes { order: 1; }
-.sb-pagination__label { margin-right: 6px; font-size: 13px; color: #6b7280; }
+.sb-pagination__sizes { order: 1; font-size: var(--sb-font-size-base); }
+.sb-pagination__label { margin-right: 6px; font-size: var(--sb-font-size-base); color: #6b7280; }
 .sb-pagination__select { border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 8px; background: #fff; }
 
 .sb-pagination__controls { display: flex; align-items: center; gap: 6px; order: 2; }
@@ -9,7 +9,7 @@
 .sb-pagination__btn.is-active { background: #111827; color: #fff; border-color: #111827; }
 .sb-pagination__btn:disabled { opacity: .5; cursor: not-allowed; }
 
-.sb-pagination__status { margin-left: auto; font-size: 13px; color: #6b7280; order: 3; }
+.sb-pagination__status { margin-left: auto; font-size: var(--sb-font-size-base); color: #6b7280; order: 3; }
 
 @media (max-width: 600px) {
   .sb-pagination { gap: 8px; }

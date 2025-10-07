@@ -2,6 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
+import './tokens.css';
 import './button.scss';
 
 /** Primary UI component for user interaction */

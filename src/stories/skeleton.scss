@@ -3,4 +3,4 @@
 @keyframes sb-skel-shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
 
 .sb-skel-text { display: grid; gap: 8px; }
-.sb-skel--line { height: 14px; width: 100%; border-radius: 6px; }
+.sb-skel--line { height: var(--sb-font-size-base); width: 100%; border-radius: 6px; }

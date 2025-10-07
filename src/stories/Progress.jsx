@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './tokens.css';
 import './progress.scss';
 
 export const ProgressBar = ({ value, max = 100, indeterminate = false, label }) => {

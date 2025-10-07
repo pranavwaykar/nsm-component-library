@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import './tokens.css';
 import './inputs.scss';
 
 export const TextInput = ({ label, value, placeholder, error, helper, onChange, ...rest }) => (
@@ -296,5 +297,172 @@ SingleSelect.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
   helper: PropTypes.string,
+};
+
+function toStartOfMonth(d) {
+  return new Date(d.getFullYear(), d.getMonth(), 1);
+}
+
+function addMonths(d, delta) {
+  return new Date(d.getFullYear(), d.getMonth() + delta, 1);
+}
+
+function daysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function formatMdY(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const yy = d.getFullYear();
+  return `${mm}/${dd}/${yy}`;
+}
+
+function toIso(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
+function fromIso(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split('-').map((x) => Number(x));
+  if (!y || !m || !d) return null;
+  return new Date(y, m - 1, d);
+}
+
+function buildMonthMatrix(base) {
+  const first = toStartOfMonth(base);
+  const total = daysInMonth(first.getFullYear(), first.getMonth());
+  const startDay = first.getDay(); // 0..6 Sun..Sat
+  const cells = [];
+  for (let i = 0; i < startDay; i++) cells.push(null);
+  for (let day = 1; day <= total; day++) cells.push(new Date(first.getFullYear(), first.getMonth(), day));
+  while (cells.length % 7 !== 0) cells.push(null);
+  const weeks = [];
+  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
+  return weeks;
+}
+
+export const DateRange = ({ label, value = { start: '', end: '' }, placeholder = 'MM/DD/YYYY – MM/DD/YYYY', onChange, disabled = false, error, helper, closeOnSelect = true }) => {
+  const rootRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const startDate = fromIso(value?.start);
+  const endDate = fromIso(value?.end);
+  const [view, setView] = useState(toStartOfMonth(startDate || new Date()));
+
+  useEffect(() => {
+    function handleDocumentClick(e) {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleDocumentClick);
+    return () => document.removeEventListener('mousedown', handleDocumentClick);
+  }, []);
+
+  function inRange(d) {
+    if (!startDate || !endDate) return false;
+    const time = d.getTime();
+    return time > startDate.getTime() && time < endDate.getTime();
+  }
+
+  function isSame(d1, d2) {
+    return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+  }
+
+  function pickDay(d) {
+    if (!d || disabled) return;
+    if (!startDate || (startDate && endDate)) {
+      onChange?.({ start: toIso(d), end: '' });
+    } else if (startDate && !endDate) {
+      if (d.getTime() < startDate.getTime()) {
+        onChange?.({ start: toIso(d), end: '' });
+      } else {
+        onChange?.({ start: toIso(startDate), end: toIso(d) });
+        if (closeOnSelect) setOpen(false);
+      }
+    }
+  }
+
+  const startText = startDate ? formatMdY(startDate) : '';
+  const endText = endDate ? formatMdY(endDate) : '';
+  const display = startText || endText ? `${startText || 'MM/DD/YYYY'}  – ${endText || 'MM/DD/YYYY'}`.replace('\u0000', '') : '';
+
+  const monthA = view;
+  const monthB = addMonths(view, 1);
+
+  function renderMonth(monthDate, showPrev, showNext) {
+    const weeks = buildMonthMatrix(monthDate);
+    const monthName = monthDate.toLocaleString(undefined, { month: 'long', year: 'numeric' });
+    return (
+      <div className="sb-dr-month">
+        <div className="sb-dr-month__head">
+          {showPrev ? <button type="button" className="sb-dr-nav" aria-label="Previous month" onClick={() => setView(addMonths(view, -1))}>‹</button> : <span />}
+          <span className="sb-dr-month__title">{monthName}</span>
+          {showNext ? <button type="button" className="sb-dr-nav" aria-label="Next month" onClick={() => setView(addMonths(view, 1))}>›</button> : <span />}
+        </div>
+        <div className="sb-dr-grid sb-dr-grid--dow">
+          <span> S </span><span> M </span><span> T </span><span> W </span><span> T </span><span> F </span><span> S </span>
+        </div>
+        <div className="sb-dr-grid">
+          {weeks.flat().map((d, idx) => {
+            if (!d) return <span key={idx} className="sb-dr-day is-empty" />;
+            const isStart = isSame(d, startDate);
+            const isEnd = isSame(d, endDate);
+            const mid = inRange(d);
+            return (
+              <button
+                key={idx}
+                type="button"
+                className={`sb-dr-day ${isStart ? 'is-start' : ''} ${isEnd ? 'is-end' : ''} ${mid ? 'is-mid' : ''}`.trim()}
+                onClick={() => pickDay(d)}
+              >
+                {d.getDate()}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <label ref={rootRef} className={`sb-field ${error ? 'is-error' : ''}`}>
+      {label ? <span className="sb-field__label">{label}</span> : null}
+      <div className={`sb-dr ${disabled ? 'is-disabled' : ''}`}>
+        <button
+          type="button"
+          className="sb-ms-trigger sb-dr-trigger"
+          onClick={() => setOpen((o) => !o)}
+          disabled={disabled}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+        >
+          {display ? <span>{display}</span> : <span className="sb-ms-placeholder">{placeholder}</span>}
+          <span className="sb-ms-caret">📅</span>
+        </button>
+
+        {open ? (
+          <div className="sb-dr-menu" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+            {renderMonth(monthA, true, false)}
+            {renderMonth(monthB, false, true)}
+          </div>
+        ) : null}
+      </div>
+      {helper ? <span className="sb-field__help">{helper}</span> : null}
+      {error ? <span className="sb-field__error">{error}</span> : null}
+    </label>
+  );
+};
+
+DateRange.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.shape({ start: PropTypes.string, end: PropTypes.string }),
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  helper: PropTypes.string,
+  closeOnSelect: PropTypes.bool,
 };
 

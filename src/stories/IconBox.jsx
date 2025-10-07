@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './tokens.css';
 import './iconbox.scss';
 
 export const IconBox = ({

@@ -1,6 +1,7 @@
-.sb-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 2px 8px; border-radius: 6px; background: #f3f4f6; color: #111827; }
+.sb-badge { display: inline-flex; align-items: center; gap: 6px; font-size: var(--sb-font-size-sm); padding: 2px 8px; border-radius: 6px; background: #f3f4f6; color: #111827; }
 .sb-badge--pill { border-radius: 999px; }
 .sb-badge__dot { width: 8px; height: 8px; border-radius: 999px; background: currentColor; }
+.sb-badge--pill, .sb-badge { line-height: 1.2; }
 
 .sb-badge--primary { background: #e0e7ff; color: #1e3a8a; }
 .sb-badge--success { background: #d1fae5; color: #065f46; }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import './tokens.css';
 import './image.scss';
 
 export const Image = ({
