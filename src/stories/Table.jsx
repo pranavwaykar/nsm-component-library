@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import './tokens.css';
-import './table.scss';
+import './shared/tokens.css';
+import './Table/table.scss';
 
 function defaultFilter(rows, query, columns) {
   if (!query) return rows;

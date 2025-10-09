@@ -2,8 +2,8 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import './tokens.css';
-import './button.scss';
+import './shared/tokens.css';
+import './Button/button.scss';
 
 /** Primary UI component for user interaction */
 export const Button = ({

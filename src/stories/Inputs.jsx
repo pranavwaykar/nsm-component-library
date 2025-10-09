@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import './tokens.css';
-import './inputs.scss';
+import './shared/tokens.css';
+import './Inputs/inputs.scss';
 
 export const TextInput = ({ label, value, placeholder, error, helper, onChange, ...rest }) => (
   <label className={`sb-field ${error ? 'is-error' : ''}`}>

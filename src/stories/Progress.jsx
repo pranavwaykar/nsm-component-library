@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './tokens.css';
-import './progress.scss';
+import './shared/tokens.css';
+import './Progress/progress.scss';
 
 export const ProgressBar = ({ value, max = 100, indeterminate = false, label }) => {
   const pct = Math.max(0, Math.min(100, (Number(value) / Number(max)) * 100));

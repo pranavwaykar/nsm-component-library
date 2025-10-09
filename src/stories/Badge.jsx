@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './tokens.css';
-import './badge.scss';
+import './shared/tokens.css';
+import './Badge/badge.scss';
 
 export const Badge = ({ label, variant = 'neutral', dot = false, pill = true }) => {
   const classNames = ['sb-badge', `sb-badge--${variant}`, pill ? 'sb-badge--pill' : null].filter(Boolean).join(' ');

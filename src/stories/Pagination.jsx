@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './tokens.css';
-import './pagination.scss';
+import './shared/tokens.css';
+import './Pagination/pagination.scss';
 
 export const Pagination = ({
   page,
