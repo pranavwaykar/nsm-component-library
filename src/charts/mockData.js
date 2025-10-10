@@ -7,7 +7,7 @@ import {
   heatMapConfig,
 } from './fusionConfig';
 
-export const mockMostCommonDocumentTypes = {
+export const mockBarData = {
   chart: { ...stackBarConfig, maxBarHeight: 30 },
   data: [
     { label: 'Type A', value: '880000', color: '#0082FA' },
@@ -18,7 +18,17 @@ export const mockMostCommonDocumentTypes = {
   ],
 };
 
-export const mockPhaseTypeDistribution = {
+export const mockColumnData = {
+  chart: barConfig,
+  data: [
+    { label: 'A', value: '120', color: '#3B82F6' },
+    { label: 'B', value: '90', color: '#3B82F6' },
+    { label: 'C', value: '60', color: '#3B82F6' },
+    { label: 'D', value: '30', color: '#3B82F6' },
+  ],
+};
+
+export const mockDoughnutData = {
   chart: pieChartConfig,
   data: [
     { label: 'Miscellaneous', value: '234', color: '#424C5D' },
@@ -28,16 +38,7 @@ export const mockPhaseTypeDistribution = {
   ],
 };
 
-export const mockTaskStatus = {
-  chart: pieChartConfig,
-  data: [
-    { label: 'Planned', value: '200', color: '#99A3AC' },
-    { label: 'Completed', value: '500', color: '#02BD8B' },
-    { label: 'Expired', value: '115', color: '#F72141' },
-  ],
-};
-
-export const mockTeamBasedSigning = {
+export const mockStackedColumnData = {
   chart: stackBarConfigWithLegend,
   categories: [
     { category: [{ label: 'Legal T' }, { label: 'Finance T' }, { label: 'Sales T' }, { label: 'XY Team' }] },
@@ -49,7 +50,7 @@ export const mockTeamBasedSigning = {
   ],
 };
 
-export const mockLineActivityOverTime = {
+export const mockLineData = {
   chart: { ...lineChartConfig, numberScaleValue: '1000' },
   categories: [
     { category: [{ label: 'Jan' }, { label: '15 Jan' }, { label: 'Feb' }, { label: '15 Feb' }, { label: 'Mar' }, { label: '15 Mar' }, { label: 'Apr' }] },
@@ -60,7 +61,7 @@ export const mockLineActivityOverTime = {
   ],
 };
 
-export const mockHeatmapTaskStatusDistributionToUser = {
+export const mockHeatmapData = {
   chart: heatMapConfig,
   rows: { row: [{ id: 'expired', label: 'Expired' }, { id: 'completed', label: 'Completed' }, { id: 'planned', label: 'Planned' }] },
   columns: { column: [{ id: 'u1', label: 'User A' }, { id: 'u2', label: 'User B' }, { id: 'u3', label: 'User C' }] },
@@ -80,6 +81,26 @@ export const mockHeatmapTaskStatusDistributionToUser = {
     },
   ],
   colorrange: { gradient: '1' },
+};
+
+export const mockPieData = {
+  chart: pieChartConfig,
+  data: [
+    { label: 'A', value: '35', color: '#6366F1' },
+    { label: 'B', value: '25', color: '#10B981' },
+    { label: 'C', value: '20', color: '#F59E0B' },
+    { label: 'D', value: '20', color: '#EF4444' },
+  ],
+};
+
+export const mockAreaData = {
+  chart: { ...lineChartConfig, drawAnchors: true },
+  categories: [
+    { category: [{ label: 'Jan' }, { label: 'Feb' }, { label: 'Mar' }, { label: 'Apr' }, { label: 'May' }] },
+  ],
+  dataset: [
+    { data: [{ value: '20' }, { value: '35' }, { value: '30' }, { value: '40' }, { value: '45' }] },
+  ],
 };
 
 

@@ -1,7 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import './tokens.css';
 import './inputs.scss';
+
+export const Inputs = ({ label = 'Label', placeholder = 'Type here', disabled = false, error, helper }) => {
+  return (
+    <div className="sb-input">
+      {label ? <label className="sb-input__label">{label}</label> : null}
+      <input className="sb-input__control" placeholder={placeholder} disabled={disabled} />
+      {helper ? <div className="sb-input__helper" aria-live="polite">{helper}</div> : null}
+      {error ? <div className="sb-input__error" role="alert">{error}</div> : null}
+    </div>
+  );
+};
+
+Inputs.propTypes = {
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  helper: PropTypes.string,
+};
 
 export const TextInput = ({ label, value, placeholder, error, helper, onChange, ...rest }) => (
   <label className={`sb-field ${error ? 'is-error' : ''}`}>
