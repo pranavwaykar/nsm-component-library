@@ -134,15 +134,14 @@ export const ColorPicker = ({ label, value, onChange }) => (
 
 ColorPicker.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func };
 
-export const DateInput = ({ label, value, onChange }) => (
+export const DateInput = ({ label, value, onChange, placeholder = '' }) => (
   <label className="sb-field">
     {label ? <span className="sb-field__label">{label}</span> : null}
-    <input className="sb-input" type="date" value={value} onChange={(e) => onChange?.(e.target.value)} />
+    <input className="sb-ms-trigger" type="date" value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} />
   </label>
 );
 
-DateInput.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func };
-
+DateInput.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func, placeholder: PropTypes.string };
 
 export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pick values', onChange, disabled = false, error, helper, closeOnSelect = true }) => {
   const rootRef = useRef(null);
@@ -216,19 +215,6 @@ export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pi
     </label>
   );
 };
-
-MultiSelect.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.arrayOf(PropTypes.string),
-  options: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string.isRequired, label: PropTypes.string.isRequired })),
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
-  disabled: PropTypes.bool,
-  error: PropTypes.string,
-  helper: PropTypes.string,
-  closeOnSelect: PropTypes.bool,
-};
-
 
 export const SingleSelect = ({ label, value = '', options = [], placeholder = 'Choose…', onChange, disabled = false, error, helper }) => {
   const rootRef = useRef(null);
@@ -386,7 +372,7 @@ export const DateRange = ({ label, value = { start: '', end: '' }, placeholder =
 
   const startText = startDate ? formatMdY(startDate) : '';
   const endText = endDate ? formatMdY(endDate) : '';
-  const display = startText || endText ? `${startText || 'MM/DD/YYYY'}  – ${endText || 'MM/DD/YYYY'}`.replace('\u0000', '') : '';
+  const display = startText || endText ? `${startText || 'MM/DD/YYYY'} – ${endText || 'MM/DD/YYYY'}` : '';
 
   const monthA = view;
   const monthB = addMonths(view, 1);

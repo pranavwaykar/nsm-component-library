@@ -1,5 +1,6 @@
 import React from 'react';
 import Chart from '../charts/Chart';
+import './chart.stories.scss';
 import {
   mockMostCommonDocumentTypes,
   mockPhaseTypeDistribution,
@@ -49,7 +50,7 @@ export const Bar_MostCommonDocumentTypes = {
   render: () =>
     React.createElement(
       'div',
-      { style: { width: '100%', height: 420, padding: 16 } },
+      { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'bar2d',
         width: '100%',
@@ -64,7 +65,7 @@ export const Doughnut_TaskStatus = {
   render: () =>
     React.createElement(
       'div',
-      { style: { width: '100%', height: 420, padding: 16 } },
+      { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'doughnut2d',
         width: '100%',
@@ -74,14 +75,12 @@ export const Doughnut_TaskStatus = {
     ),
 };
 
-// Removed duplicate doughnut story
-
 export const StackedColumn_TeamBasedSigning = {
   name: 'Stacked Column',
   render: () =>
     React.createElement(
       'div',
-      { style: { width: '100%', height: 420, padding: 16 } },
+      { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'scrollstackedcolumn2d',
         width: '100%',
@@ -96,7 +95,7 @@ export const Line_ActivityOverTime = {
   render: () =>
     React.createElement(
       'div',
-      { style: { width: '100%', height: 420, padding: 16 } },
+      { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'msline',
         width: '100%',
@@ -111,7 +110,7 @@ export const Heatmap_TaskStatusDistributionToUser = {
   render: () =>
     React.createElement(
       'div',
-      { style: { width: '100%', height: 420, padding: 16 } },
+      { style: { width: '100%', height: 420 } },
       React.createElement(Chart, {
         type: 'heatmap',
         width: '100%',

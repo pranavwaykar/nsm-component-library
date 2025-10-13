@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, TextArea, Select, Checkbox, Toggle, RadioGroup, RangeInput, FileInput, ColorPicker, DateInput, MultiSelect, SingleSelect } from './Inputs';
+import { TextInput, TextArea, Select, Checkbox, Toggle, RadioGroup, RangeInput, FileInput, ColorPicker, DateInput, MultiSelect, SingleSelect, DateRange } from './Inputs';
 
 export default {
   id: 'example-inputs',
@@ -104,6 +104,15 @@ export const DateField = {
     return React.createElement(DateInput, { ...args, value: v, onChange: setV });
   },
   args: { label: 'Date' },
+};
+
+export const DateRangePicker = {
+  name: 'Date Range Picker',
+  render: (args) => {
+    const [v, setV] = useState(args.value);
+    return React.createElement(DateRange, { ...args, value: v, onChange: setV });
+  },
+  args: { label: 'Date Range', value: { start: '', end: '' } },
 };
 
 

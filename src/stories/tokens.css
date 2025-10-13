@@ -1,4 +1,11 @@
 :root {
+  --sb-font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --sb-text-color: #111827;
+  --sb-muted-color: #6b7280;
+  --sb-border-color: #e5e7eb;
+  --sb-surface: #ffffff;
+  --sb-surface-muted: #f9fafb;
+
   --sb-font-size-xs: 11px;
   --sb-font-size-sm: 12px;
   --sb-font-size-base: 14px;
@@ -9,5 +16,7 @@
   --sb-font-size-caption: var(--sb-font-size-sm);
   --sb-font-size-title: var(--sb-font-size-lg);
 }
+
+body, .sb-field, .sb-table, .sb-ms, .sb-dr, .sb-pagination, .sb-button, .sb-badge { font-family: var(--sb-font-family); color: var(--sb-text-color); }
 
 
