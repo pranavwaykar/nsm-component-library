@@ -76,16 +76,14 @@ export const Table = ({
             {expandable && <th aria-label="expander" />}
             {columns.map((col) => {
               const isActive = sortBy === col.accessor;
-              const dir = isActive ? sortDir : null;
+              const dir = isActive ? sortDir : 'neutral';
               return (
                 <th key={col.accessor}>
                   <button type="button" className={`sb-table__thbtn ${isActive ? 'is-active' : ''}`} onClick={() => toggleSort(col.accessor)}>
                     <span>{col.header}</span>
-                    {isActive ? (
-                      <span className={`sb-sort-icon ${dir === 'asc' ? 'asc' : 'desc'}`} aria-hidden>
-                        <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                    ) : null}
+                    <span className={`sb-sort-icon ${dir}`} aria-hidden>
+                      <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </span>
                   </button>
                 </th>
               );

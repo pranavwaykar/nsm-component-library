@@ -1,51 +1,19 @@
 import React from 'react';
 import Chart from '../charts/Chart';
 import './chart.stories.scss';
-import {
-  mockMostCommonDocumentTypes,
-  mockPhaseTypeDistribution,
-  mockTaskStatus,
-  mockTeamBasedSigning,
-  mockLineActivityOverTime,
-  mockHeatmapTaskStatusDistributionToUser,
-} from '../charts/mockData';
+import { mockBarData, mockDoughnutData, mockPieData, mockStackedData, mockLineData, mockHeatmapData } from '../charts/mockData';
 
 export default {
   id: 'charts',
   title: 'Charts',
   component: Chart,
   parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: `
-Use mock data for quick demos, or switch to live endpoints with the ready-to-go FetchChart:
-
-import { FetchChart } from '../charts/FetchChart';
-import { barConfig } from '../charts/fusionConfig';
-
-<FetchChart
-  chartType="bar2d"
-  endpoint="/api/your-endpoint"
-  method="GET"
-  headers={{ Authorization: 'Bearer <token>' }}
-  params={{ from: '2024-01-01', to: '2024-12-31' }}
-  transform={(resp) => ({
-    chart: barConfig,
-    data: (resp?.items || []).map(item => ({
-      label: item.name,
-      value: String(item.count),
-      color: '#0082FA',
-    })),
-  })}
-/>`,
-      },
-    },
+    layout: 'centered',
+    docs: { disable: true },
   },
-  tags: ['autodocs'],
 };
 
-export const Bar_MostCommonDocumentTypes = {
+export const Bar = {
   name: 'Bar',
   render: () =>
     React.createElement(
@@ -53,14 +21,14 @@ export const Bar_MostCommonDocumentTypes = {
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'bar2d',
-        width: '100%',
-        height: '100%',
-        dataSource: mockMostCommonDocumentTypes,
+        width: '80%',
+        height: '60%',
+        dataSource: mockBarData,
       }),
     ),
 };
 
-export const Doughnut_TaskStatus = {
+export const Doughnut = {
   name: 'Doughnut',
   render: () =>
     React.createElement(
@@ -68,14 +36,14 @@ export const Doughnut_TaskStatus = {
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'doughnut2d',
-        width: '100%',
-        height: '100%',
-        dataSource: mockTaskStatus,
+        width: '80%',
+        height: '70%',
+        dataSource: mockDoughnutData,
       }),
     ),
 };
 
-export const StackedColumn_TeamBasedSigning = {
+export const StackedColumn = {
   name: 'Stacked Column',
   render: () =>
     React.createElement(
@@ -83,14 +51,14 @@ export const StackedColumn_TeamBasedSigning = {
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'scrollstackedcolumn2d',
-        width: '100%',
-        height: '100%',
-        dataSource: mockTeamBasedSigning,
+        width: '80%',
+        height: '70%',
+        dataSource: mockStackedData,
       }),
     ),
 };
 
-export const Line_ActivityOverTime = {
+export const Line = {
   name: 'Line',
   render: () =>
     React.createElement(
@@ -98,24 +66,24 @@ export const Line_ActivityOverTime = {
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'msline',
-        width: '100%',
-        height: '100%',
-        dataSource: mockLineActivityOverTime,
+        width: '70%',
+        height: '70%',
+        dataSource: mockLineData,
       }),
     ),
 };
 
-export const Heatmap_TaskStatusDistributionToUser = {
+export const Heatmap = {
   name: 'Heatmap',
   render: () =>
     React.createElement(
       'div',
-      { style: { width: '100%', height: 420 } },
+      { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'heatmap',
-        width: '100%',
-        height: '100%',
-        dataSource: mockHeatmapTaskStatusDistributionToUser,
+        width: '80%',
+        height: '70%',
+        dataSource: mockHeatmapData,
       }),
     ),
 };

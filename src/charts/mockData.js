@@ -7,7 +7,7 @@ import {
   heatMapConfig,
 } from './fusionConfig';
 
-export const mockMostCommonDocumentTypes = {
+export const mockBarData = {
   chart: { ...stackBarConfig, maxBarHeight: 30 },
   data: [
     { label: 'Type A', value: '880000', color: '#0082FA' },
@@ -18,7 +18,7 @@ export const mockMostCommonDocumentTypes = {
   ],
 };
 
-export const mockPhaseTypeDistribution = {
+export const mockDoughnutData = {
   chart: pieChartConfig,
   data: [
     { label: 'Miscellaneous', value: '234', color: '#424C5D' },
@@ -28,7 +28,7 @@ export const mockPhaseTypeDistribution = {
   ],
 };
 
-export const mockTaskStatus = {
+export const mockPieData = {
   chart: pieChartConfig,
   data: [
     { label: 'Planned', value: '200', color: '#99A3AC' },
@@ -37,7 +37,7 @@ export const mockTaskStatus = {
   ],
 };
 
-export const mockTeamBasedSigning = {
+export const mockStackedData = {
   chart: stackBarConfigWithLegend,
   categories: [
     { category: [{ label: 'Legal T' }, { label: 'Finance T' }, { label: 'Sales T' }, { label: 'XY Team' }] },
@@ -49,7 +49,7 @@ export const mockTeamBasedSigning = {
   ],
 };
 
-export const mockLineActivityOverTime = {
+export const mockLineData = {
   chart: { ...lineChartConfig, numberScaleValue: '1000' },
   categories: [
     { category: [{ label: 'Jan' }, { label: '15 Jan' }, { label: 'Feb' }, { label: '15 Feb' }, { label: 'Mar' }, { label: '15 Mar' }, { label: 'Apr' }] },
@@ -60,7 +60,7 @@ export const mockLineActivityOverTime = {
   ],
 };
 
-export const mockHeatmapTaskStatusDistributionToUser = {
+export const mockHeatmapData = {
   chart: heatMapConfig,
   rows: { row: [{ id: 'expired', label: 'Expired' }, { id: 'completed', label: 'Completed' }, { id: 'planned', label: 'Planned' }] },
   columns: { column: [{ id: 'u1', label: 'User A' }, { id: 'u2', label: 'User B' }, { id: 'u3', label: 'User C' }] },

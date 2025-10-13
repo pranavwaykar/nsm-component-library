@@ -56,6 +56,7 @@
   font-size: var(--sb-font-size-base);
 }
 .sb-table__thbtn .sb-sort-icon { display: inline-flex; margin-left: 6px; color: #cbd5e1; transform: rotate(0deg); transition: transform .15s ease, color .15s ease; }
+.sb-table__thbtn .sb-sort-icon.neutral { color: #cbd5e1; transform: rotate(0deg); }
 .sb-table__thbtn .sb-sort-icon.asc { color: #2563eb; transform: rotate(180deg); }
 .sb-table__thbtn .sb-sort-icon.desc { color: #2563eb; transform: rotate(0deg); }
 .sb-table__sort {

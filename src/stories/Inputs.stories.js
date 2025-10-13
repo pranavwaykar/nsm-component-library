@@ -97,14 +97,14 @@ export const Color = {
   args: { label: 'Pick color' },
 };
 
-export const DateField = {
-  name: 'Date Picker',
-  render: (args) => {
-    const [v, setV] = useState('');
-    return React.createElement(DateInput, { ...args, value: v, onChange: setV });
-  },
-  args: { label: 'Date' },
-};
+// export const DateField = {
+//   name: 'Date Picker',
+//   render: (args) => {
+//     const [v, setV] = useState('');
+//     return React.createElement(DateInput, { ...args, value: v, onChange: setV });
+//   },
+//   args: { label: 'Date' },
+// };
 
 export const DateRangePicker = {
   name: 'Date Range Picker',

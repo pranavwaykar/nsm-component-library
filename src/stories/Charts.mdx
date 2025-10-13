@@ -1,0 +1,31 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import Chart from "../charts/Chart";
+
+<Meta title="Charts/Docs" component={Chart} />
+
+# Charts
+
+Use mock data for quick demos, or switch to live endpoints with the ready-to-go FetchChart:
+
+```jsx
+import { FetchChart } from '../charts/FetchChart';
+import { barConfig } from '../charts/fusionConfig';
+
+<FetchChart
+  chartType="bar2d"
+  endpoint="/api/your-endpoint"
+  method="GET"
+  headers={{ Authorization: 'Bearer <token>' }}
+  params={{ from: '2024-01-01', to: '2024-12-31' }}
+  transform={(resp) => ({
+    chart: barConfig,
+    data: (resp?.items || []).map(item => ({
+      label: item.name,
+      value: String(item.count),
+      color: '#0082FA',
+    })),
+  })}
+/>
+```
+
+
