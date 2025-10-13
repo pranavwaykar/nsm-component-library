@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './tokens.css';
 import './badge.scss';
 
 export const Badge = ({ label, variant = 'neutral', dot = false, pill = true }) => {

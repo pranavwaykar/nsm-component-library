@@ -20,6 +20,7 @@ const FetchChart = ({ chartType, width = '100%', height = '100%', endpoint, meth
   return <Chart type={chartType} width={width} height={height} dataSource={dataSource} />;
 };
 
+export default FetchChart;
 export { FetchChart };
 
 

@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './tokens.css';
 import './progress.scss';
 
-export const Progress = ({ value = 50, color = '#3B82F6' }) => {
-  const clamped = Math.max(0, Math.min(100, value));
+export const ProgressBar = ({ value, max = 100, indeterminate = false, label }) => {
+  const pct = Math.max(0, Math.min(100, (Number(value) / Number(max)) * 100));
   return (
-    <div className="sb-progress">
-      <div className="sb-progress__bar" style={{ width: `${clamped}%`, background: color }} />
+    <div className="sb-progressbar" role="progressbar" aria-valuemin={0} aria-valuemax={max} aria-valuenow={indeterminate ? undefined : Math.round(pct)} aria-label={label}>
+      <div className={`sb-progressbar__fill ${indeterminate ? 'is-indeterminate' : ''}`} style={indeterminate ? undefined : { width: `${pct}%` }} />
     </div>
   );
 };
 
-Progress.propTypes = {
+ProgressBar.propTypes = {
   value: PropTypes.number,
-  color: PropTypes.string,
+  max: PropTypes.number,
+  indeterminate: PropTypes.bool,
+  label: PropTypes.string,
 };
 
 export const ProgressRing = ({ value, max = 100, size = 44, stroke = 4, indeterminate = false, label }) => {
