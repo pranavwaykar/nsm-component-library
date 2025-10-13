@@ -1,6 +1,5 @@
 import React from 'react';
 import Chart from '../charts/Chart';
-import './chart.stories.scss';
 import {
   mockBarData,
   mockDoughnutData,
@@ -55,8 +54,8 @@ import { barConfig } from '../charts/fusionConfig';
   tags: ['autodocs'],
 };
 
-const stageClass = 'sb-chart-stage';
-const containerClass = 'sb-chart-container';
+const stageStyle = { width: '100%', minHeight: '100%', display: 'flex', placeItems: 'center', boxSizing: 'border-box' };
+const containerStyle = { width: '100%', height: 420, boxSizing: 'border-box'};
 
 export const Bar_MostCommonDocumentTypes = {
   name: 'Bar',
@@ -73,10 +72,10 @@ export const Bar_MostCommonDocumentTypes = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, {
           type: 'bar2d',
           width: args.width,
@@ -99,10 +98,10 @@ export const Column_Basic = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, { type: 'column2d', width: args.width, height: args.height, dataSource: ds }),
       ),
     );
@@ -124,10 +123,10 @@ export const Doughnut_TaskStatus = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, {
           type: 'doughnut2d',
           width: args.width,
@@ -150,10 +149,10 @@ export const Pie_Basic = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, { type: 'pie2d', width: args.width, height: args.height, dataSource: ds }),
       ),
     );
@@ -175,10 +174,10 @@ export const StackedColumn_TeamBasedSigning = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, {
           type: 'scrollstackedcolumn2d',
           width: args.width,
@@ -204,10 +203,10 @@ export const Line_ActivityOverTime = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, {
           type: 'msline',
           width: args.width,
@@ -227,10 +226,10 @@ export const Area_Basic = {
     const ds = { ...mockAreaData };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, { type: 'msarea', width: args.width, height: args.height, dataSource: ds }),
       ),
     );
@@ -255,10 +254,10 @@ export const Heatmap_TaskStatusDistributionToUser = {
     };
     return React.createElement(
       'div',
-      { className: stageClass },
+      { style: stageStyle },
       React.createElement(
         'div',
-        { className: containerClass },
+        { style: containerStyle },
         React.createElement(Chart, {
           type: 'heatmap',
           width: args.width,

@@ -11,22 +11,6 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react()],
-  build: {
-    lib: {
-      entry: path.resolve(dirname, 'src/stories/stories.global.scss'),
-      name: 'cmp-library-styles',
-      fileName: 'styles',
-      formats: ['es'],
-    },
-    rollupOptions: {
-      output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name && assetInfo.name.endsWith('.css')) return 'styles.css';
-          return assetInfo.name || 'asset-[hash][extname]';
-        },
-      },
-    },
-  },
   test: {
     projects: [{
       extends: true,
