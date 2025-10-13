@@ -1,3 +1,18 @@
+// Global Storybook parameters
+// Prefix copied code blocks with a CDN stylesheet link so users get the same styling
+
+/** @type { import('@storybook/react').Preview } */
+export const parameters = {
+  docs: {
+    source: {
+      transform: (src /* string */, ctx) => {
+        const cdnCss = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cmp-library@latest/dist/styles.css" />';
+        return `${cdnCss}\n${src}`;
+      },
+    },
+  },
+};
+
 /** @type { import('@storybook/react-vite').Preview } */
 const preview = {
   parameters: {
