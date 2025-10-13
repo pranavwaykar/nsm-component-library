@@ -1,4 +1,4 @@
-import {
+import { 
   barConfig,
   stackBarConfig,
   stackBarConfigWithLegend,
@@ -80,6 +80,67 @@ export const mockHeatmapData = {
     },
   ],
   colorrange: { gradient: '1' },
+};
+
+export const mockAreaData = {
+  chart: { ...lineChartConfig, drawAnchors: true },
+  data: [
+    { label: 'Jan', value: '15123', color: '#0082FA' },
+    { label: 'Feb', value: '14233', color: '#0082FA' },
+    { label: 'Mar', value: '25507', color: '#0082FA' },
+    { label: 'Apr', value: '9110', color: '#0082FA' },
+    { label: 'May', value: '15529', color: '#0082FA' },
+    { label: 'Jun', value: '20803', color: '#0082FA' },
+    { label: 'Jul', value: '19202', color: '#0082FA' },
+  ],
+};
+
+export const mockParetoData = {
+  chart: { ...barConfig, showValues: '1' },
+  data: [
+    { label: 'Type A', value: '880000' },
+    { label: 'Type B', value: '730000' },
+    { label: 'Type C', value: '590000' },
+    { label: 'Type D', value: '520000' },
+    { label: 'Type E', value: '330000' },
+  ],
+};
+
+export const mockRadarData = {
+  chart: { theme: 'fusion', showLegend: '1' },
+  categories: [
+    { category: [
+      { label: 'Security' }, { label: 'UX' }, { label: 'Performance' }, { label: 'Docs' }, { label: 'API' }
+    ] },
+  ],
+  dataset: [
+    { seriesname: 'A', data: [{ value: '80' }, { value: '60' }, { value: '65' }, { value: '50' }, { value: '70' }] },
+    { seriesname: 'B', data: [{ value: '70' }, { value: '55' }, { value: '60' }, { value: '65' }, { value: '60' }] },
+  ],
+};
+
+export const mockBubbleData = {
+  chart: {
+    theme: 'fusion',
+    xAxisName: 'Revenue (k$)',
+    yAxisName: 'Profit (k$)',
+    xAxisMinValue: '0',
+    xAxisMaxValue: '100',
+    yAxisMinValue: '0',
+    yAxisMaxValue: '50',
+    showValues: '0',
+    showLegend: '0',
+  },
+  dataset: [
+    {
+      data: [
+        { x: '20', y: '16', z: '4', name: 'A' },
+        { x: '35', y: '20', z: '6', name: 'B' },
+        { x: '50', y: '24', z: '8', name: 'C' },
+        { x: '65', y: '30', z: '10', name: 'D' },
+      ],
+    },
+  ],
 };
 
 

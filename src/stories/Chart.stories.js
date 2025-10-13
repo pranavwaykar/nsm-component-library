@@ -1,7 +1,7 @@
 import React from 'react';
 import Chart from '../charts/Chart';
 import './chart.stories.scss';
-import { mockBarData, mockDoughnutData, mockPieData, mockStackedData, mockLineData, mockHeatmapData } from '../charts/mockData';
+import { mockBarData, mockDoughnutData, mockPieData, mockStackedData, mockLineData, mockHeatmapData, mockAreaData, mockParetoData, mockRadarData, mockBubbleData } from '../charts/mockData';
 
 export default {
   id: 'charts',
@@ -84,6 +84,67 @@ export const Heatmap = {
         width: '80%',
         height: '70%',
         dataSource: mockHeatmapData,
+      }),
+    ),
+};
+
+
+export const Area = {
+  name: 'Area',
+  render: () =>
+    React.createElement(
+      'div',
+      { className: 'sb-chart-host' },
+      React.createElement(Chart, {
+        type: 'area2d',
+        width: '70%',
+        height: '60%',
+        dataSource: mockAreaData,
+      }),
+    ),
+};
+
+export const Pareto = {
+  name: 'Pareto',
+  render: () =>
+    React.createElement(
+      'div',
+      { className: 'sb-chart-host' },
+      React.createElement(Chart, {
+        type: 'pareto2d',
+        width: '70%',
+        height: '60%',
+        dataSource: mockParetoData,
+      }),
+    ),
+};
+
+export const Radar = {
+  name: 'Radar',
+  render: () =>
+    React.createElement(
+      'div',
+      { className: 'sb-chart-host' },
+      React.createElement(Chart, {
+        type: 'radar',
+        width: '70%',
+        height: '60%',
+        dataSource: mockRadarData,
+      }),
+    ),
+};
+
+export const Bubble = {
+  name: 'Bubble',
+  render: () =>
+    React.createElement(
+      'div',
+      { className: 'sb-chart-host' },
+      React.createElement(Chart, {
+        type: 'bubble',
+        width: '70%',
+        height: '60%',
+        dataSource: mockBubbleData,
       }),
     ),
 };
