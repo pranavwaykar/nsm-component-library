@@ -1,7 +1,7 @@
 import React from 'react';
 import Chart from '../charts/Chart';
 import './chart.stories.scss';
-import { mockBarData, mockDoughnutData, mockPieData, mockStackedData, mockLineData, mockHeatmapData, mockAreaData, mockParetoData, mockRadarData, mockBubbleData } from '../charts/mockData';
+import { mockBarData, mockDoughnutData, mockPieData, mockStackedData, mockLineData, /*mockHeatmapData,*/ mockAreaData, mockParetoData, mockRadarData, mockBubbleData } from '../charts/mockData';
 
 export default {
   id: 'charts',
@@ -72,20 +72,7 @@ export const Line = {
     ),
 };
 
-export const Heatmap = {
-  name: 'Heatmap',
-  render: () =>
-    React.createElement(
-      'div',
-      { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'heatmap',
-        width: '80%',
-        height: '70%',
-        dataSource: mockHeatmapData,
-      }),
-    ),
-};
+// Heatmap is temporarily removed from the drawer
 
 
 export const Area = {

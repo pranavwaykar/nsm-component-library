@@ -351,7 +351,8 @@ function LineChart({ categories = [], series = [], area = false, margin = { top:
         const isDimByLegend = hiddenSeries.has(i) || (area && dimArea);
         const baseColor = s.color || LINE_COLORS[i % LINE_COLORS.length];
         const color = isDimByLegend ? GRAY_COLOR : baseColor;
-        const d = buildPath(s?.data || []);
+        const pts = s?.data || [];
+        const d = buildPath(pts);
         const areaPath = area
           ? `${d} L ${step * Math.max(0, (s?.data?.length || 1) - 1)} ${innerHeight} L 0 ${innerHeight} Z`
           : null;
@@ -359,6 +360,11 @@ function LineChart({ categories = [], series = [], area = false, margin = { top:
           <g key={i}>
             {area && <path d={areaPath} fill={color} opacity={isDimByLegend ? DIM_OPACITY : 0.15} />}
             <path d={d} fill="none" stroke={color} strokeWidth={2} opacity={isDimByLegend ? DIM_OPACITY : 1} />
+            {pts.map((v, pi) => {
+              const x = pi * step;
+              const y = yScale(toNumber(v?.value));
+              return <circle key={pi} cx={x} cy={y} r={3} fill={color} opacity={isDimByLegend ? DIM_OPACITY : 1} />;
+            })}
           </g>
         );
       })}
@@ -483,6 +489,22 @@ function ParetoChart({ data = [], margin = { top: 24, right: 40, bottom: 56, lef
     <g transform={`translate(${margin.left},${margin.top})`}>
       <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#CBD5E1" />
       <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#CBD5E1" />
+      {/* y ticks */}
+      {(() => {
+        const steps = 5;
+        return Array.from({ length: steps + 1 }).map((_, i) => {
+          const t = i / steps;
+          const val = t * maxValue;
+          const y = yScale(val);
+          return (
+            <g key={`pyl-${i}`}>
+              <line x1={0} y1={y} x2={4} y2={y} stroke="#CBD5E1" />
+              <line x1={0} y1={y} x2={innerWidth} y2={y} stroke="#e5e7eb" opacity={0.35} />
+              <text x={-6} y={y + 3} textAnchor="end" fontSize="10" fill="#64748B">{formatShort(Math.round(val))}</text>
+            </g>
+          );
+        });
+      })()}
       {data.map((d, i) => {
         const barHeight = innerHeight - yScale(d.value);
         const x = i * step + (step - barWidth) / 2;
@@ -555,6 +577,7 @@ function BubbleChart({ points = [], xRange = [0, 100], yRange = [0, 100], showPo
       {Array.from({ length: 6 }).map((_, i) => {
         const t = i / 5;
         const xv = xRange[0] + t * (xRange[1] - xRange[0]);
+        if (i > 0 && Math.round(xv) === 0) return null; // avoid double 0 label
         const x = xScale(xv);
         return (
           <g key={`xt-${i}`}>
@@ -566,6 +589,7 @@ function BubbleChart({ points = [], xRange = [0, 100], yRange = [0, 100], showPo
       {Array.from({ length: 6 }).map((_, i) => {
         const t = i / 5;
         const yv = yRange[0] + t * (yRange[1] - yRange[0]);
+        if (i > 0 && Math.round(yv) === 0) return null; // avoid double 0 label from Y origin
         const y = yScale(yv);
         return (
           <g key={`yt-${i}`}>
@@ -646,10 +670,8 @@ const Chart = ({ type, width = '100%', height = '100%', dataSource, events }) =>
       return <LineChart categories={categories} series={series} area />;
     }
     if (t === 'heatmap') {
-      const rows = dataSource?.rows?.row || [];
-      const columns = dataSource?.columns?.column || [];
-      const values = dataSource?.dataset?.[0]?.data || [];
-      return <Heatmap rows={rows} columns={columns} values={values} colorrange={dataSource?.colorrange} onDataClick={handleDataClick} onHover={handleHover} hoverKey={hoverKey} />;
+      // temporarily disabled heatmap rendering per request
+      return null;
     }
     if (t === 'pareto2d' || t === 'pareto') {
       return <ParetoChart data={dataSource?.data || []} showBars={showParetoBars} showLine={showParetoLine} />;
@@ -687,11 +709,11 @@ const Chart = ({ type, width = '100%', height = '100%', dataSource, events }) =>
         {(() => {
           const t = String(type).toLowerCase();
           // dataset based legends
-          if (['stackedcolumn2d','scrollstackedcolumn2d','msline','radar'].includes(t) && Array.isArray(dataSource?.dataset)) {
+          if (['stackedcolumn2d','scrollstackedcolumn2d','msline','radar','line'].includes(t) && Array.isArray(dataSource?.dataset)) {
             return (
               <div className="sb-chart-legend">
                 {dataSource.dataset.map((s, idx) => {
-                  const palette = t === 'radar' ? RADAR_COLORS : PASTEL_COLORS;
+                  const palette = t === 'radar' ? RADAR_COLORS : (t === 'msline' || t === 'line') ? LINE_COLORS : PASTEL_COLORS;
                   const color = resolveDisplayColor(
                     normalizeColor(s.color, palette[idx % palette.length]),
                     palette[idx % palette.length]
