@@ -9,7 +9,6 @@ export default {
   component: Chart,
   parameters: {
     layout: 'centered',
-    docs: { disable: true },
   },
 };
 
