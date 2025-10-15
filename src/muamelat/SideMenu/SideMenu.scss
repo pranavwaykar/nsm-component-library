@@ -1,0 +1,17 @@
+@import '../styles/_mixins.scss';
+.side-menu { width: 86px; background: var(--sideMenuBg, #002874); color: #fff; height: 100%; display: flex; flex-direction: column; align-items: center; border-radius: 6px; box-shadow: 0 8px 16px rgba(16, 28, 36, .08); }
+.side-menu .sm-logo { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 15px 0 18px; cursor: pointer; }
+.side-menu .sml-thumb { display:flex; align-items:center; justify-content:center; width: 44px; height: 44px; border-radius: 5px; overflow: hidden; position: relative; background-color:#021d52; }
+.side-menu .sml-light { position:absolute; width:70px; height:70px; left:-30px; bottom:-30px; background: linear-gradient(45deg,#021d52,#021d52,#021d52,#2e509369,#021d52); }
+.side-menu .sml-thumb-svg { width:57px; height:57px; position:absolute; left:-7px; bottom:-7px; }
+.side-menu .sm-logo-content { font-size: 11px; font-weight: 600; color: #fff; }
+.side-menu .sm-menus { flex:1; width:100%; display:flex; flex-direction:column; gap:5px; overflow: hidden; }
+.menu-comp { width:100%; height:50px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px; cursor:pointer; position:relative; }
+.menu-comp .mc-icon { width:20px; height:20px; display:flex; align-items:center; justify-content:center; }
+.menu-comp .mc-content { font-size:10px; font-weight:600; }
+.menu-comp:hover, .menu-comp.active { background: var(--activeMenuBg, rgba(31,148,255,.05)); }
+.menu-comp:hover::after, .menu-comp.active::after { content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background: var(--activeMenu, #1f94ff); }
+.sm-profile { margin-bottom:28px; padding-top:10px; position:relative; }
+.sm-profile .smp-img { background:#fff; width:45px; height:45px; border-radius:50%; border:2px solid #2772f4; }
+
+

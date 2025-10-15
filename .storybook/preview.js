@@ -1,3 +1,6 @@
+import '@flaticon/flaticon-uicons/css/all/all.css';
+import '@flaticon/flaticon-uicons/css/brands/all.css';
+// Removed remote icon CSS due to CORS in Storybook. Icons are provided via Flaticon or inline SVG.
 /** @type { import('@storybook/react-vite').Preview } */
 const preview = {
   parameters: {

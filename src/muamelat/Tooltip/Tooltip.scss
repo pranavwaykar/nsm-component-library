@@ -1,0 +1,16 @@
+@import '../styles/_mixins.scss';
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip-pop {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 8px);
+  padding: 6px 10px;
+  background: #0a2938; color: #fff; font-size: 11px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 30;
+  pointer-events: none;
+}
+
+

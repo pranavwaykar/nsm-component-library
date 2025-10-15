@@ -1,0 +1,21 @@
+@import './animations.scss';
+
+@mixin whiteBox() { height: 100%; background-color: var(--white); box-shadow: 0px 8px 16px rgba(16, 28, 36, 0.078); border-radius: 5px; overflow: hidden; @include verticalFlex(); animation: pageTransition 0.4s ease-in-out forwards; transform-origin: bottom; }
+@mixin fontProperties($size, $weight, $color) { font-size: $size; font-weight: $weight; color: $color; }
+@mixin absoluteCenter() { position: absolute; top: 50%; left: 50%; translate: -50% -50%; }
+@mixin box($width, $height: $width) { width: $width; height: $height; }
+@mixin setToCenter() { display: flex; align-items: center; justify-content: center; }
+@mixin hideScrollbar { -ms-overflow-style: none; scrollbar-width: none; overflow-y: scroll; &::-webkit-scrollbar { display: none; } }
+@mixin addLineClamp($lines) { display: -webkit-box; -webkit-line-clamp: $lines; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: break-word; }
+@mixin setSpaceBetween() { display: flex; align-items: center; justify-content: space-between; }
+@mixin flexAlign() { display: flex; align-items: center; }
+@mixin setFlexEnd() { display: flex; align-items: center; justify-content: flex-end; }
+@mixin setFlexStart() { display: flex; align-items: center; justify-content: flex-start; }
+@mixin verticalFlex() { display: flex; flex-direction: column; }
+@mixin setTextInOneLine() { clear: both; display: inline-block; overflow: hidden; white-space: nowrap; }
+@mixin removeDefaultStyle() { border-style: none; background: none; background-color: none; outline-width: 0; outline-style: none; }
+@mixin skeletonAnimate() { background: linear-gradient(110deg, #ecf1f6 8%, #f9f9f9 18%, #ecf1f6 33%); background-color: #ecf1f6; border-radius: 5px; background-size: 200% 100%; animation: 1.5s skeletonAnimation linear infinite; }
+@mixin skeletonAnimate2() { background: linear-gradient(110deg, #ffffff 8%, #e5e6e7 18%, #fff 33%); background-color: #fff; border-radius: 5px; background-size: 200% 100%; animation: 1.5s skeletonAnimation linear infinite; }
+@mixin preventSelect() { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+
+
