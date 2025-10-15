@@ -5,7 +5,7 @@ import { PageNotFound } from '../muamelat';
 
 export default {
   id: 'page-not-found',
-  title: 'Muamelat/PageNotFound',
+  title: 'Muamelat/Page Not Found',
   component: PageNotFound,
   tags: ['autodocs'],
   parameters: {

@@ -5,7 +5,7 @@ import { UserContactCard } from '../muamelat';
 
 export default {
   id: 'user-contact-card',
-  title: 'Muamelat/UserContactCard',
+  title: 'Muamelat/User Contact Card',
   component: UserContactCard,
   tags: ['autodocs'],
   parameters: {

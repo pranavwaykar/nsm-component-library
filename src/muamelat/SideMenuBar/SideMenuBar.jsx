@@ -1,23 +1,30 @@
 import React from 'react';
 import './SideMenuBar.scss';
 
-const items = [ { label: 'Menu 1' }, { label: 'Menu 2' }, { label: 'Menu 3' } ];
+const defaultMenus = [ { label: 'Menu 1' }, { label: 'Menu 2' }, { label: 'Menu 3' } ];
 
-const SideMenuBar = ({ onClick = () => {} }) => {
+const SideMenuBar = ({
+  menus = defaultMenus,
+  onMenuClick = () => {},
+  notificationCount = '99+',
+  avatarSrc = '',
+  logo = null,
+  style = {},
+}) => {
   return (
-    <aside className="side-menubar">
-      <div className="logo"><div className="logo-mark" /></div>
+    <aside className="side-menubar" style={style}>
+      <div className="logo">{logo || <div className="logo-mark" />}</div>
       <div className="menu">
-        {items.map((m, i) => (
-          <div key={i} className="menu-item" onClick={() => onClick(m)}>
+        {menus.map((m, i) => (
+          <div key={i} className="menu-item" onClick={() => onMenuClick(m, i)}>
             <div className="icon" />
             <div className="label">{m.label}</div>
           </div>
         ))}
       </div>
       <div className="bottom">
-        <div className="notify">99+</div>
-        <div className="avatar" />
+        <div className="notify">{notificationCount}</div>
+        {avatarSrc ? <img className="avatar" src={avatarSrc} alt="profile" /> : <div className="avatar" />}
       </div>
     </aside>
   );

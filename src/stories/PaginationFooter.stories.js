@@ -5,7 +5,7 @@ import { PaginationFooter } from '../muamelat';
 
 export default {
   id: 'pagination-footer',
-  title: 'Muamelat/PaginationFooter',
+  title: 'Muamelat/Pagination Footer',
   component: PaginationFooter,
   tags: ['autodocs'],
   parameters: {

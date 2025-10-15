@@ -5,7 +5,7 @@ import UserControlsPopup from '../muamelat/UserControlsPopup/UserControlsPopup';
 
 export default {
   id: 'user-controls-popup',
-  title: 'Muamelat/UserControlsPopup',
+  title: 'Muamelat/User Controls Popup',
   component: UserControlsPopup,
   tags: ['autodocs'],
   parameters: {
@@ -16,7 +16,19 @@ export default {
 
 export const Default = {
   name: 'Default',
-  render: () => React.createElement(UserControlsPopup),
+  args: { name: 'John Doe', email: 'john@example.com', languages: ['Turkish','English'] },
+  parameters: {
+    docs: {
+      source: {
+        language: 'jsx',
+        code: `<UserControlsPopup
+  name="John Doe"
+  email="john@example.com"
+  languages={[ 'Turkish', 'English' ]}
+/>`,
+      },
+    },
+  },
 };
 
 
