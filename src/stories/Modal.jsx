@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import './tokens.css';
 import './modal.scss';
@@ -12,6 +12,8 @@ export const Modal = ({
   closeOnEsc = true,
   closeOnOutside = true,
   showClose = true,
+  as,
+  ...rest
 }) => {
   useEffect(() => {
     function handleKey(e) {
@@ -24,11 +26,12 @@ export const Modal = ({
 
   if (!open) return null;
 
+  const Root = as || 'div';
   return (
-    <div className="sb-modal" role="dialog" aria-modal="true" aria-labelledby={title ? 'sb-modal-title' : undefined} onMouseDown={(e) => {
+    <Root className="sb-modal" role="dialog" aria-modal="true" aria-labelledby={title ? 'sb-modal-title' : undefined} onMouseDown={(e) => {
       if (!closeOnOutside) return;
       if (e.target.classList.contains('sb-modal')) onClose?.();
-    }}>
+    }} {...rest}>
       <div className="sb-modal__content" style={{ width }} onMouseDown={(e) => e.stopPropagation()}>
         {(title || showClose) ? (
           <div className="sb-modal__header">
@@ -40,7 +43,7 @@ export const Modal = ({
         ) : null}
         <div className="sb-modal__body">{children}</div>
       </div>
-    </div>
+    </Root>
   );
 };
 

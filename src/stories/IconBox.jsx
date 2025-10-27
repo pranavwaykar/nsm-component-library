@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import './tokens.css';
 import './iconbox.scss';
 
-export const IconBox = ({
+export const IconBox = forwardRef(({
   icon,
   count,
   label,
@@ -11,7 +11,9 @@ export const IconBox = ({
   size = 'md',
   indicator = false,
   onClick,
-}) => {
+  as,
+  ...rest
+}, ref) => {
   const classNames = [
     'sb-iconbox',
     `sb-iconbox--${variant}`,
@@ -21,14 +23,15 @@ export const IconBox = ({
     .filter(Boolean)
     .join(' ');
 
+  const Component = as || 'div';
   return (
-    <div className={classNames} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined} onClick={onClick} onKeyDown={(e) => {
+    <Component ref={ref} className={classNames} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined} onClick={onClick} onKeyDown={(e) => {
       if (!onClick) return;
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         onClick();
       }
-    }}>
+    }} {...rest}>
       <div className="sb-iconbox__icon" aria-hidden>
         {icon}
         {indicator ? <span className="sb-iconbox__dot" /> : null}
@@ -37,9 +40,9 @@ export const IconBox = ({
         <div className="sb-iconbox__count">{count}</div>
       ) : null}
       {label ? <div className="sb-iconbox__label">{label}</div> : null}
-    </div>
+    </Component>
   );
-};
+});
 
 IconBox.propTypes = {
   icon: PropTypes.node,
@@ -49,6 +52,7 @@ IconBox.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   indicator: PropTypes.bool,
   onClick: PropTypes.func,
+  as: PropTypes.elementType,
 };
 
 

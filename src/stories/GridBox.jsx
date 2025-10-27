@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
-export const GridBox = ({ columns = 'repeat(3, minmax(0, 1fr))', rows, gap = 12, style, children }) => {
+export const GridBox = forwardRef(({ columns = 'repeat(3, minmax(0, 1fr))', rows, gap = 12, style, children, as, ...rest }, ref) => {
   const merged = {
     display: 'grid',
     gridTemplateColumns: columns,
@@ -9,8 +9,9 @@ export const GridBox = ({ columns = 'repeat(3, minmax(0, 1fr))', rows, gap = 12,
     gap,
     ...style,
   };
-  return <div style={merged}>{children}</div>;
-};
+  const Component = as || 'div';
+  return <Component ref={ref} style={merged} {...rest}>{children}</Component>;
+});
 
 GridBox.propTypes = {
   columns: PropTypes.string,
@@ -18,6 +19,7 @@ GridBox.propTypes = {
   gap: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   style: PropTypes.object,
   children: PropTypes.node,
+  as: PropTypes.elementType,
 };
 
 

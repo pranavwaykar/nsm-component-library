@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import './tokens.css';
 import './inputs.scss';
 
-export const TextInput = ({ label, value, placeholder, error, helper, onChange, ...rest }) => (
-  <label className={`sb-field ${error ? 'is-error' : ''}`}>
-    {label ? <span className="sb-field__label">{label}</span> : null}
-    <input className="sb-input" value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...rest} />
-    {helper ? <span className="sb-field__help">{helper}</span> : null}
-    {error ? <span className="sb-field__error">{error}</span> : null}
-  </label>
-);
+export const TextInput = ({ label, value, placeholder, error, helper, onChange, as = 'label', containerProps = {}, children, ...rest }) => {
+  const Component = as;
+  return (
+    <Component className={`sb-field ${error ? 'is-error' : ''}`} {...containerProps}>
+      {label ? <span className="sb-field__label">{label}</span> : null}
+      <input className="sb-input" value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...rest} />
+      {helper ? <span className="sb-field__help">{helper}</span> : null}
+      {error ? <span className="sb-field__error">{error}</span> : null}
+      {children}
+    </Component>
+  );
+};
 
 TextInput.propTypes = {
   label: PropTypes.string,
@@ -21,19 +25,23 @@ TextInput.propTypes = {
   onChange: PropTypes.func,
 };
 
-export const TextArea = ({ label, value, placeholder, rows = 4, error, helper, onChange, ...rest }) => (
-  <label className={`sb-field ${error ? 'is-error' : ''}`}>
-    {label ? <span className="sb-field__label">{label}</span> : null}
-    <textarea className="sb-input sb-input--area" rows={rows} value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...rest} />
-    {helper ? <span className="sb-field__help">{helper}</span> : null}
-    {error ? <span className="sb-field__error">{error}</span> : null}
-  </label>
-);
+export const TextArea = ({ label, value, placeholder, rows = 4, error, helper, onChange, as = 'label', containerProps = {}, children, ...rest }) => {
+  const Component = as;
+  return (
+    <Component className={`sb-field ${error ? 'is-error' : ''}`} {...containerProps}>
+      {label ? <span className="sb-field__label">{label}</span> : null}
+      <textarea className="sb-input sb-input--area" rows={rows} value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...rest} />
+      {helper ? <span className="sb-field__help">{helper}</span> : null}
+      {error ? <span className="sb-field__error">{error}</span> : null}
+      {children}
+    </Component>
+  );
+};
 
 TextArea.propTypes = TextInput.propTypes;
 
-export const Select = ({ label, value, options = [], onChange, multiple = false, placeholder, error, helper }) => (
-  <label className={`sb-field ${error ? 'is-error' : ''}`}>
+export const Select = ({ label, value, options = [], onChange, multiple = false, placeholder, error, helper, as = 'label', containerProps = {}, children, ...rest }) => (
+  <as className={`sb-field ${error ? 'is-error' : ''}`} {...containerProps}>
     {label ? <span className="sb-field__label">{label}</span> : null}
     <select className="sb-input" multiple={multiple} value={value} onChange={(e) => {
       if (multiple) {
@@ -42,7 +50,7 @@ export const Select = ({ label, value, options = [], onChange, multiple = false,
       } else {
         onChange?.(e.target.value);
       }
-    }}>
+    }} {...rest}>
       {placeholder && !multiple ? <option value="">{placeholder}</option> : null}
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -50,7 +58,8 @@ export const Select = ({ label, value, options = [], onChange, multiple = false,
     </select>
     {helper ? <span className="sb-field__help">{helper}</span> : null}
     {error ? <span className="sb-field__error">{error}</span> : null}
-  </label>
+    {children}
+  </as>
 );
 
 Select.propTypes = {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import './tokens.css';
 import './table.scss';
@@ -12,7 +12,7 @@ function defaultFilter(rows, query, columns) {
   );
 }
 
-export const Table = ({
+export const Table = forwardRef(({
   columns,
   data,
   initialSort,
@@ -24,7 +24,9 @@ export const Table = ({
   pageSize = 10,
   totalPages,
   onPageChange,
-}) => {
+  as,
+  ...rest
+}, ref) => {
   const [sortBy, setSortBy] = useState(initialSort?.by || null);
   const [sortDir, setSortDir] = useState(initialSort?.dir || 'asc');
   const [expanded, setExpanded] = useState({});
@@ -68,8 +70,9 @@ export const Table = ({
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
+  const Root = as || 'div';
   return (
-    <div className={responsive ? 'sb-table__wrap' : undefined}>
+    <Root ref={ref} className={responsive ? 'sb-table__wrap' : undefined} {...rest}>
       <table className="sb-table">
         <thead>
           <tr>
@@ -140,9 +143,9 @@ export const Table = ({
           <button className="sb-table__pagebtn" disabled={page >= totalPages} onClick={() => onPageChange?.(page + 1)}>Next</button>
         </div>
       ) : null}
-    </div>
+    </Root>
   );
-};
+});
 
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({ header: PropTypes.string.isRequired, accessor: PropTypes.string.isRequired, render: PropTypes.func })).isRequired,
@@ -157,6 +160,7 @@ Table.propTypes = {
   pageSize: PropTypes.number,
   totalPages: PropTypes.number,
   onPageChange: PropTypes.func,
+  as: PropTypes.elementType,
 };
 
 

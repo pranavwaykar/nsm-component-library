@@ -14,6 +14,7 @@ export const Image = ({
   errorFallback,
   threshold = 0.1,
   rootMargin = '200px',
+  as,
   ...rest
 }) => {
   const containerRef = useRef(null);
@@ -56,8 +57,9 @@ export const Image = ({
   if (height) style.height = height;
 
 
+  const Container = as || 'div';
   return (
-    <div ref={containerRef} className={classNames} style={style}>
+    <Container ref={containerRef} className={classNames} style={style} {...rest}>
       {!isVisible && fallback ? (
         <div className="sb-image__fallback" aria-hidden="true">{fallback}</div>
       ) : null}
@@ -69,7 +71,6 @@ export const Image = ({
           style={{ objectFit: fit, width: '100%', height: '100%' }}
           onLoad={() => setLoaded(true)}
           onError={() => setHasError(true)}
-          {...rest}
         />
       )}
 
@@ -80,7 +81,7 @@ export const Image = ({
           <div className="sb-image__error" role="img" aria-label="image failed">⚠️</div>
         )
       )}
-    </div>
+    </Container>
   );
 };
 

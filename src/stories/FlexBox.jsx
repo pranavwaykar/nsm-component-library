@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
-export const FlexBox = ({ direction = 'row', align = 'center', justify = 'flex-start', gap = 8, wrap = false, style, children }) => {
+export const FlexBox = forwardRef(({ direction = 'row', align = 'center', justify = 'flex-start', gap = 8, wrap = false, style, children, as, ...rest }, ref) => {
   const merged = {
     display: 'flex',
     flexDirection: direction,
@@ -11,8 +11,9 @@ export const FlexBox = ({ direction = 'row', align = 'center', justify = 'flex-s
     flexWrap: wrap ? 'wrap' : 'nowrap',
     ...style,
   };
-  return <div style={merged}>{children}</div>;
-};
+  const Component = as || 'div';
+  return <Component ref={ref} style={merged} {...rest}>{children}</Component>;
+});
 
 FlexBox.propTypes = {
   direction: PropTypes.oneOf(['row','row-reverse','column','column-reverse']),
@@ -22,6 +23,7 @@ FlexBox.propTypes = {
   wrap: PropTypes.bool,
   style: PropTypes.object,
   children: PropTypes.node,
+  as: PropTypes.elementType,
 };
 
 

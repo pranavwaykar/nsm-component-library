@@ -7,6 +7,19 @@ export default {
   component: GridBox,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+  argTypes: {
+    as: { control: 'text' },
+    id: { control: 'text' },
+    tabIndex: { control: 'number' },
+    role: { control: 'text' },
+    title: { control: 'text' },
+    hidden: { control: 'boolean' },
+    draggable: { control: 'boolean' },
+    'data-testid': { control: 'text', name: 'data-testid' },
+    onClick: { action: 'clicked' },
+    onFocus: { action: 'focus' },
+    onBlur: { action: 'blur' },
+  },
 };
 
 export const Playground = {
@@ -15,11 +28,8 @@ export const Playground = {
     React.createElement('div', { style: { background: '#e5e7eb', padding: 10 } }, '1'),
     React.createElement('div', { style: { background: '#e5e7eb', padding: 10 } }, '2'),
     React.createElement('div', { style: { background: '#e5e7eb', padding: 10 } }, '3'),
-    React.createElement('div', { style: { background: '#e5e7eb', padding: 10 } }, '4'),
-    React.createElement('div', { style: { background: '#e5e7eb', padding: 10 } }, '5'),
-    React.createElement('div', { style: { background: '#e5e7eb', padding: 10 } }, '6'),
   ),
-  args: { columns: 'repeat(3, minmax(0, 1fr))', gap: 12 },
+  args: { columns: 'repeat(3, 100px)', gap: 12, id: 'grid-1', 'data-testid': 'grid' },
 };
 
 
