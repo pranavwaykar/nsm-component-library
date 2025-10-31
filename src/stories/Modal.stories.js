@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ConfirmDialog } from './Modal';
+import { Modal } from '../components/Modal/Modal';
 
 export default {
   id: 'example-modal',
@@ -27,11 +27,9 @@ export default {
 export const Basic = {
   render: (args) => {
     const [open, setOpen] = useState(true);
-    return (
-      <>
-        <button onClick={() => setOpen(true)}>Open</button>
-        <Modal {...args} open={open} onClose={() => setOpen(false)} title="Hello" id="modal-1" data-testid="modal" />
-      </>
+    return React.createElement(React.Fragment, null,
+      React.createElement('button', { onClick: () => setOpen(true) }, 'Open'),
+      React.createElement(Modal, { ...args, open, onClose: () => setOpen(false), title: 'Hello', id: 'modal-1', 'data-testid': 'modal' })
     );
   },
 };

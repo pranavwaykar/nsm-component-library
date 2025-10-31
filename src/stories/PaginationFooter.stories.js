@@ -1,11 +1,10 @@
 import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import { PaginationFooter } from '../muamelat';
+import '../index.scss';
+import PaginationFooter from '../components/PaginationFooter/PaginationFooter';
 
 export default {
   id: 'pagination-footer',
-  title: 'Muamelat/Pagination Footer',
+  title: 'Pagination Footer',
   component: PaginationFooter,
   tags: ['autodocs'],
   parameters: {

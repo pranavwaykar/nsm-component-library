@@ -1,0 +1,53 @@
+@use "../../stories/theme.tokens.scss" as *;
+
+.sb-progressbar {
+  width: 240px;
+  height: 8px;
+  background: #f3f4f6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.sb-progressbar__fill {
+  height: 100%;
+  background: #3b82f6;
+  width: 0;
+  transition: width 160ms ease;
+}
+.sb-progressbar__fill.is-indeterminate {
+  position: relative;
+  width: 40%;
+  animation: sb-progressbar-indet 1.2s infinite;
+}
+@keyframes sb-progressbar-indet {
+  0% {
+    margin-left: -40%;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
+
+.sb-progressring {
+  transform: rotate(-90deg);
+}
+.sb-progressring__bg {
+  fill: none;
+  stroke: #e5e7eb;
+}
+.sb-progressring__fg {
+  fill: none;
+  stroke: #10b981;
+  transition: stroke-dasharray 160ms ease;
+}
+.sb-progressring.is-indeterminate .sb-progressring__fg {
+  animation: sb-progressring-indet 1.6s linear infinite;
+  stroke: #3b82f6;
+}
+@keyframes sb-progressring-indet {
+  0% {
+    stroke-dasharray: 0 999;
+  }
+  100% {
+    stroke-dasharray: 200 999;
+  }
+}

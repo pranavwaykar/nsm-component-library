@@ -1,11 +1,10 @@
 import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import Breadcrumb from '../muamelat/Breadcrumb/Breadcrumb';
+import '../index.scss';
+import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
 
 export default {
   id: 'breadcrumb',
-  title: 'Muamelat/Breadcrumb',
+  title: 'Breadcrumb Component',
   component: Breadcrumb,
   tags: ['autodocs'],
   parameters: {

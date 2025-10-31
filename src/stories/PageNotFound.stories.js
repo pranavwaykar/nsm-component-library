@@ -1,11 +1,9 @@
-import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import { PageNotFound } from '../muamelat';
+import '../index.scss';
+import { PageNotFound } from '../components/PageNotFound/PageNotFound';
 
 export default {
   id: 'page-not-found',
-  title: 'Muamelat/Page Not Found',
+  title: 'Page Not Found',
   component: PageNotFound,
   tags: ['autodocs'],
   parameters: {

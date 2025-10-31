@@ -1,0 +1,9 @@
+.user-contact-card-comp { display:flex; align-items:center; gap: 8px; max-width: 280px; padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: var(--sb-radius-md); background: #fff; }
+.user-contact-card-comp .uccc-name { color: #0f172a; font-size: 13px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-contact-card-comp .uccc-icons { display:flex; align-items:center; gap: 10px; font-size: 17px; }
+.user-contact-card-comp .uccc-icon { cursor: pointer; background: transparent; border: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; color: #0f172a; }
+.user-contact-card-comp .uccc-icon i { font-size: 18px; line-height: 1; }
+.user-contact-card-comp .teams { color: #5b5fc7; font-size: 20px; }
+.user-contact-card-comp:hover { box-shadow: 0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.03); }
+
+

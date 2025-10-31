@@ -1,5 +1,5 @@
 import React from 'react';
-import { GridBox } from './GridBox';
+import { GridBox } from '../components/GridBox/GridBox';
 
 export default {
   id: 'example-gridbox',

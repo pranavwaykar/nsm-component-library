@@ -1,11 +1,10 @@
 import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import UserControlsPopup from '../muamelat/UserControlsPopup/UserControlsPopup';
+import '../index.scss';
+import UserControlsPopup from '../components/UserControlsPopup/UserControlsPopup';
 
 export default {
   id: 'user-controls-popup',
-  title: 'Muamelat/User Controls Popup',
+  title: 'User Controls Popup',
   component: UserControlsPopup,
   tags: ['autodocs'],
   parameters: {

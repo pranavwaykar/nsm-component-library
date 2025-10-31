@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconBox } from './IconBox';
+import { IconBox } from '../components/IconBox/IconBox';
 
 export default {
   id: 'example-iconbox',

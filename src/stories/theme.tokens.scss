@@ -1,0 +1,25 @@
+/* Shared utility tokens: radius and elevation */
+
+:root {
+    --sb-radius-none: 0;
+  --sb-radius-sm: 4px;
+    --sb-radius-md: 8px;
+    --sb-radius-lg: 12px;
+    --sb-radius-full: 999px;
+  }
+
+.sb-radius-none { border-radius: 0; }
+.sb-radius-sm { border-radius: 4px; }
+.sb-radius-md { border-radius: 8px; }
+.sb-radius-lg { border-radius: 12px; }
+.sb-radius-full { border-radius: 999px; }
+
+
+.sb-elev-0 { box-shadow: none; }
+.sb-elev-1 { box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+.sb-elev-2 { box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+.sb-elev-3 { box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+.sb-elev-4 { box-shadow: 0 8px 18px rgba(0,0,0,0.16); }
+.sb-elev-5 { box-shadow: 0 12px 24px rgba(0,0,0,0.20); }
+
+

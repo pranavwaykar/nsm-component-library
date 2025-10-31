@@ -5,7 +5,6 @@ import Charts from 'fusioncharts/fusioncharts.charts';
 import PowerCharts from 'fusioncharts/fusioncharts.powercharts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 
-// Initialize required modules once
 Charts(FusionCharts);
 PowerCharts(FusionCharts);
 FusionTheme(FusionCharts);

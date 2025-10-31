@@ -1,0 +1,142 @@
+@use "../../stories/theme.tokens.scss" as *;
+
+.sb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--sb-font-size-sm);
+  padding: 2px 8px;
+  border-radius: var(--sb-radius-md);
+  background: var(--sb-badge-bg, #f3f4f6);
+  color: var(--sb-badge-fg, #111827);
+  border: 1px solid var(--sb-badge-border, transparent);
+  box-shadow: var(--sb-shadow, var(--sb-shadow-0));
+  text-decoration: none;
+}
+.sb-badge--pill {
+  border-radius: var(--sb-radius-full);
+}
+.sb-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--sb-radius-full);
+  background: currentColor;
+}
+.sb-badge--pill,
+.sb-badge {
+  line-height: 1.2;
+}
+
+/* color tokens */
+.sb-badge--color-neutral {
+  --sb-badge-fg: #111827;
+  --sb-badge-bg: #f3f4f6;
+  --sb-badge-border: #e5e7eb;
+}
+.sb-badge--color-primary {
+  --sb-badge-fg: #1e3a8a;
+  --sb-badge-bg: #e0e7ff;
+  --sb-badge-border: #c7d2fe;
+}
+.sb-badge--color-success {
+  --sb-badge-fg: #065f46;
+  --sb-badge-bg: #d1fae5;
+  --sb-badge-border: #a7f3d0;
+}
+.sb-badge--color-warning {
+  --sb-badge-fg: #92400e;
+  --sb-badge-bg: #fef3c7;
+  --sb-badge-border: #fde68a;
+}
+.sb-badge--color-error {
+  --sb-badge-fg: #991b1b;
+  --sb-badge-bg: #fee2e2;
+  --sb-badge-border: #fecaca;
+}
+.sb-badge--color-info {
+  --sb-badge-fg: #1e40af;
+  --sb-badge-bg: #dbeafe;
+  --sb-badge-border: #bfdbfe;
+}
+
+/* variants */
+.sb-badge--variant-solid {
+  background: var(--sb-badge-bg);
+  color: var(--sb-badge-fg);
+  border-color: transparent;
+}
+.sb-badge--variant-outline {
+  background: transparent;
+  color: var(--sb-badge-fg);
+  border-color: var(--sb-badge-border);
+}
+.sb-badge--variant-ghost {
+  background: transparent;
+  color: var(--sb-badge-fg);
+  border-color: transparent;
+}
+.sb-badge--variant-link {
+  background: transparent;
+  color: var(--sb-badge-fg);
+  border-color: transparent;
+  text-decoration: underline;
+}
+
+/* sizes */
+.sb-badge--size-xs {
+  font-size: 10px;
+  padding: 1px 6px;
+}
+.sb-badge--size-sm {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+.sb-badge--size-md {
+  font-size: 14px;
+  padding: 4px 10px;
+}
+.sb-badge--size-lg {
+  font-size: 16px;
+  padding: 6px 12px;
+}
+.sb-badge--size-xl {
+  font-size: 18px;
+  padding: 8px 14px;
+}
+
+/* radius */
+.sb-badge--radius-none {
+  border-radius: var(--sb-radius-none);
+}
+.sb-badge--radius-sm {
+  border-radius: var(--sb-radius-sm);
+}
+.sb-badge--radius-md {
+  border-radius: var(--sb-radius-md);
+}
+.sb-badge--radius-lg {
+  border-radius: var(--sb-radius-lg);
+}
+.sb-badge--radius-full {
+  border-radius: var(--sb-radius-full);
+}
+
+/* elevation */
+.sb-badge--elev-0 {
+  --sb-shadow: var(--sb-shadow-0);
+}
+.sb-badge--elev-1 {
+  --sb-shadow: var(--sb-shadow-1);
+}
+.sb-badge--elev-2 {
+  --sb-shadow: var(--sb-shadow-2);
+}
+.sb-badge--elev-3 {
+  --sb-shadow: var(--sb-shadow-3);
+}
+.sb-badge--elev-4 {
+  --sb-shadow: var(--sb-shadow-4);
+}
+.sb-badge--elev-5 {
+  --sb-shadow: var(--sb-shadow-5);
+}

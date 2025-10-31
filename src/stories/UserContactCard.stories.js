@@ -1,11 +1,10 @@
 import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import { UserContactCard } from '../muamelat';
+import '../index.scss';
+import UserContactCard from '../components/UserContactCard/UserContactCard';
 
 export default {
   id: 'user-contact-card',
-  title: 'Muamelat/User Contact Card',
+  title: 'User Contact Card',
   component: UserContactCard,
   tags: ['autodocs'],
   parameters: {

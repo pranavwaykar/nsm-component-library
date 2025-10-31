@@ -1,63 +1,34 @@
 import React from 'react';
-import { fn } from 'storybook/test';
-import { Table } from './Table';
+import { Table } from '../components/Table/Table';
+
+const columns = [
+  { header: 'Name', accessor: 'name' },
+  { header: 'Age', accessor: 'age' },
+];
+const data = [
+  { id: 1, name: 'Alice', age: 30 },
+  { id: 2, name: 'Bob', age: 25 },
+  { id: 3, name: 'Carol', age: 35 },
+];
 
 export default {
   id: 'example-table',
   title: 'Table Component',
   component: Table,
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: 'Data table with sorting, search filter, and accordion sub-rows. Resize window to see horizontal scroll.'
-      }
-    }
-  },
+  parameters: { layout: 'centered' },
   tags: ['autodocs'],
   argTypes: {
-    filterable: { control: 'boolean' },
-    expandable: { control: 'boolean' },
-    responsive: { control: 'boolean' },
-  },
-  args: {},
+    as: { control: 'text' }, id: { control: 'text' }, 'data-testid': { control: 'text', name: 'data-testid' },
+    role: { control: 'text' }, tabIndex: { control: 'number' }, title: { control: 'text' }, hidden: { control: 'boolean' }, draggable: { control: 'boolean' },
+    onClick: { action: 'clicked' }, onFocus: { action: 'focus' }, onBlur: { action: 'blur' }, onKeyDown: { action: 'keydown' }, onKeyUp: { action: 'keyup' },
+    style: { control: 'object' }, className: { control: 'text' },
+  }
 };
 
-const sampleColumns = [
-  { header: 'ID', accessor: 'id' },
-  { header: 'Name', accessor: 'name' },
-  { header: 'Role', accessor: 'role' },
-  { header: 'Status', accessor: 'status', render: (v) => (v ? 'Active' : 'Inactive') },
-];
-
-const sampleData = Array.from({ length: 8 }).map((_, i) => ({
-  id: i + 1,
-  name: ['Alice', 'Bob', 'Cara', 'Dan', 'Eve', 'Fred', 'Gina', 'Hank'][i],
-  role: ['Admin', 'Editor', 'Viewer', 'Editor', 'Viewer', 'Admin', 'Viewer', 'Editor'][i],
-  status: i % 2 === 0,
-  email: `user${i + 1}@example.com`,
-  notes: 'Additional details for this user can be shown here.'
-}));
-
-export const Primary = {
+export const Basic = {
   name: 'Table',
-  args: {
-    columns: sampleColumns,
-    data: sampleData,
-    initialSort: { by: 'name', dir: 'asc' },
-    filterable: true,
-    expandable: true,
-    responsive: true,
-    rowActions: (row) => React.createElement('div', null,
-      React.createElement('button', { onClick: () => fn()(`Edit ${row.id}`) }, 'Edit'),
-      ' ',
-      React.createElement('button', { onClick: () => fn()(`Delete ${row.id}`) }, 'Delete')
-    ),
-    renderSubRow: (row) => React.createElement('div', null,
-      React.createElement('div', null, React.createElement('strong', null, 'Email:'), ' ', row.email),
-      React.createElement('div', null, React.createElement('strong', null, 'Notes:'), ' ', row.notes)
-    ),
-  },
+  args: { columns, data, page: 1, pageSize: 10, totalPages: 1, id: 'table-1', 'data-testid': 'table' },
+  render: (args) => React.createElement(Table, { ...args }),
 };
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image } from './Image';
-import sampleImage from './assets/avif-test-image.avif';
+import { Image } from '../components/Image/Image';
+import sampleImage from '../assets/avif-test-image.avif';
 
 export default {
   id: 'example-image',

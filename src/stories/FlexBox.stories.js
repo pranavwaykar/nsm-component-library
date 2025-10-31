@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlexBox } from './FlexBox';
+import { FlexBox } from '../components/FlexBox/FlexBox';
 
 export default {
   id: 'example-flexbox',

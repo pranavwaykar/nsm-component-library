@@ -1,11 +1,10 @@
 import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import SideMenuBar from '../muamelat/SideMenuBar/SideMenuBar';
+import '../index.scss';
+import SideMenuBar from '../components/SideMenuBar/SideMenuBar';
 
 export default {
   id: 'side-menubar',
-  title: 'Muamelat/Side Menu Bar',
+  title: 'Side Menu Bar',
   component: SideMenuBar,
   tags: ['autodocs'],
   parameters: {

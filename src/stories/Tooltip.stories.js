@@ -1,11 +1,10 @@
 import React from 'react';
-import '../stories/tokens.css';
-import '../muamelat/styles/index.scss';
-import { Tooltip } from '../muamelat';
+import '../index.scss';
+import { Tooltip } from '../components/Tooltip/Tooltip';
 
 export default {
   id: 'tooltip',
-  title: 'Muamelat/Tooltip',
+  title: 'Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
   parameters: {
