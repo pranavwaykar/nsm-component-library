@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import './fusioncharts-license';
 import ReactFusioncharts from 'react-fusioncharts';
 import FusionCharts from 'fusioncharts';
 import Charts from 'fusioncharts/fusioncharts.charts';
