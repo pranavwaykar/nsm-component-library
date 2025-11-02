@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import '../../stories/theme.tokens.scss';
+import '../../index.scss';
 import './inputs.scss';
 
 export const TextInput = ({ label, value, placeholder, error, helper, onChange, as = 'label', containerProps = {}, children, ...rest }) => {

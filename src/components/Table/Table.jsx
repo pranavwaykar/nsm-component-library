@@ -1,6 +1,6 @@
 import React, { useMemo, useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import '../../stories/theme.tokens.scss';
+import '../../index.scss';
 import './table.scss';
 
 function defaultFilter(rows, query, columns) {

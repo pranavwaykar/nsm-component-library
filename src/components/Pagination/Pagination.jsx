@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../stories/theme.tokens.scss';
+import '../../index.scss';
 import './pagination.scss';
 
 export const Pagination = ({
