@@ -27,6 +27,9 @@
   line-height: 1.2;
 }
 
+.sb-badge--tone-subtle { opacity: 0.85; }
+.sb-badge--tone-strong { opacity: 0.98; }
+
 /* color tokens */
 .sb-badge--color-neutral {
   --sb-badge-fg: #111827;

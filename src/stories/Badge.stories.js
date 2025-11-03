@@ -1,4 +1,4 @@
-import React, { Children, useRef, useState } from "react";
+import React from "react";
 import { Badge } from "../components/Badge/Badge";
 
 export default {
@@ -8,29 +8,20 @@ export default {
   parameters: { layout: "centered" },
   tags: ["autodocs"],
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["solid", "outline", "ghost", "link"],
-    },
+    variant: { control: "select", options: ["solid", "outline", "ghost", "link"] },
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
-    color: {
-      control: "select",
-      options: ["neutral", "primary", "success", "warning", "error", "info"],
-    },
-    // tone removed; use style.opacity or --sb-opacity tokens
-    radius: {
-      control: "text",
-      table: { type: { summary: "'none'|'sm'|'md'|'lg'|'full'|number" } },
-    },
-    elevation: { control: "number", min: 0, max: 5 },
-    shadow: { control: "text" },
-    as: { control: "text" },
+    color: { control: "select", options: ["neutral", "primary", "success", "warning", "error", "info"] },
+    tone: { control: "select", options: ["default", "subtle", "strong"] },
+    radius: { control: "select", options: ["none", "sm", "md", "lg", "full"] },
+    elevation: { control: "select", options: [0, 1, 2, 3, 4, 5] },
+    shadow: { control: "select", options: ["none", "sm", "md", "lg"] },
+    as: { control: "select", options: ["span", "a", "button", "div"] },
     id: { control: "text" },
     tabIndex: { control: "number" },
     title: { control: "text" },
     hidden: { control: "boolean" },
     draggable: { control: "boolean" },
-    dir: { control: "text" },
+    dir: { control: "select", options: ["ltr", "rtl", "auto"] },
     lang: { control: "text" },
     "data-testid": { control: "text", name: "data-testid" },
     onClick: { action: "clicked" },
@@ -69,6 +60,7 @@ export const Primary = {
     color: "success",
     size: "sm",
     radius: "md",
+    tone: "default",
     elevation: 0,
     shadow: "none",
     dot: true,
@@ -87,5 +79,6 @@ export const Primary = {
     py: "2px",
     w: "auto",
     h: "auto",
+    as: "span",
   },
 };
