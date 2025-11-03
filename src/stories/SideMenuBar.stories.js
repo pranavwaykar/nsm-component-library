@@ -16,7 +16,12 @@ export default {
 export const Default = {
   name: 'Default',
   args: {
-    menus: [{label:'Home'},{label:'Menu 2'},{label:'Menu 3'}],
+    activeIndex: 0,
+    menus: [
+      { label: 'Home', count: 0 },
+      { label: 'Tasks', count: 12 },
+      { label: 'Reports', count: 2 },
+    ],
     notificationCount: '9+',
   },
   parameters: {
@@ -24,8 +29,12 @@ export const Default = {
       source: {
         language: 'jsx',
         code: `<SideMenuBar
-  menus={[{ label: 'Home' }, { label: 'Menu 2' }, { label: 'Menu 3' }]}
+  activeIndex={0}
+  menus={[ { label: 'Home', count: 0 }, { label: 'Tasks', count: 12 }, { label: 'Reports', count: 2 } ]}
   notificationCount="9+"
+  onLogoClick={() => {}}
+  onProfileClick={() => {}}
+  onMenuClick={(menu, index) => {}}
 />`,
       },
     },

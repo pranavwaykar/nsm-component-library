@@ -26,6 +26,17 @@
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
+.sb-table--flat { box-shadow: none; border-color: #e5e7eb; }
+.sb-table--surface { background: #fff; }
+.sb-table--sm td { padding: 10px 12px; }
+.sb-table--lg td { padding: 16px 20px; }
+.sb-table.is-bordered { border: 1px solid #d1d5db; }
+.sb-table.is-striped tbody tr:nth-child(odd) td { background: #fbfdff; }
+.sb-table.is-hoverable tbody tr:hover td { background: #f6fbff; }
+.sb-table thead.is-sticky th {
+  position: sticky;
+  top: 0;
+}
 .sb-table thead th {
   position: sticky;
   top: 0;
@@ -42,6 +53,7 @@
   border-bottom: 1px solid #f1f5f9;
   background: #fff;
   vertical-align: middle;
+  height: var(--sb-row-h, auto);
 }
 
 .sb-table__thbtn {
@@ -84,16 +96,36 @@
 .sb-table__expander {
   width: 40px;
 }
+.sb-table__selcol { width: 36px; }
+.sb-table__index { width: 40px; color: #6b7280; }
 
 .sb-table__actions > * {
   margin-left: 6px;
 }
+
+/* options menu */
+.sb-table__options { position: relative; width: 44px; text-align: right; }
+.sb-table__optbtn { border: 0; background: transparent; cursor: pointer; padding: 4px; border-radius: 6px; color: #111827; }
+.sb-table__optbtn:hover { background: #eef2ff; }
+.sb-table__menu { position: absolute; right: 2px; top: 28px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 8px 16px rgba(16,24,40,.12); padding: 6px; z-index: 10; display:flex; flex-direction: column; min-width: 120px; }
+.sb-table__menu > button { border: 0; background: transparent; text-align: left; padding: 8px 10px; cursor: pointer; border-radius: 6px; font-size: 13px; }
+.sb-table__menu > button:hover { background: #f8fafc; }
+.sb-table__opthd { width: 44px; }
 
 .sb-table__subrow td {
   background: #f9fafb;
   border-top: 0;
   padding: 16px 24px;
 }
+
+/* color schemes */
+.sb-table--scheme-primary thead th { background: #eef2ff; }
+.sb-table--scheme-primary .sb-table__thbtn .sb-sort-icon.asc,
+.sb-table--scheme-primary .sb-table__thbtn .sb-sort-icon.desc { color: #2563eb; }
+.sb-table--scheme-neutral thead th { background: #f8fafc; }
+
+/* sticky footer */
+.sb-table tfoot.is-sticky tr td { position: sticky; bottom: 0; background: #fff; border-top: 1px solid #e5e7eb; }
 
 .sb-table__pagination {
   display: flex;

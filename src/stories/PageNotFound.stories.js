@@ -12,6 +12,14 @@ export default {
   },
 };
 
-export const Default = { name: 'Default', args: {} };
+export const Default = {
+  name: 'Default',
+  args: {
+    title: 'Page not found',
+    description: "The page you are looking for doesn't exist or has been moved.",
+    ctaLabel: 'Go Home',
+    secondaryLabel: 'Contact support',
+  },
+};
 
 
