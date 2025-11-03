@@ -21,10 +21,11 @@
   border-collapse: separate;
   border-spacing: 0;
   font-size: var(--sb-font-size-base);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--sb-table-border, #e5e7eb);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  background: var(--sb-table-bg, #fff);
 }
 .sb-table--flat { box-shadow: none; border-color: #e5e7eb; }
 .sb-table--surface { background: #fff; }

@@ -46,6 +46,8 @@ export default {
     pl: { control: "text" },
     w: { control: "text" },
     h: { control: "text" },
+    bgColor: { control: "color" },
+    borderColor: { control: "color" },
   },
 };
 
@@ -80,5 +82,7 @@ export const Primary = {
     w: "auto",
     h: "auto",
     as: "span",
+    bgColor: undefined,
+    borderColor: undefined,
   },
 };

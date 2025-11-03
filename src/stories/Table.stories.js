@@ -30,6 +30,13 @@ export default {
     hoverable: { control: 'boolean' },
     stickyHeader: { control: 'boolean' },
     showIndex: { control: 'boolean' },
+    // styling props
+    radius: { control: 'select', options: ['none','sm','md','lg','full'] },
+    elevation: { control: 'select', options: [0,1,2,3,4,5] },
+    shadow: { control: 'select', options: ['none','sm','md','lg'] },
+    m: { control: 'text' }, px: { control: 'text' }, py: { control: 'text' }, w: { control: 'text' }, maxHeight: { control: 'text' },
+    bgColor: { control: 'color' },
+    borderColor: { control: 'color' },
   }
 };
 
@@ -55,6 +62,17 @@ export const Basic = {
     expandable: true,
     renderExpandedRow: (row) => React.createElement('div', { style: { padding: '8px 4px' } }, `More about ${row.name}…`),
     rowActions: (row, action) => { /* eslint-disable no-console */ console.log(action, row); },
+    // styling defaults
+    radius: 'md',
+    elevation: 0,
+    shadow: 'none',
+    m: '0',
+    px: '0',
+    py: '0',
+    w: '100%',
+    maxHeight: 'auto',
+    bgColor: '#ffffff',
+    borderColor: '#e5e7eb',
   },
   render: (args) => React.createElement(Table, { ...args }),
 };
