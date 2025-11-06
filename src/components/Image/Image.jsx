@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../index.scss';
 import './Image.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 export const Image = ({
   src,
@@ -17,7 +18,7 @@ export const Image = ({
   as,
   className,
   style,
-  sx,
+  hidden,
   ...rest
 }) => {
   const containerRef = useRef(null);
@@ -56,9 +57,10 @@ export const Image = ({
     className,
   ].filter(Boolean).join(' ');
 
-  const mergedStyle = { ...(style || {}), ...(sx || {}) };
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
   if (width) mergedStyle.width = width;
   if (height) mergedStyle.height = height;
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
 
   const Container = as || 'div';
   return (

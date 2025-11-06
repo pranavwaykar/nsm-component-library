@@ -1,7 +1,9 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import '../../index.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
-export const FlexBox = forwardRef(({ direction = 'row', align = 'center', justify = 'flex-start', gap = 8, wrap = false, style, children, as, ...rest }, ref) => {
+export const FlexBox = forwardRef(({ direction = 'row', align = 'center', justify = 'flex-start', gap = 8, wrap = false, style, hidden, children, as, ...rest }, ref) => {
   const merged = {
     display: 'flex',
     flexDirection: direction,
@@ -9,8 +11,10 @@ export const FlexBox = forwardRef(({ direction = 'row', align = 'center', justif
     justifyContent: justify,
     gap,
     flexWrap: wrap ? 'wrap' : 'nowrap',
+    ...expandStyleProps(rest),
     ...style,
   };
+  if (hidden === true && merged.display === undefined) merged.display = 'none';
   const Component = as || 'div';
   return <Component ref={ref} style={merged} {...rest}>{children}</Component>;
 });

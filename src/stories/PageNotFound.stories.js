@@ -8,7 +8,10 @@ export default {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    docs: { source: { language: 'jsx', code: '<PageNotFound />' } },
+    docs: {
+      source: { language: 'jsx', code: '<PageNotFound />' },
+      description: { component: 'A friendly empty state for 404 errors. Includes decorative art, headline, description, and primary/secondary actions. Customize text and wire `onCtaClick` / `onSecondaryClick`. Container supports universal/style props.' },
+    },
   },
 };
 

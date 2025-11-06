@@ -2,12 +2,15 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import '../../index.scss';
 import './Progress.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
-export const ProgressBar = forwardRef(({ value, max = 100, indeterminate = false, label, as, ...rest }, ref) => {
+export const ProgressBar = forwardRef(({ value, max = 100, indeterminate = false, label, as, style, hidden, ...rest }, ref) => {
   const pct = Math.max(0, Math.min(100, (Number(value) / Number(max)) * 100));
   const Component = as || 'div';
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   return (
-    <Component ref={ref} className="sb-progressbar" role="progressbar" aria-valuemin={0} aria-valuemax={max} aria-valuenow={indeterminate ? undefined : Math.round(pct)} aria-label={label} {...rest}>
+    <Component ref={ref} className="sb-progressbar" role="progressbar" aria-valuemin={0} aria-valuemax={max} aria-valuenow={indeterminate ? undefined : Math.round(pct)} aria-label={label} style={mergedStyle} {...rest}>
       <div className={`sb-progressbar__fill ${indeterminate ? 'is-indeterminate' : ''}`} style={indeterminate ? undefined : { width: `${pct}%` }} />
     </Component>
   );
@@ -15,14 +18,16 @@ export const ProgressBar = forwardRef(({ value, max = 100, indeterminate = false
 
 ProgressBar.propTypes = { value: PropTypes.number, max: PropTypes.number, indeterminate: PropTypes.bool, label: PropTypes.string, as: PropTypes.elementType };
 
-export const ProgressRing = forwardRef(({ value, max = 100, size = 44, stroke = 4, indeterminate = false, label, as, ...rest }, ref) => {
+export const ProgressRing = forwardRef(({ value, max = 100, size = 44, stroke = 4, indeterminate = false, label, as, style, hidden, ...rest }, ref) => {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
   const pct = Math.max(0, Math.min(100, (Number(value) / Number(max)) * 100));
   const dash = indeterminate ? circumference * 0.25 : (pct / 100) * circumference;
   const Component = as || 'svg';
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   return (
-    <Component ref={ref} className={`sb-progressring ${indeterminate ? 'is-indeterminate' : ''}`} width={size} height={size} role="img" aria-label={label} {...rest}>
+    <Component ref={ref} className={`sb-progressring ${indeterminate ? 'is-indeterminate' : ''}`} width={size} height={size} role="img" aria-label={label} style={mergedStyle} {...rest}>
       <circle className="sb-progressring__bg" cx={size/2} cy={size/2} r={radius} strokeWidth={stroke} />
       <circle className="sb-progressring__fg" cx={size/2} cy={size/2} r={radius} strokeWidth={stroke} strokeDasharray={`${dash} ${circumference}`} />
     </Component>

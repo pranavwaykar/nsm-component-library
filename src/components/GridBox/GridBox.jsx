@@ -1,14 +1,18 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import '../../index.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
-export const GridBox = forwardRef(({ columns = 'repeat(3, minmax(0, 1fr))', rows, gap = 12, style, children, as, ...rest }, ref) => {
+export const GridBox = forwardRef(({ columns = 'repeat(3, minmax(0, 1fr))', rows, gap = 12, style, hidden, children, as, ...rest }, ref) => {
   const merged = {
     display: 'grid',
     gridTemplateColumns: columns,
     gridTemplateRows: rows,
     gap,
+    ...expandStyleProps(rest),
     ...style,
   };
+  if (hidden === true && merged.display === undefined) merged.display = 'none';
   const Component = as || 'div';
   return <Component ref={ref} style={merged} {...rest}>{children}</Component>;
 });

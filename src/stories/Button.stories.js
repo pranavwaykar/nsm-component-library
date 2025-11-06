@@ -2,6 +2,7 @@ import React from "react";
 import { fn } from "storybook/test";
 
 import { Button as ButtonComponent } from "../components/Button/Button";
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 
 export default {
   id: "example-button",
@@ -12,13 +13,15 @@ export default {
     docs: {
       description: {
         component:
-          "Explain what Button is for, usage guidance, accessibility notes.",
+          "Button triggers an action or workflow. Variants cover common intents (primary, secondary, ghost, link, destructive, success, warning) with a consistent size scale (xsmall–xlarge). Supports loading/disabled states, count/indicator badges, and optional left/right icons. Buttons are polymorphic via `as` and expose full universal props (id, data-/aria-*, a11y events). Styling entry points: tokens for radius/elevation/shadow, and a rich shorthand style-system for spacing/layout/background/borders/effects/typography.",
       },
     },
   },
 
   tags: ["autodocs"],
   argTypes: {
+    ...universalArgTypes,
+    ...styleSystemArgTypes,
     as: { control: "text" },
     id: { control: "text" },
     tabIndex: { control: "number" },
@@ -70,6 +73,7 @@ export default {
   },
   args: {
     onClick: fn(),
+    as: 'button',
     id: "btn-1",
     tabIndex: 0,
     draggable: false,
@@ -77,6 +81,7 @@ export default {
     "aria-label": "Button",
     dir: "ltr",
     lang: "en",
+    m: '0', w: 'auto',
   },
 };
 

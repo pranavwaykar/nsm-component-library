@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../../index.scss';
 import './pagination.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 export const Pagination = ({
   page,
@@ -11,6 +12,12 @@ export const Pagination = ({
   onPageChange,
   onPageSizeChange,
   disabled = false,
+  as,
+  className,
+  role = 'navigation',
+  style,
+  hidden,
+  ...rest
 }) => {
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize || 1));
   const currentPage = Math.min(Math.max(1, page), totalPages);
@@ -30,8 +37,11 @@ export const Pagination = ({
   const end = Math.min(totalPages, start + maxButtons - 1);
   for (let i = Math.max(1, end - maxButtons + 1); i <= end; i += 1) pagesToShow.push(i);
 
+  const Root = as || 'nav';
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   return (
-    <nav className="sb-pagination" role="navigation" aria-label="Pagination">
+    <Root className={`sb-pagination ${className || ''}`.trim()} role={role} aria-label="Pagination" style={mergedStyle} {...rest}>
       <div className="sb-pagination__sizes">
         <label>
           <span className="sb-pagination__label">Rows per page:</span>
@@ -98,7 +108,7 @@ export const Pagination = ({
       <div className="sb-pagination__status" aria-live="polite">
         Page {currentPage} of {totalPages}
       </div>
-    </nav>
+    </Root>
   );
 };
 

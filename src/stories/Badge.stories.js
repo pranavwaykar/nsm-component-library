@@ -5,7 +5,15 @@ export default {
   id: "example-badge",
   title: "Badge Component",
   component: Badge,
-  parameters: { layout: "centered" },
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component:
+          "Badge is a compact label used to annotate UI elements with status or metadata. It supports semantic color tokens, variants (solid, outline, ghost, link), size scale (xs–xl), tone (mapped to opacity), and design tokens for radius and elevation. Badges are polymorphic via `as` and accept the full universal prop set (a11y, events, data-/aria-*). Styling entry points include `className`, `style`, and a comprehensive shorthand style-system for spacing/layout/typography/background/borders/effects/transforms.",
+      },
+    },
+  },
   tags: ["autodocs"],
   argTypes: {
     variant: { control: "select", options: ["solid", "outline", "ghost", "link"] },
@@ -29,7 +37,6 @@ export default {
     onBlur: { action: "blur" },
     onKeyDown: { action: "keydown" },
     onKeyUp: { action: "keyup" },
-    // common shorthand style-system props to reveal in Show code
     m: { control: "text" },
     mx: { control: "text" },
     my: { control: "text" },

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '../../index.scss';
 import './Modal.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 export const Modal = ({
   open = false,
@@ -14,6 +15,8 @@ export const Modal = ({
   showClose = true,
   as,
   className,
+  style,
+  hidden,
   ...rest
  }) => {
   useEffect(() => {
@@ -28,8 +31,10 @@ export const Modal = ({
   if (!open) return null;
 
   const Root = as || 'div';
+  const rootStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && rootStyle.display === undefined) rootStyle.display = 'none';
   return (
-    <Root className={`sb-modal ${className || ''}`.trim()} role="dialog" aria-modal="true" aria-labelledby={title ? 'sb-modal-title' : undefined} onMouseDown={(e) => {
+    <Root className={`sb-modal ${className || ''}`.trim()} style={rootStyle} role="dialog" aria-modal="true" aria-labelledby={title ? 'sb-modal-title' : undefined} onMouseDown={(e) => {
       if (!closeOnOutside) return;
       if (e.target.classList.contains('sb-modal')) onClose?.();
     }} {...rest}>

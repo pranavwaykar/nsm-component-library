@@ -2,8 +2,9 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import '../../index.scss';
 import './IconBox.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
-export const IconBox = forwardRef(({ icon, count, label, variant = 'neutral', size = 'md', indicator = false, onClick, as, className, style, sx, ...rest }, ref) => {
+export const IconBox = forwardRef(({ icon, count, label, variant = 'neutral', size = 'md', indicator = false, onClick, as, className, style, hidden, radius, elevation, shadow, ...rest }, ref) => {
   const classNames = [
     'sb-iconbox',
     `sb-iconbox--${variant}`,
@@ -15,6 +16,9 @@ export const IconBox = forwardRef(({ icon, count, label, variant = 'neutral', si
     .join(' ');
 
   const Component = as || 'div';
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (typeof radius === 'number') mergedStyle.borderRadius = radius;
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   return (
     <Component ref={ref} className={classNames} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined} onClick={onClick} onKeyDown={(e) => {
       if (!onClick) return;
@@ -22,7 +26,7 @@ export const IconBox = forwardRef(({ icon, count, label, variant = 'neutral', si
         e.preventDefault();
         onClick();
       }
-    }} style={{ ...(style || {}), ...(sx || {}) }} {...rest}>
+    }} style={mergedStyle} {...rest}>
       <div className="sb-iconbox__icon" aria-hidden>
         {icon}
         {indicator ? <span className="sb-iconbox__dot" /> : null}

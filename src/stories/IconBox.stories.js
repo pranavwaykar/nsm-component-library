@@ -1,29 +1,26 @@
 import React from 'react';
 import { IconBox } from '../components/IconBox/IconBox';
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-iconbox',
   title: 'Icon Box Component',
   component: IconBox,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'IconBox pairs an icon with an optional label, count badge, and attention indicator. Useful for navigation shortcuts, metrics, and notifications. Variants control visual emphasis; size adjusts tap targets. Fully clickable (keyboard accessible) and supports universal props and the shorthand style-system for layout and spacing.',
+      },
+    },
+  },
   argTypes: {
+    ...universalArgTypes,
+    ...styleSystemArgTypes,
     variant: { control: 'select', options: ['neutral','primary','success','warning','error','info'] },
     size: { control: 'select', options: ['sm','md','lg'] },
     icon: { control: false },
-    as: { control: 'text' },
-    id: { control: 'text' },
-    tabIndex: { control: 'number' },
-    role: { control: 'text' },
-    title: { control: 'text' },
-    hidden: { control: 'boolean' },
-    draggable: { control: 'boolean' },
-    'data-testid': { control: 'text', name: 'data-testid' },
-    onClick: { action: 'clicked' },
-    onFocus: { action: 'focus' },
-    onBlur: { action: 'blur' },
-    onKeyDown: { action: 'keydown' },
-    onKeyUp: { action: 'keyup' },
   },
 };
 
@@ -32,15 +29,14 @@ const bell = React.createElement('span', { 'aria-hidden': 'true' }, '🔔');
 export const Primary = {
   name: 'Icon Box',
   args: {
+    as: 'div', id: 'iconbox-1', 'data-testid': 'iconbox', tabIndex: 0, dir: 'ltr', lang: 'en', hidden: false,
     icon: bell,
     count: 12,
     label: 'Notifications',
     variant: 'primary',
     size: 'md',
     indicator: true,
-    id: 'iconbox-1',
-    tabIndex: 0,
-    'data-testid': 'iconbox',
+    m: '0', px: '10px', py: '8px',
   },
 };
 

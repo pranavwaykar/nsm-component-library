@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UserControlsPopup.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 const UserControlsPopup = ({
   name = 'Pranav Waykar',
@@ -9,11 +10,19 @@ const UserControlsPopup = ({
   onLogout = () => {},
   onConsent = () => {},
   onToggleEditMode = () => {},
+  as,
+  className,
+  style,
+  hidden,
+  ...rest
 }) => {
   const [langOpen, setLangOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const Component = as || 'div';
+  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && merged.display === undefined) merged.display = 'none';
   return (
-    <div className="user-controls">
+    <Component className={`user-controls ${className || ''}`.trim()} style={merged} {...rest}>
       <div className="uc-user">
         <div className="avatar" />
         <div className="info">
@@ -45,7 +54,7 @@ const UserControlsPopup = ({
       <div className="uc-row" onClick={onLogout}>
         <div className="label"><i className="fi fi-rr-exit" style={{marginRight:8}}/>Logout</div>
       </div>
-    </div>
+    </Component>
   );
 };
 

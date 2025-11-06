@@ -19,7 +19,7 @@ export default {
   id: "example-inputs",
   title: "Input Components",
   component: TextInput,
-  parameters: { layout: "centered" },
+  parameters: { layout: "centered", docs: { description: { component: "A set of accessible form inputs used throughout the library: text, textarea, single/multi-select, checkbox, toggle, radio, range, file, color, and date range. Each input exposes a predictable onChange API and forwards universal/style props for seamless composition in forms and layouts." } } },
   tags: ["autodocs"],
   argTypes: {
     as: { control: "text" },

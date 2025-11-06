@@ -1,6 +1,7 @@
 import React from 'react';
 import './SideMenu.scss';
 import Carousel from './Carousal';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 const items = [
   { label: 'Panorama', icon: 'icon-panorama' },
@@ -10,9 +11,12 @@ const items = [
   { label: 'Reports', icon: 'icon-report' },
 ];
 
-const SideMenu = ({ onNavigate = () => {} }) => {
+const SideMenu = ({ onNavigate = () => {}, as, className, style, hidden, ...rest }) => {
+  const Component = as || 'div';
+  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && merged.display === undefined) merged.display = 'none';
   return (
-    <div className="side-menu">
+    <Component className={`side-menu ${className || ''}`.trim()} style={merged} {...rest}>
       <div className="sm-logo">
         <div className="sml-thumb">
           <div className="sml-light" />
@@ -50,7 +54,7 @@ const SideMenu = ({ onNavigate = () => {} }) => {
       <div className="sm-profile">
         <div className="smp-img" />
       </div>
-    </div>
+    </Component>
   );
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import '../index.scss';
 import UserContactCard from '../components/UserContactCard/UserContactCard';
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 
 export default {
   id: 'user-contact-card',
@@ -11,12 +12,13 @@ export default {
     layout: 'centered',
     docs: { source: { language: 'jsx', code: '<UserContactCard user={{ firstname: "Pranav", lastname: "Waykar", email: "test@example.com" }} />' } },
   },
+  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
 };
 
 export const Default = {
   name: 'Default',
   render: () => React.createElement('div', { style: { width: 380 } },
-    React.createElement(UserContactCard, { user: { firstname: 'Pranav', lastname: 'Waykar', email: 'test@example.com' } })
+    React.createElement(UserContactCard, { user: { firstname: 'Pranav', lastname: 'Waykar', email: 'test@example.com' }, as: 'div', id: 'ucc-1', 'data-testid': 'ucc', m: '0' })
   ),
 };
 

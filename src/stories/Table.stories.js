@@ -16,7 +16,10 @@ export default {
   id: 'example-table',
   title: 'Table Component',
   component: Table,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: { description: { component: 'Table renders structured data with sorting, filtering, selection, pagination, and expandable rows. Style variants (surface/flat) and size scale (sm–lg) are provided with sticky headers/footers. The component supports column visibility controls, index column, 3‑dots row actions, and a rich style-system for layout and theming.' } },
+  },
   tags: ['autodocs'],
   argTypes: {
     as: { control: 'text' }, id: { control: 'text' }, 'data-testid': { control: 'text', name: 'data-testid' },
@@ -62,7 +65,6 @@ export const Basic = {
     expandable: true,
     renderExpandedRow: (row) => React.createElement('div', { style: { padding: '8px 4px' } }, `More about ${row.name}…`),
     rowActions: (row, action) => { /* eslint-disable no-console */ console.log(action, row); },
-    // styling defaults
     radius: 'md',
     elevation: 0,
     shadow: 'none',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from '../components/Image/Image';
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 import sampleImage from '../assets/avif-test-image.avif';
 
 export default {
@@ -10,12 +11,14 @@ export default {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Optimized image with IntersectionObserver-based lazy loading, fallback, and error states.'
+        component: 'Image provides lazy‑loaded visuals with graceful fallbacks and error states. It uses IntersectionObserver to defer loading off‑screen images. Supports radius tokens, object‑fit modes, and full universal/style props on the container so you can control layout, spacing, and responsiveness without wrappers.'
       }
     }
   },
   tags: ['autodocs'],
   argTypes: {
+    ...universalArgTypes,
+    ...styleSystemArgTypes,
     fit: { control: 'select', options: ['cover', 'contain', 'fill', 'none', 'scale-down'] },
     radius: { control: 'select', options: ['none', 'sm', 'md', 'lg', 'pill'] },
     width: { control: 'text' },
@@ -42,6 +45,7 @@ export default {
 export const Primary = {
   name: 'Image',
   args: {
+    as: 'div', id: 'image-1', 'data-testid': 'image', tabIndex: 0, dir: 'ltr', lang: 'en', hidden: false,
     src: sampleImage,
     alt: 'Sample',
     fit: 'cover',
@@ -50,9 +54,7 @@ export const Primary = {
     errorFallback: 'Failed to load',
     threshold: 0.1,
     rootMargin: '200px',
-    id: 'image-1',
-    tabIndex: 0,
-    'data-testid': 'image',
+    m: '0',
   },
 };
 

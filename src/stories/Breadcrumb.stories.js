@@ -9,7 +9,10 @@ export default {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    docs: { source: { language: 'jsx', code: '<Breadcrumb items={["ADVANCITY4009","TEST MUAMELAT 06","MUAMELE DETAY SAYFASI","KÜNYE BİLGİLERİ"]} />' } },
+    docs: {
+      source: { language: 'jsx', code: '<Breadcrumb items={["ADVANCITY4009","TEST MUAMELAT 06","MUAMELE DETAY SAYFASI","KÜNYE BİLGİLERİ"]} />' },
+      description: { component: 'Breadcrumb communicates the user\'s location in the app hierarchy. Provide `items` as an ordered array of labels. The container supports universal/style props for spacing and placement within headers or pages.' },
+    },
   },
 };
 

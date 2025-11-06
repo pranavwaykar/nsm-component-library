@@ -1,25 +1,14 @@
 import React from 'react';
 import { GridBox } from '../components/GridBox/GridBox';
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-gridbox',
   title: 'GridBox Component',
   component: GridBox,
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'centered', docs: { description: { component: 'GridBox exposes a minimal API for CSS Grid layouts (columns/rows/gap). Use it for cards, dashboards, and responsive compositions. Universal/style props let you control spacing and responsiveness without extra wrappers.' } } },
   tags: ['autodocs'],
-  argTypes: {
-    as: { control: 'text' },
-    id: { control: 'text' },
-    tabIndex: { control: 'number' },
-    role: { control: 'text' },
-    title: { control: 'text' },
-    hidden: { control: 'boolean' },
-    draggable: { control: 'boolean' },
-    'data-testid': { control: 'text', name: 'data-testid' },
-    onClick: { action: 'clicked' },
-    onFocus: { action: 'focus' },
-    onBlur: { action: 'blur' },
-  },
+  argTypes: { ...universalArgTypes, ...styleSystemArgTypes, columns: { control: 'text' }, rows: { control: 'text' }, gap: { control: 'text' } },
 };
 
 export const Playground = {

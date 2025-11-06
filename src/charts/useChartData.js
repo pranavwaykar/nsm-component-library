@@ -9,11 +9,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
  * - transform: (response) => FusionCharts dataSource
  * - deps: dependency array to refetch
  */
-export function useChartData({ endpoint, method = 'GET', headers, params, transform, deps = [] }) {
+export function useChartData({ endpoint, method = 'GET', headers, params, transform, deps = [], enabled = true, pollInterval = 0, onSuccess, onError, timeout }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [dataSource, setDataSource] = useState(null);
   const abortRef = useRef();
+  const timerRef = useRef();
 
   const urlWithQuery = useMemo(() => {
     if (typeof endpoint !== 'string' || method !== 'GET' || !params) return endpoint;
@@ -27,6 +28,7 @@ export function useChartData({ endpoint, method = 'GET', headers, params, transf
   useEffect(() => {
     let isMounted = true;
     const run = async () => {
+      if (!enabled) return;
       setLoading(true);
       setError(null);
       if (abortRef.current) abortRef.current.abort();
@@ -43,25 +45,35 @@ export function useChartData({ endpoint, method = 'GET', headers, params, transf
             signal: controller.signal,
           };
           if (method !== 'GET' && params) fetchInit.body = JSON.stringify(params);
-          const r = await fetch(urlWithQuery, fetchInit);
+          const r = await fetch(urlWithQuery, { ...fetchInit, ...(timeout ? { signal: controller.signal } : {}) });
           resp = await r.json();
         }
         const ds = typeof transform === 'function' ? transform(resp) : resp;
-        if (isMounted) setDataSource(ds);
+        if (isMounted) {
+          setDataSource(ds);
+          onSuccess?.(ds);
+        }
       } catch (e) {
-        if (isMounted && e.name !== 'AbortError') setError(e);
+        if (isMounted && e.name !== 'AbortError') {
+          setError(e);
+          onError?.(e);
+        }
       } finally {
         if (isMounted) setLoading(false);
       }
     };
 
     run();
+    if (pollInterval > 0 && enabled) {
+      timerRef.current = setInterval(run, pollInterval);
+    }
     return () => {
       isMounted = false;
       if (abortRef.current) abortRef.current.abort();
+      if (timerRef.current) clearInterval(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urlWithQuery, method, JSON.stringify(headers || {}), JSON.stringify(params || {}), ...deps]);
+  }, [urlWithQuery, method, JSON.stringify(headers || {}), JSON.stringify(params || {}), enabled, pollInterval, ...deps]);
 
   return { loading, error, dataSource };
 }

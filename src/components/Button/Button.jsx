@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../../index.scss";
 import "./Button.scss";
+import { expandStyleProps } from "../../utils/styleSystem";
 
 export const Button = ({
   primary = false,
@@ -24,19 +25,16 @@ export const Button = ({
   className,
   as,
   style,
-  sx,
-  // a11y/native
+
   tabIndex,
   title,
   draggable,
   hidden,
   dir,
   lang,
-  // theme tokens (optional)
   color,
   tone,
   elevation,
-  // style-system shorthands (optional)
   m, mx, my, mt, mr, mb, ml,
   p, px, py, pt, pr, pb, pl,
   w, h, minW, maxW, minH, maxH,
@@ -93,7 +91,7 @@ export const Button = ({
     return s;
   };
 
-  const inlineStyle = { ...expandShorthand(), ...(style || {}), ...(sx || {}) };
+  const inlineStyle = { ...expandShorthand(), ...expandStyleProps(props), ...(style || {}) };
   if (backgroundColor) inlineStyle.backgroundColor = backgroundColor;
   if (textColor) inlineStyle.color = textColor;
   if (typeof radius === 'number') inlineStyle.borderRadius = radius;
@@ -158,7 +156,6 @@ Button.propTypes = {
   count: PropTypes.number,
   as: PropTypes.elementType,
   style: PropTypes.object,
-  sx: PropTypes.object,
 };
 
 export default Button;
