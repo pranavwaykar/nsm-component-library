@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 import {
   TextInput,
   TextArea,
@@ -22,23 +23,8 @@ export default {
   parameters: { layout: "centered", docs: { description: { component: "A set of accessible form inputs used throughout the library: text, textarea, single/multi-select, checkbox, toggle, radio, range, file, color, and date range. Each input exposes a predictable onChange API and forwards universal/style props for seamless composition in forms and layouts." } } },
   tags: ["autodocs"],
   argTypes: {
-    as: { control: "text" },
-    id: { control: "text" },
-    "data-testid": { control: "text", name: "data-testid" },
-    role: { control: "text" },
-    tabIndex: { control: "number" },
-    title: { control: "text" },
-    hidden: { control: "boolean" },
-    draggable: { control: "boolean" },
-    dir: { control: "text" },
-    lang: { control: "text" },
-    onClick: { action: "clicked" },
-    onFocus: { action: "focus" },
-    onBlur: { action: "blur" },
-    onKeyDown: { action: "keydown" },
-    onKeyUp: { action: "keyup" },
-    // style: { control: "object" },
-    sx: { control: "object" },
+    ...universalArgTypes,
+    ...styleSystemArgTypes,
     containerProps: { control: "object" },
   },
 };

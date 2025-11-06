@@ -1,5 +1,6 @@
 import '../index.scss';
 import { PageNotFound } from '../components/PageNotFound/PageNotFound';
+import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
 
 export default {
   id: 'page-not-found',
@@ -13,6 +14,7 @@ export default {
       description: { component: 'A friendly empty state for 404 errors. Includes decorative art, headline, description, and primary/secondary actions. Customize text and wire `onCtaClick` / `onSecondaryClick`. Container supports universal/style props.' },
     },
   },
+  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
 };
 
 export const Default = {
