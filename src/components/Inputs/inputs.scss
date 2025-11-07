@@ -9,6 +9,14 @@
 .sb-input::placeholder { color: #9ca3af; }
 .sb-input--area { min-height: 96px; }
 
+/* adornments for select */
+.sb-field--select .sb-input-wrap { position: relative; display: inline-block; }
+.sb-field__section { position: absolute; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none; }
+.sb-field__section--left { left: 10px; }
+.sb-field__section--right { right: 10px; }
+.sb-input.has-left-section { padding-left: 32px; }
+.sb-input.has-right-section { padding-right: 32px; }
+
 .sb-check { display: inline-flex; gap: 8px; align-items: center; font-size: var(--sb-font-size-base); }
 .sb-check input { margin: 3px; }
 
@@ -43,7 +51,7 @@
 .sb-ms-placeholder { color: #9ca3af; }
 .sb-ms-caret { position: absolute; right: 10px; color: #6b7280; pointer-events: none; }
 
-.sb-ms-chip { display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; padding: 4px 8px; border-radius: 999px; font-size: var(--sb-font-size-base); }
+.sb-ms-chip { display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-size: var(--sb-font-size-base); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background-color: rgb(241, 243, 245); color: rgb(73, 80, 87); font-weight: 500; font-size: 0.80rem;}
 .sb-ms-chip__x { border: 0; background: transparent; cursor: pointer; color: #374151; font-size: 16px; line-height: 1; padding: 0; }
 
 .sb-ms-menu { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,.08); max-height: 240px; overflow: auto; padding: 6px; }

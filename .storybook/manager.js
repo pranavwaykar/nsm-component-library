@@ -120,6 +120,42 @@ addons.register(EXPAND_ADDON_ID, () => {
   });
 });
 
+// Inject a search box into the Controls panel header and filter rows
+function injectControlsSearch() {
+  const root = document;
+  const panel = root.querySelector('[data-testid="addon-controls"]')
+    || root.querySelector('#panel-tab-content')
+    || root.querySelector('[id^="panel-tab-content"]')
+    || root.querySelector('[role="tabpanel"] [data-addons="controls"]');
+  if (!panel) return;
+  if (panel.querySelector('#cmp-controls-search-host')) return;
+  const host = root.createElement('div');
+  host.id = 'cmp-controls-search-host';
+  host.style.cssText = 'display:flex; justify-content:flex-end; position:sticky; top:0; background:var(--sb-background, #fff); padding:6px 8px; z-index:1;';
+  const input = root.createElement('input');
+  input.type = 'search';
+  input.placeholder = 'Search props…';
+  input.style.cssText = 'width:220px; height:28px; border:1px solid #d1d5db; border-radius:6px; padding:4px 8px;';
+  host.appendChild(input);
+  panel.prepend(host);
+  const apply = () => {
+    const q = (input.value || '').toLowerCase();
+    const rows = panel.querySelectorAll('[role="row"],[data-name]');
+    rows.forEach((row) => {
+      const text = (row.textContent || '').toLowerCase();
+      const match = !q || text.includes(q);
+      row.style.display = match ? '' : 'none';
+    });
+  };
+  input.addEventListener('input', apply);
+}
+
+// Observe DOM changes to (re)inject when Controls mounts
+const observer = new MutationObserver(() => {
+  try { injectControlsSearch(); } catch (_) {}
+});
+observer.observe(document.documentElement, { childList: true, subtree: true });
+
 addons.setConfig({
   theme: create({
     base: 'light',

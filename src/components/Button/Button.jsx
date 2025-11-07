@@ -35,12 +35,6 @@ export const Button = ({
   color,
   tone,
   elevation,
-  m, mx, my, mt, mr, mb, ml,
-  p, px, py, pt, pr, pb, pl,
-  w, h, minW, maxW, minH, maxH,
-  display, boxSizing, overflow, overflowX, overflowY,
-  rounded,
-  bg, bgColor,
   ...props
 }) => {
   const effectiveVariant = variant || (primary ? "primary" : "secondary");
@@ -62,36 +56,7 @@ export const Button = ({
     .filter(Boolean)
     .join(" ");
 
-  const expandShorthand = () => {
-    const s = {};
-    const set = (k, v) => { if (v !== undefined) s[k] = v; };
-    set('margin', m);
-    set('marginTop', mt ?? my);
-    set('marginRight', mr ?? mx);
-    set('marginBottom', mb ?? my);
-    set('marginLeft', ml ?? mx);
-    set('padding', p);
-    set('paddingTop', pt ?? py);
-    set('paddingRight', pr ?? px);
-    set('paddingBottom', pb ?? py);
-    set('paddingLeft', pl ?? px);
-    set('width', w);
-    set('height', h);
-    set('minWidth', minW);
-    set('maxWidth', maxW);
-    set('minHeight', minH);
-    set('maxHeight', maxH);
-    set('display', display);
-    set('boxSizing', boxSizing);
-    set('overflow', overflow);
-    set('overflowX', overflowX);
-    set('overflowY', overflowY);
-    set('borderRadius', rounded);
-    set('background', bg ?? bgColor);
-    return s;
-  };
-
-  const inlineStyle = { ...expandShorthand(), ...expandStyleProps(props), ...(style || {}) };
+  const inlineStyle = { ...expandStyleProps(props), ...(style || {}) };
   if (backgroundColor) inlineStyle.backgroundColor = backgroundColor;
   if (textColor) inlineStyle.color = textColor;
   if (typeof radius === 'number') inlineStyle.borderRadius = radius;

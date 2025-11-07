@@ -1,17 +1,21 @@
 import React from 'react';
 import '../../index.scss';
 import './Breadcrumb.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
-const Breadcrumb = ({ items = [] }) => {
+const Breadcrumb = ({ items = [], as, className, style, hidden, role = 'navigation', ...rest }) => {
+  const Component = as || 'nav';
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   return (
-    <nav className="breadcrumb">
+    <Component className={`breadcrumb ${className || ''}`.trim()} style={mergedStyle} role={role} {...rest}>
       {items.map((item, idx) => (
         <span key={idx} className="crumb">
           {item}
           {idx < items.length - 1 && <span className="sep">›</span>}
         </span>
       ))}
-    </nav>
+    </Component>
   );
 };
 

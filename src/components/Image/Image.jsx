@@ -57,9 +57,7 @@ export const Image = ({
     className,
   ].filter(Boolean).join(' ');
 
-  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
-  if (width) mergedStyle.width = width;
-  if (height) mergedStyle.height = height;
+  const mergedStyle = { ...expandStyleProps({ width, height, ...rest }), ...(style || {}) };
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
 
   const Container = as || 'div';

@@ -4,15 +4,20 @@ import '../../index.scss';
 import './inputs.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
 
-export const TextInput = ({ label, value, placeholder, error, helper, onChange, as = 'label', containerProps = {}, children, ...rest }) => {
+const isRenderable = (v) => v !== undefined && v !== null && typeof v !== 'boolean' && (typeof v === 'string' || typeof v === 'number' || React.isValidElement(v) || (Array.isArray(v) && v.every((x) => typeof x === 'string' || typeof x === 'number' || React.isValidElement(x))));
+
+export const TextInput = ({ label, value, placeholder, error, helper, onChange, as = 'label', className, style, hidden, containerProps = {}, inputProps = {}, children, ...rest }) => {
   const Component = as;
-  const cp = { ...containerProps, style: { ...expandStyleProps(containerProps), ...(containerProps.style || {}) } };
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}), ...(containerProps.style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
+  const rootClass = [`sb-field`, error ? 'is-error' : '', containerProps.className, className].filter(Boolean).join(' ');
+  const { style: _omitStyle, className: _omitClass, ...containerRest } = containerProps;
   return (
-    <Component className={`sb-field ${error ? 'is-error' : ''}`} {...cp}>
+    <Component className={rootClass} style={mergedStyle} {...containerRest} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <input className="sb-input" value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...rest} />
-      {helper ? <span className="sb-field__help">{helper}</span> : null}
-      {error ? <span className="sb-field__error">{error}</span> : null}
+      <input className="sb-input" value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...inputProps} />
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
       {children}
     </Component>
   );
@@ -27,15 +32,18 @@ TextInput.propTypes = {
   onChange: PropTypes.func,
 };
 
-export const TextArea = ({ label, value, placeholder, rows = 4, error, helper, onChange, as = 'label', containerProps = {}, children, ...rest }) => {
+export const TextArea = ({ label, value, placeholder, rows = 4, error, helper, onChange, as = 'label', className, style, hidden, containerProps = {}, inputProps = {}, children, ...rest }) => {
   const Component = as;
-  const cp = { ...containerProps, style: { ...expandStyleProps(containerProps), ...(containerProps.style || {}) } };
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}), ...(containerProps.style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
+  const rootClass = [`sb-field`, error ? 'is-error' : '', containerProps.className, className].filter(Boolean).join(' ');
+  const { style: _omitStyle, className: _omitClass, ...containerRest } = containerProps;
   return (
-    <Component className={`sb-field ${error ? 'is-error' : ''}`} {...cp}>
+    <Component className={rootClass} style={mergedStyle} {...containerRest} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <textarea className="sb-input sb-input--area" rows={rows} value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...rest} />
-      {helper ? <span className="sb-field__help">{helper}</span> : null}
-      {error ? <span className="sb-field__error">{error}</span> : null}
+      <textarea className="sb-input sb-input--area" rows={rows} value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} {...inputProps} />
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
       {children}
     </Component>
   );
@@ -43,27 +51,34 @@ export const TextArea = ({ label, value, placeholder, rows = 4, error, helper, o
 
 TextArea.propTypes = TextInput.propTypes;
 
-export const Select = ({ label, value, options = [], onChange, multiple = false, placeholder, error, helper, as = 'label', containerProps = {}, children, ...rest }) => {
+export const Select = ({ label, value, options = [], onChange, multiple = false, placeholder, error, helper, leftSection, rightSection, as = 'label', className, style, hidden, containerProps = {}, selectProps = {}, children, ...rest }) => {
   const Component = as;
-  const cp = { ...containerProps, style: { ...expandStyleProps(containerProps), ...(containerProps.style || {}) } };
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}), ...(containerProps.style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
+  const rootClass = [`sb-field`, error ? 'is-error' : '', containerProps.className, className].filter(Boolean).join(' ');
+  const { style: _omitStyle, className: _omitClass, ...containerRest } = containerProps;
   return (
-    <Component className={`sb-field ${error ? 'is-error' : ''}`} {...cp}>
+    <Component className={`${rootClass} sb-field--select`.trim()} style={mergedStyle} {...containerRest} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <select className="sb-input" multiple={multiple} value={value} onChange={(e) => {
-        if (multiple) {
-          const v = Array.from(e.target.selectedOptions).map((o) => o.value);
-          onChange?.(v);
-        } else {
-          onChange?.(e.target.value);
-        }
-      }} {...rest}>
-        {placeholder && !multiple ? <option value="">{placeholder}</option> : null}
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
-        ))}
-      </select>
-      {helper ? <span className="sb-field__help">{helper}</span> : null}
-      {error ? <span className="sb-field__error">{error}</span> : null}
+      <div className={`sb-input-wrap ${leftSection ? 'has-left' : ''} ${rightSection ? 'has-right' : ''}`.trim()}>
+        {leftSection ? <span className="sb-field__section sb-field__section--left" aria-hidden>{leftSection}</span> : null}
+        <select className={`sb-input ${leftSection ? 'has-left-section' : ''} ${rightSection ? 'has-right-section' : ''}`.trim()} multiple={multiple} value={value} onChange={(e) => {
+          if (multiple) {
+            const v = Array.from(e.target.selectedOptions).map((o) => o.value);
+            onChange?.(v);
+          } else {
+            onChange?.(e.target.value);
+          }
+        }} {...selectProps}>
+          {placeholder && !multiple ? <option value="">{placeholder}</option> : null}
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+        {rightSection ? <span className="sb-field__section sb-field__section--right" aria-hidden>{rightSection}</span> : null}
+      </div>
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
       {children}
     </Component>
   );
@@ -78,9 +93,11 @@ Select.propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.string,
   helper: PropTypes.string,
+  leftSection: PropTypes.node,
+  rightSection: PropTypes.node,
 };
 
-export const Checkbox = ({ label, checked, onChange, as = 'label', style, hidden, ...rest }) => {
+export const Checkbox = ({ label, checked, onChange, error, helper, as = 'label', style, hidden, ...rest }) => {
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
@@ -88,13 +105,15 @@ export const Checkbox = ({ label, checked, onChange, as = 'label', style, hidden
     <Component className="sb-check" style={merged} {...rest}>
       <input type="checkbox" checked={checked} onChange={(e) => onChange?.(e.target.checked)} />
       <span>{label}</span>
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };
 
 Checkbox.propTypes = { label: PropTypes.string, checked: PropTypes.bool, onChange: PropTypes.func };
 
-export const Toggle = ({ label, checked, onChange, as = 'label', style, hidden, ...rest }) => {
+export const Toggle = ({ label, checked, onChange, error, helper, as = 'label', style, hidden, ...rest }) => {
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
@@ -103,31 +122,35 @@ export const Toggle = ({ label, checked, onChange, as = 'label', style, hidden, 
       <input type="checkbox" checked={checked} onChange={(e) => onChange?.(e.target.checked)} />
       <span className="sb-toggle__track"><span className="sb-toggle__thumb" /></span>
       {label ? <span className="sb-toggle__label">{label}</span> : null}
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };
 
 Toggle.propTypes = Checkbox.propTypes;
 
-export const RadioGroup = ({ name, value, options = [], onChange, as = 'div', style, hidden, ...rest }) => {
+export const RadioGroup = ({ label, name, value, options = [], onChange, error, helper, as = 'div', style, hidden, ...rest }) => {
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
   return (
     <Component className="sb-radio" style={merged} {...rest}>
+      {label ? <span className="sb-field__label">{label}</span> : null}
       {options.map((opt) => (
-        <label key={opt.value}>
-          <input type="radio" name={name} value={opt.value} checked={value === opt.value} onChange={(e) => onChange?.(e.target.value)} />
+        <label key={opt.value} onClick={() => onChange?.(opt.value)}>
           <span>{opt.label}</span>
         </label>
       ))}
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };
 
-RadioGroup.propTypes = { name: PropTypes.string, value: PropTypes.string, options: PropTypes.array, onChange: PropTypes.func };
+RadioGroup.propTypes = { label: PropTypes.string, name: PropTypes.string, value: PropTypes.string, options: PropTypes.array, onChange: PropTypes.func, error: PropTypes.string, helper: PropTypes.string };
 
-export const RangeInput = ({ label, value, min = 0, max = 100, step = 1, onChange, as = 'label', style, hidden, ...rest }) => {
+export const RangeInput = ({ label, value, min = 0, max = 100, step = 1, onChange, error, helper, as = 'label', style, hidden, ...rest }) => {
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
@@ -135,11 +158,13 @@ export const RangeInput = ({ label, value, min = 0, max = 100, step = 1, onChang
     <Component className="sb-field" style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <input className="sb-range" type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange?.(Number(e.target.value))} />
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };
 
-RangeInput.propTypes = { label: PropTypes.string, value: PropTypes.number, min: PropTypes.number, max: PropTypes.number, step: PropTypes.number, onChange: PropTypes.func };
+RangeInput.propTypes = { label: PropTypes.string, value: PropTypes.number, min: PropTypes.number, max: PropTypes.number, step: PropTypes.number, onChange: PropTypes.func, error: PropTypes.string, helper: PropTypes.string };
 
 export const FileInput = ({ label, onFiles, accept, multiple = false, as = 'div', style, hidden, ...rest }) => {
   const ref = useRef(null);
@@ -164,7 +189,7 @@ export const FileInput = ({ label, onFiles, accept, multiple = false, as = 'div'
 
 FileInput.propTypes = { label: PropTypes.string, onFiles: PropTypes.func, accept: PropTypes.string, multiple: PropTypes.bool };
 
-export const ColorPicker = ({ label, value, onChange, as = 'label', style, hidden, ...rest }) => {
+export const ColorPicker = ({ label, value, onChange, error, helper, as = 'label', style, hidden, ...rest }) => {
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
@@ -172,13 +197,15 @@ export const ColorPicker = ({ label, value, onChange, as = 'label', style, hidde
     <Component className="sb-field" style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <input className="sb-color" type="color" value={value} onChange={(e) => onChange?.(e.target.value)} />
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };
 
-ColorPicker.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func };
+ColorPicker.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func, error: PropTypes.string, helper: PropTypes.string };
 
-export const DateInput = ({ label, value, onChange, placeholder = '', as = 'label', style, hidden, ...rest }) => {
+export const DateInput = ({ label, value, onChange, placeholder = '', error, helper, as = 'label', style, hidden, ...rest }) => {
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
@@ -186,13 +213,15 @@ export const DateInput = ({ label, value, onChange, placeholder = '', as = 'labe
     <Component className="sb-field" style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <input className="sb-ms-trigger" type="date" value={value} placeholder={placeholder} onChange={(e) => onChange?.(e.target.value)} />
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };
 
-DateInput.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func, placeholder: PropTypes.string };
+DateInput.propTypes = { label: PropTypes.string, value: PropTypes.string, onChange: PropTypes.func, placeholder: PropTypes.string, error: PropTypes.string, helper: PropTypes.string };
 
-export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pick values', onChange, disabled = false, error, helper, closeOnSelect = true }) => {
+export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pick values', onChange, disabled = false, error, helper, closeOnSelect = true, as = 'label', className, style, hidden, ...rest }) => {
   const rootRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -223,8 +252,11 @@ export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pi
 
   const selectedOptions = options.filter((o) => value.includes(o.value));
 
+  const Component = as;
+  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && merged.display === undefined) merged.display = 'none';
   return (
-    <label ref={rootRef} className={`sb-field ${error ? 'is-error' : ''}`}>
+    <Component ref={rootRef} className={`sb-field ${error ? 'is-error' : ''} ${className || ''}`.trim()} style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-ms ${disabled ? 'is-disabled' : ''}`}>
         <button
@@ -252,20 +284,19 @@ export const MultiSelect = ({ label, value = [], options = [], placeholder = 'Pi
           <div className="sb-ms-menu" role="listbox" aria-multiselectable="true" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}>
             {options.map((opt) => (
               <div key={opt.value} className="sb-ms-item" role="option" aria-selected={isSelected(opt.value)} onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleValue(opt.value); }}>
-                <input type="checkbox" readOnly checked={isSelected(opt.value)} />
                 <span>{opt.label}</span>
               </div>
             ))}
           </div>
         ) : null}
       </div>
-      {helper ? <span className="sb-field__help">{helper}</span> : null}
-      {error ? <span className="sb-field__error">{error}</span> : null}
-    </label>
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
+    </Component>
   );
 };
 
-export const SingleSelect = ({ label, value = '', options = [], placeholder = 'Choose…', onChange, disabled = false, error, helper }) => {
+export const SingleSelect = ({ label, value = '', options = [], placeholder = 'Choose…', onChange, disabled = false, error, helper, as = 'label', className, style, hidden, ...rest }) => {
   const rootRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -286,8 +317,11 @@ export const SingleSelect = ({ label, value = '', options = [], placeholder = 'C
     setOpen(false);
   }
 
+  const Component = as;
+  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && merged.display === undefined) merged.display = 'none';
   return (
-    <label ref={rootRef} className={`sb-field ${error ? 'is-error' : ''}`}>
+    <Component ref={rootRef} className={`sb-field ${error ? 'is-error' : ''} ${className || ''}`.trim()} style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-ms ${disabled ? 'is-disabled' : ''}`}>
         <button
@@ -310,16 +344,15 @@ export const SingleSelect = ({ label, value = '', options = [], placeholder = 'C
           <div className="sb-ms-menu" role="listbox" aria-multiselectable="false" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}>
             {options.map((opt) => (
               <div key={opt.value} className="sb-ms-item" role="option" aria-selected={opt.value === value} onClick={(e) => { e.preventDefault(); e.stopPropagation(); selectValue(opt.value); }}>
-                <input type="radio" readOnly checked={opt.value === value} />
                 <span>{opt.label}</span>
               </div>
             ))}
           </div>
         ) : null}
       </div>
-      {helper ? <span className="sb-field__help">{helper}</span> : null}
-      {error ? <span className="sb-field__error">{error}</span> : null}
-    </label>
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
+    </Component>
   );
 };
 
@@ -487,8 +520,8 @@ export const DateRange = ({ label, value = { start: '', end: '' }, placeholder =
           </div>
         ) : null}
       </div>
-      {helper ? <span className="sb-field__help">{helper}</span> : null}
-      {error ? <span className="sb-field__error">{error}</span> : null}
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
 };

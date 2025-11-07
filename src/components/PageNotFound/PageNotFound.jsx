@@ -1,16 +1,22 @@
 import React from 'react';
 import '../../index.scss';
 import './PageNotFound.scss';
+import '../Button/Button.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
 
 export const PageNotFound = ({
   title = 'Page not found',
   description = 'The page you are looking for doesn\'t exist or has been moved.',
   ctaLabel = 'Go Home',
-  onCtaClick,
   secondaryLabel = 'Contact support',
+  // click handlers
+  primaryOnClick,
+  secondaryOnClick,
+  // back-compat (deprecated names)
+  onCtaClick,
   onSecondaryClick,
   as,
+  className,
   style,
   hidden,
   ...rest
@@ -19,7 +25,7 @@ export const PageNotFound = ({
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden) mergedStyle.display = mergedStyle.display || 'none';
   return (
-    <Root className="sb-pnf" style={mergedStyle} {...rest}>
+    <Root className={`sb-pnf ${className || ''}`.trim()} style={mergedStyle} {...rest}>
       <div className="sb-pnf__art">
         <div className="block a" />
         <div className="block b" />
@@ -29,8 +35,8 @@ export const PageNotFound = ({
       <div className="sb-pnf__title">{title}</div>
       <div className="sb-pnf__desc">{description}</div>
       <div className="sb-pnf__actions">
-        <button type="button" className="sb-btn sb-btn--primary storybook-button--small" onClick={onCtaClick}>{ctaLabel}</button>
-        <button type="button" className="sb-btn storybook-button--small" onClick={onSecondaryClick}>{secondaryLabel}</button>
+        <button type="button" className="sb-btn sb-btn--primary sb-btn--small storybook-button" onClick={primaryOnClick || onCtaClick}>{ctaLabel}</button>
+        <button type="button" className="sb-btn sb-btn--secondary sb-btn--small storybook-button" onClick={secondaryOnClick || onSecondaryClick}>{secondaryLabel}</button>
       </div>
     </Root>
   );

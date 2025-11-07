@@ -9,6 +9,10 @@ export const Modal = ({
   onClose,
   children,
   title,
+  header,
+  footer,
+  headerProps = {},
+  footerProps = {},
   width = 500,
   closeOnEsc = true,
   closeOnOutside = true,
@@ -19,6 +23,12 @@ export const Modal = ({
   hidden,
   ...rest
  }) => {
+  const isRenderable = (v) => {
+    if (v === undefined || v === null || typeof v === 'boolean') return false;
+    if (typeof v === 'string' || typeof v === 'number') return true;
+    if (Array.isArray(v)) return v.every((x) => typeof x === 'string' || typeof x === 'number' || React.isValidElement(x));
+    return React.isValidElement(v);
+  };
   useEffect(() => {
     function handleKey(e) {
       if (!open) return;
@@ -39,15 +49,27 @@ export const Modal = ({
       if (e.target.classList.contains('sb-modal')) onClose?.();
     }} {...rest}>
       <div className="sb-modal__content" style={{ width }} onMouseDown={(e) => e.stopPropagation()}>
-        {(title || showClose) ? (
-          <div className="sb-modal__header">
-            {title ? <div id="sb-modal-title" className="sb-modal__title">{title}</div> : <span />}
+        {(header || title || showClose) ? (
+          <div className="sb-modal__header" {...headerProps}>
+            {(() => {
+              // Accept string/number/valid element; ignore objects/booleans from accidental controls
+              if (header !== undefined && header !== null && typeof header !== 'boolean') {
+                if (typeof header === 'string' || typeof header === 'number') return <div className="sb-modal__title">{header}</div>;
+                if (React.isValidElement(header)) return header;
+              }
+              return title ? <div id="sb-modal-title" className="sb-modal__title">{title}</div> : <span />;
+            })()}
             {showClose ? (
               <button type="button" className="sb-modal__close" aria-label="Close" onClick={() => onClose?.()}>×</button>
             ) : null}
           </div>
         ) : null}
         <div className="sb-modal__body">{children}</div>
+        {isRenderable(footer) ? (
+          <div className="sb-modal__footer" {...footerProps}>
+            {footer}
+          </div>
+        ) : null}
       </div>
     </Root>
   );
@@ -58,6 +80,10 @@ Modal.propTypes = {
   onClose: PropTypes.func,
   children: PropTypes.node,
   title: PropTypes.string,
+  header: PropTypes.node,
+  footer: PropTypes.node,
+  headerProps: PropTypes.object,
+  footerProps: PropTypes.object,
   width: PropTypes.number,
   closeOnEsc: PropTypes.bool,
   closeOnOutside: PropTypes.bool,

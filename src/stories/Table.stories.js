@@ -33,6 +33,13 @@ export default {
     hoverable: { control: 'boolean' },
     stickyHeader: { control: 'boolean' },
     showIndex: { control: 'boolean' },
+    // column augmentation
+    extraColumns: { control: 'object', description: 'Extra columns to insert. Each item: { header, accessor, render?, at? } where at is number | "start" | "end".' },
+    extraColumnsPlacement: { control: 'select', options: ['start','end'], description: 'Default placement when extra column item has no at.' },
+    // expansion and row menu
+    expandedContent: { control: 'text', description: 'String or render function(row) returning content for expanded row.' },
+    rowMenu: { control: 'object' },
+    onRowMenu: { action: 'rowMenu' },
     // styling props
     radius: { control: 'select', options: ['none','sm','md','lg','full'] },
     elevation: { control: 'select', options: [0,1,2,3,4,5] },
@@ -48,6 +55,8 @@ export const Basic = {
   args: {
     columns,
     data,
+    extraColumnsPlacement: 'end',
+    extraColumns: [],
     page: 1,
     pageSize: 10,
     totalPages: 1,
@@ -63,8 +72,11 @@ export const Basic = {
     filterable: true,
     selectable: true,
     expandable: true,
-    renderExpandedRow: (row) => React.createElement('div', { style: { padding: '8px 4px' } }, `More about ${row.name}…`),
-    rowActions: (row, action) => { /* eslint-disable no-console */ console.log(action, row); },
+    expandedContent: 'More details…',
+    rowMenu: [
+      { label: 'Edit', value: 'edit' },
+      { label: 'Delete', value: 'delete' },
+    ],
     radius: 'md',
     elevation: 0,
     shadow: 'none',

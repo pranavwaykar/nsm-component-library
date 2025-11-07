@@ -8,12 +8,14 @@ export function expandStyleProps(props = {}) {
     m, mx, my, mt, mr, mb, ml,
     p, px, py, pt, pr, pb, pl,
     w, h, minW, maxW, minH, maxH,
+    // direct aliases
+    width, height, minWidth, maxWidth, minHeight, maxHeight,
     display, boxSizing, overflow, overflowX, overflowY,
     flex, flexDir, flexWrap, justify, align, alignSelf, alignContent, gap, rowGap, columnGap, flexGrow, flexShrink, flexBasis, order,
     gridCols, gridRows, gridAreas, gridCol, gridRow, gridAutoFlow, gridAutoCols, gridAutoRows, placeItems, placeContent,
     position, top, right, bottom, left, inset, zIndex,
     fontFamily, fontSize, fontWeight, lineHeight, letterSpacing, fontStyle, textAlign, textTransform, textDecoration, textOverflow, whiteSpace, wordBreak, overflowWrap,
-    color, opacity, bg, bgColor, bgImage, bgGradient, bgClip, bgPos, bgSize, bgRepeat, bgAttachment, mixBlendMode,
+    color, opacity, bg, bgColor, bgImage, bgGradient, bgClip, bgPos, bgSize, bgRepeat, bgAttachment, mixBlendMode, backgroundColor,
     border, borderTop, borderRight, borderBottom, borderLeft, borderColor, borderWidth, borderStyle, rounded, borderRadius, outline, outlineOffset,
     boxShadow, filter, backdropFilter, backdropBlur,
     transform, transformOrigin, translateX, translateY, scale, rotate, skew,
@@ -27,7 +29,9 @@ export function expandStyleProps(props = {}) {
 
   set('margin', m); set('marginTop', mt ?? my); set('marginRight', mr ?? mx); set('marginBottom', mb ?? my); set('marginLeft', ml ?? mx);
   set('padding', p); set('paddingTop', pt ?? py); set('paddingRight', pr ?? px); set('paddingBottom', pb ?? py); set('paddingLeft', pl ?? px);
+  // sizing (shorthands first, then direct aliases to allow explicit overrides)
   set('width', w); set('height', h); set('minWidth', minW); set('maxWidth', maxW); set('minHeight', minH); set('maxHeight', maxH);
+  set('width', width); set('height', height); set('minWidth', minWidth); set('maxWidth', maxWidth); set('minHeight', minHeight); set('maxHeight', maxHeight);
   set('display', display); set('boxSizing', boxSizing); set('overflow', overflow); set('overflowX', overflowX); set('overflowY', overflowY);
   set('flex', flex); set('flexDirection', flexDir); set('flexWrap', flexWrap);
   set('justifyContent', justify); set('alignItems', align); set('alignSelf', alignSelf); set('alignContent', alignContent);
@@ -43,7 +47,7 @@ export function expandStyleProps(props = {}) {
   set('fontFamily', fontFamily); set('fontSize', fontSize); set('fontWeight', fontWeight); set('lineHeight', lineHeight);
   set('letterSpacing', letterSpacing); set('fontStyle', fontStyle); set('textAlign', textAlign); set('textTransform', textTransform);
   set('textDecoration', textDecoration); set('textOverflow', textOverflow); set('whiteSpace', whiteSpace); set('wordBreak', wordBreak); set('overflowWrap', overflowWrap);
-  set('color', color); set('opacity', opacity); set('background', bg ?? bgColor);
+  set('color', color); set('opacity', opacity); set('background', bg ?? bgColor); set('backgroundColor', backgroundColor ?? bgColor);
   set('backgroundImage', bgImage ?? bgGradient); set('backgroundClip', bgClip);
   set('backgroundPosition', bgPos); set('backgroundSize', bgSize); set('backgroundRepeat', bgRepeat); set('backgroundAttachment', bgAttachment);
   set('mixBlendMode', mixBlendMode);

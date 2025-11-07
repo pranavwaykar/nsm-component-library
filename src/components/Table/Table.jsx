@@ -2,6 +2,7 @@ import React, { useMemo, useState, forwardRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '../../index.scss';
 import './table.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 function defaultFilter(rows, query, columns) {
   if (!query) return rows;
@@ -41,44 +42,24 @@ export const Table = forwardRef(({
   stickyFooter = false,
   showColumnControls = false,
   onColumnsChange,
-  // styling tokens & style-system shorthands
+  // styling tokens & selected style props
   radius,
   elevation,
   shadow,
   style,
-  // spacing
-  m, mx, my, mt, mr, mb, ml,
-  p, px, py, pt, pr, pb, pl,
-  // sizing
-  w, h, minW, maxW, minH, maxH,
-  // layout/display
-  display, boxSizing, overflow, overflowX, overflowY,
-  // flexbox
-  flex, flexDir, flexWrap, justify, align, alignSelf, alignContent, gap, rowGap, columnGap, flexGrow, flexShrink, flexBasis, order,
-  // grid
-  gridCols, gridRows, gridAreas, gridCol, gridRow, gridAutoFlow, gridAutoCols, gridAutoRows, placeItems, placeContent,
-  // position
-  position, top, right, bottom, left, inset, zIndex,
-  // typography
-  fontFamily, fontSize, fontWeight, lineHeight, letterSpacing, fontStyle, textAlign, textTransform, textDecoration, textOverflow, whiteSpace, wordBreak, overflowWrap,
-  // color/background
-  color: textColor, opacity, bg, bgColor, bgImage, bgGradient, bgClip, bgPos, bgSize, bgRepeat, bgAttachment, mixBlendMode,
-  // borders
-  border, borderTop, borderRight, borderBottom, borderLeft, borderColor, borderWidth, borderStyle, rounded, borderRadius, outline, outlineOffset,
-  // effects
-  boxShadow, filter, backdropFilter, backdropBlur,
-  // transforms
-  transform, transformOrigin, translateX, translateY, scale, rotate, skew,
-  // interaction visuals
-  cursor, pointerEvents, userSelect, touchAction,
-  // media/objects
-  objectFit, objectPosition, aspectRatio,
-  // visibility/containment
-  visibility, isolation, contain, contentVisibility,
-  // scroll
-  scrollBehavior, scrollSnapType, scrollSnapAlign,
-  scrollMargin, scrollMarginTop, scrollMarginRight, scrollMarginBottom, scrollMarginLeft,
-  scrollPadding, scrollPaddingTop, scrollPaddingRight, scrollPaddingBottom, scrollPaddingLeft,
+  bg,
+  bgColor,
+  color: textColor,
+  borderColor,
+  // column augmentation
+  extraColumns = [],
+  extraColumnsPlacement = 'end', // 'start' | 'end' | number via per-item at/index
+  // toolbar injection
+  toolbarRight,
+  // expansion & row menu
+  expandedContent,
+  rowMenu,
+  onRowMenu,
   // existing features
   initialSort,
   expandable = false,
@@ -98,11 +79,26 @@ export const Table = forwardRef(({
   role,
   ...rest
 }, ref) => {
+  const mergedColumns = useMemo(() => {
+    let base = Array.isArray(columns) ? [...columns] : [];
+    const extras = Array.isArray(extraColumns) ? extraColumns.filter(Boolean) : [];
+    for (const ec of extras) {
+      const at = (ec && (ec.at ?? ec.index)) ?? extraColumnsPlacement;
+      if (at === 'start') base = [ec, ...base];
+      else if (at === 'end') base = [...base, ec];
+      else if (typeof at === 'number' && at >= 0 && at <= base.length) base = [...base.slice(0, at), ec, ...base.slice(at)];
+      else base = [...base, ec];
+    }
+    return base;
+  }, [columns, extraColumns, extraColumnsPlacement]);
   const [sortBy, setSortBy] = useState(initialSort?.by || null);
   const [sortDir, setSortDir] = useState(initialSort?.dir || 'asc');
   const [expanded, setExpanded] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
-  const [visibleCols, setVisibleCols] = useState(() => columns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false })));
+  const [visibleCols, setVisibleCols] = useState(() => mergedColumns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false })));
+  useEffect(() => {
+    setVisibleCols(mergedColumns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false })));
+  }, [mergedColumns]);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [openMenuId, setOpenMenuId] = useState(null);
 
@@ -194,72 +190,7 @@ export const Table = forwardRef(({
   const useBordered = variant === 'bordered';
   const useHover = variant === 'hover';
 
-  function expandShorthand() {
-    const s = {};
-    const set = (k, v) => { if (v !== undefined) s[k] = v; };
-    // spacing
-    set('margin', m); set('marginTop', mt ?? my); set('marginRight', mr ?? mx); set('marginBottom', mb ?? my); set('marginLeft', ml ?? mx);
-    set('padding', p); set('paddingTop', pt ?? py); set('paddingRight', pr ?? px); set('paddingBottom', pb ?? py); set('paddingLeft', pl ?? px);
-    // sizing
-    set('width', w); set('height', h); set('minWidth', minW); set('maxWidth', maxW); set('minHeight', minH); set('maxHeight', maxH);
-    // layout
-    set('display', display); set('boxSizing', boxSizing); set('overflow', overflow); set('overflowX', overflowX); set('overflowY', overflowY);
-    // flexbox
-    set('flex', flex); set('flexDirection', flexDir); set('flexWrap', flexWrap);
-    set('justifyContent', justify); set('alignItems', align); set('alignSelf', alignSelf); set('alignContent', alignContent);
-    set('gap', gap); set('rowGap', rowGap); set('columnGap', columnGap);
-    set('flexGrow', flexGrow); set('flexShrink', flexShrink); set('flexBasis', flexBasis); set('order', order);
-    // grid
-    if (typeof gridCols === 'number') set('gridTemplateColumns', `repeat(${gridCols}, minmax(0,1fr))`); else set('gridTemplateColumns', gridCols);
-    if (typeof gridRows === 'number') set('gridTemplateRows', `repeat(${gridRows}, auto)`); else set('gridTemplateRows', gridRows);
-    set('gridTemplateAreas', gridAreas);
-    set('gridColumn', gridCol); set('gridRow', gridRow);
-    set('gridAutoFlow', gridAutoFlow); set('gridAutoColumns', gridAutoCols); set('gridAutoRows', gridAutoRows);
-    set('placeItems', placeItems); set('placeContent', placeContent);
-    // position
-    set('position', position); set('top', top); set('right', right); set('bottom', bottom); set('left', left); set('inset', inset); set('zIndex', zIndex);
-    // typography
-    set('fontFamily', fontFamily); set('fontSize', fontSize); set('fontWeight', fontWeight); set('lineHeight', lineHeight);
-    set('letterSpacing', letterSpacing); set('fontStyle', fontStyle); set('textAlign', textAlign); set('textTransform', textTransform);
-    set('textDecoration', textDecoration); set('textOverflow', textOverflow); set('whiteSpace', whiteSpace); set('wordBreak', wordBreak); set('overflowWrap', overflowWrap);
-    // color/background
-    set('color', textColor); set('opacity', opacity); set('background', bg ?? bgColor);
-    set('backgroundImage', bgImage ?? bgGradient); set('backgroundClip', bgClip);
-    set('backgroundPosition', bgPos); set('backgroundSize', bgSize); set('backgroundRepeat', bgRepeat); set('backgroundAttachment', bgAttachment);
-    set('mixBlendMode', mixBlendMode);
-    // borders
-    set('border', border); set('borderTop', borderTop); set('borderRight', borderRight); set('borderBottom', borderBottom); set('borderLeft', borderLeft);
-    set('borderColor', borderColor); set('borderWidth', borderWidth); set('borderStyle', borderStyle);
-    set('borderRadius', borderRadius ?? rounded);
-    set('outline', outline); set('outlineOffset', outlineOffset);
-    // effects
-    set('boxShadow', boxShadow); set('filter', filter); set('backdropFilter', backdropFilter);
-    if (backdropBlur !== undefined) set('backdropFilter', `blur(${backdropBlur})`);
-    // transforms
-    set('transform', transform); set('transformOrigin', transformOrigin);
-    if (translateX !== undefined || translateY !== undefined || scale !== undefined || rotate !== undefined || skew !== undefined) {
-      const parts = [];
-      if (translateX !== undefined) parts.push(`translateX(${translateX})`);
-      if (translateY !== undefined) parts.push(`translateY(${translateY})`);
-      if (scale !== undefined) parts.push(`scale(${scale})`);
-      if (rotate !== undefined) parts.push(`rotate(${rotate})`);
-      if (skew !== undefined) parts.push(`skew(${skew})`);
-      s.transform = [s.transform, parts.join(' ')].filter(Boolean).join(' ');
-    }
-    // interaction visuals
-    set('cursor', cursor); set('pointerEvents', pointerEvents); set('userSelect', userSelect); set('touchAction', touchAction);
-    // media/objects
-    set('objectFit', objectFit); set('objectPosition', objectPosition); set('aspectRatio', aspectRatio);
-    // visibility/containment
-    set('visibility', visibility); set('isolation', isolation); set('contain', contain); set('contentVisibility', contentVisibility);
-    // scroll
-    set('scrollBehavior', scrollBehavior); set('scrollSnapType', scrollSnapType); set('scrollSnapAlign', scrollSnapAlign);
-    set('scrollMargin', scrollMargin); set('scrollMarginTop', scrollMarginTop); set('scrollMarginRight', scrollMarginRight); set('scrollMarginBottom', scrollMarginBottom); set('scrollMarginLeft', scrollMarginLeft);
-    set('scrollPadding', scrollPadding); set('scrollPaddingTop', scrollPaddingTop); set('scrollPaddingRight', scrollPaddingRight); set('scrollPaddingBottom', scrollPaddingBottom); set('scrollPaddingLeft', scrollPaddingLeft);
-    return s;
-  }
-
-  const rootStyle = { ...expandShorthand(), ...(style || {}) };
+  const rootStyle = { ...expandStyleProps({ ...rest, color: textColor, bg, bgColor, borderColor }), ...(style || {}) };
   if (typeof radius === 'number') rootStyle.borderRadius = radius;
   if (typeof radius === 'string') rootStyle.borderRadius = `var(--sb-radius-${radius})`;
   if (typeof elevation === 'number') rootStyle.boxShadow = `var(--sb-shadow-${Math.max(0, Math.min(5, elevation))})`;
@@ -268,40 +199,50 @@ export const Table = forwardRef(({
     const key = map[String(shadow)] || null;
     if (key) rootStyle.boxShadow = `var(--sb-shadow-${key})`;
   }
-  if (bgColor) rootStyle['--sb-table-bg'] = bgColor;
+  const resolvedBg = bg ?? bgColor ?? rootStyle.background;
+  if (resolvedBg) rootStyle['--sb-table-bg'] = resolvedBg;
+  const resolvedFg = textColor ?? rootStyle.color;
+  if (resolvedFg) rootStyle['--sb-table-fg'] = resolvedFg;
   if (borderColor) rootStyle['--sb-table-border'] = borderColor;
 
   return (
     <Root ref={ref} className={`${responsive ? 'sb-table__wrap' : ''} ${className || ''}`.trim()} id={id} role={role} style={{ ...(maxHeight ? { maxHeight, overflow: 'auto' } : {}), ...rootStyle }} {...rest}>
-      {(filterable || showColumnControls) ? (
+      {(filterable || showColumnControls || toolbarRight) ? (
         <div className="sb-table__toolbar">
-          {filterable ? (
-            <input
-              className="sb-table__search"
-              placeholder="Filter..."
-              value={globalFilter}
-              onChange={(e) => { setGlobalFilter(e.target.value); onFilterChange?.({ global: e.target.value }); }}
-            />
-          ) : null}
-          {showColumnControls ? (
-            <details>
-              <summary>Columns</summary>
-              <div>
-                {visibleCols.map((c, idx) => (
-                  <label key={c.accessor} style={{ display: 'block', fontSize: '12px', marginTop: 6 }}>
-                    <input
-                      type="checkbox"
-                      checked={!c.hidden}
-                      onChange={(e) => {
-                        const updated = visibleCols.map((col, i) => i === idx ? { ...col, hidden: !e.target.checked } : col);
-                        setVisibleCols(updated);
-                        onColumnsChange?.(updated);
-                      }}
-                    />{' '}{c.header}
-                  </label>
-                ))}
-              </div>
-            </details>
+          <div className="sb-table__toolbar-left">
+            {filterable ? (
+              <input
+                className="sb-table__search"
+                placeholder="Filter..."
+                value={globalFilter}
+                onChange={(e) => { setGlobalFilter(e.target.value); onFilterChange?.({ global: e.target.value }); }}
+              />
+            ) : null}
+            {showColumnControls ? (
+              <details>
+                <summary>Columns</summary>
+                <div>
+                  {visibleCols.map((c, idx) => (
+                    <label key={c.accessor} style={{ display: 'block', fontSize: '12px', marginTop: 6 }}>
+                      <input
+                        type="checkbox"
+                        checked={!c.hidden}
+                        onChange={(e) => {
+                          const updated = visibleCols.map((col, i) => i === idx ? { ...col, hidden: !e.target.checked } : col);
+                          setVisibleCols(updated);
+                          onColumnsChange?.(updated);
+                        }}
+                      />{' '}{c.header}
+                    </label>
+                  ))}
+                </div>
+              </details>
+            ) : null}
+          </div>
+          {toolbarRight ? (
+            <div className="sb-table__toolbar-right">
+              {toolbarRight}
+            </div>
           ) : null}
         </div>
       ) : null}
@@ -319,7 +260,7 @@ export const Table = forwardRef(({
               const isActive = sortBy === col.accessor;
               const dir = isActive ? sortDir : 'neutral';
               return (
-                <th key={col.accessor}>
+                <th key={col.accessor} style={{ ...(col.style || {}), ...(col.width ? { width: col.width } : {}) , fontWeight: col.isBold ? 600 : undefined }}>
                   <button type="button" className={`sb-table__thbtn ${isActive ? 'is-active' : ''}`} onClick={() => toggleSort(col.accessor)} disabled={!sortable}>
                     <span>{col.header}</span>
                     <span className={`sb-sort-icon ${dir}`} aria-hidden>
@@ -329,14 +270,14 @@ export const Table = forwardRef(({
                 </th>
               );
             })}
-            {rowActions && <th className="sb-table__opthd" aria-label="options" />}
+            {(rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) && <th className="sb-table__opthd" aria-label="options" />}
           </tr>
         </thead>
         <tbody>
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <tr key={`sk-${i}`}>
-                <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + (rowActions ? 1 : 0) + (showIndex ? 1 : 0)}>
+                <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + ((rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) ? 1 : 0) + (showIndex ? 1 : 0)}>
                   <div style={{ height: 36, background: '#f3f4f6', borderRadius: 6, opacity: .6 }} />
                 </td>
               </tr>
@@ -344,7 +285,7 @@ export const Table = forwardRef(({
           ) : null}
           {!loading && pageRows.length === 0 ? (
             <tr>
-              <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + (rowActions ? 1 : 0) + (showIndex ? 1 : 0)} style={{ textAlign: 'center', color: '#64748b' }}>
+              <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + ((rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) ? 1 : 0) + (showIndex ? 1 : 0)} style={{ textAlign: 'center', color: '#64748b' }}>
                 {typeof emptyMessage === 'string' ? emptyMessage : emptyMessage}
               </td>
             </tr>
@@ -371,7 +312,7 @@ export const Table = forwardRef(({
                   )}
                   {showIndex && <td className="sb-table__index">{startIdx + idx + 1}</td>}
                   {visibleCols.filter((c) => !c.hidden).map((col) => (
-                    <td key={col.accessor} data-col={col.accessor}>
+                    <td key={col.accessor} data-col={col.accessor} style={col.style}>
                       {editable || col.editable ? (
                         <span
                           contentEditable
@@ -383,7 +324,7 @@ export const Table = forwardRef(({
                       )}
                     </td>
                   ))}
-                  {rowActions && (
+                  {(rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) && (
                     <td className="sb-table__options" data-menu onClick={(e) => e.stopPropagation()}>
                       <button type="button" className="sb-table__optbtn" aria-haspopup="menu" aria-expanded={openMenuId === rowId} onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === rowId ? null : rowId); }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -392,19 +333,48 @@ export const Table = forwardRef(({
                       </button>
                       {openMenuId === rowId ? (
                         <div className="sb-table__menu" role="menu">
-                          <button type="button" role="menuitem" onClick={() => { setOpenMenuId(null); rowActions(row, 'edit'); }}>Edit</button>
-                          <button type="button" role="menuitem" onClick={() => { setOpenMenuId(null); rowActions(row, 'delete'); }}>Delete</button>
+                          {(
+                            (Array.isArray(rowMenu) && rowMenu.length > 0)
+                              ? rowMenu
+                              : (rowActions ? [{ label: 'Edit', value: 'edit' }, { label: 'Delete', value: 'delete' }] : [])
+                          ).map((opt, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              role="menuitem"
+                              onClick={() => {
+                                setOpenMenuId(null);
+                                if (typeof opt.onClick === 'function') opt.onClick(row);
+                                else if (typeof onRowMenu === 'function') onRowMenu(row, opt.value);
+                                else if (typeof rowActions === 'function' && opt.value) rowActions(row, opt.value);
+                              }}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
                         </div>
                       ) : null}
                     </td>
                   )}
                 </tr>
-                {expandable && isOpen && (renderExpandedRow || renderSubRow) && (
-                  <tr className="sb-table__subrow">
-                    <td colSpan={(columns?.length || 0) + (rowActions ? 2 : 1)}>
-                      {(renderExpandedRow || renderSubRow)(row)}
-                    </td>
-                  </tr>
+                {expandable && isOpen && (
+                  (() => {
+                    const renderer = renderExpandedRow || renderSubRow || expandedContent;
+                    if (!renderer) return null;
+                    const content = typeof renderer === 'function' ? renderer(row) : renderer;
+                    const span = (visibleCols.filter((c) => !c.hidden).length)
+                      + (expandable ? 1 : 0)
+                      + (selectable ? 1 : 0)
+                      + ((rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) ? 1 : 0)
+                      + (showIndex ? 1 : 0);
+                    return (
+                      <tr className="sb-table__subrow">
+                        <td colSpan={span}>
+                          {content}
+                        </td>
+                      </tr>
+                    );
+                  })()
                 )}
               </React.Fragment>
             );
@@ -413,7 +383,7 @@ export const Table = forwardRef(({
         {showFooter ? (
           <tfoot className={stickyFooter ? 'is-sticky' : undefined}>
             <tr>
-              <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + (rowActions ? 1 : 0) + (showIndex ? 1 : 0)}>
+              <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + ((rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) ? 1 : 0) + (showIndex ? 1 : 0)}>
                 Rows: {sorted.length}
               </td>
             </tr>
@@ -436,6 +406,9 @@ export const Table = forwardRef(({
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({ header: PropTypes.string.isRequired, accessor: PropTypes.string.isRequired, render: PropTypes.func })).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  extraColumns: PropTypes.arrayOf(PropTypes.shape({ header: PropTypes.string.isRequired, accessor: PropTypes.string.isRequired, render: PropTypes.func, at: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['start','end'])]) })),
+  extraColumnsPlacement: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['start','end'])]),
+  toolbarRight: PropTypes.node,
   rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   loading: PropTypes.bool,
   emptyMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

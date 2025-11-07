@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../index.scss';
 import './SideMenuBar.scss';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 const defaultMenus = [
   { label: 'Home', count: 0 },
@@ -17,10 +18,18 @@ const SideMenuBar = ({
   notificationCount = '99+',
   avatarSrc = '',
   logo = null,
+  as,
+  className,
   style = {},
+  hidden,
+  ...rest
 }) => {
+  const Component = as || 'aside';
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
+  const classes = ['side-menubar', className].filter(Boolean).join(' ');
   return (
-    <aside className="side-menubar" style={style}>
+    <Component className={classes} style={mergedStyle} {...rest}>
       <button className="logo" type="button" onClick={onLogoClick} aria-label="App Home">
         {logo || <div className="logo-mark" />}
       </button>
@@ -51,7 +60,7 @@ const SideMenuBar = ({
           <button type="button" className="avatar" onClick={onProfileClick} aria-label="Profile" />
         )}
       </div>
-    </aside>
+    </Component>
   );
 };
 
