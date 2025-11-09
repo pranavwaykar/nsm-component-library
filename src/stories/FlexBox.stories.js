@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlexBox } from '../components/FlexBox/FlexBox';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-flexbox',
@@ -8,7 +8,7 @@ export default {
   component: FlexBox,
   parameters: { layout: 'centered', docs: { description: { component: 'FlexBox is a light wrapper over CSS Flexbox with a simplified API (direction, align, justify, gap, wrap). Use it to compose layouts quickly. Universal/style props allow full control of spacing and dimensions.' } } },
   tags: ['autodocs'],
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes, direction: { control: 'select', options: ['row','row-reverse','column','column-reverse'] }, align: { control: 'select', options: ['stretch','flex-start','center','flex-end','baseline'] }, justify: { control: 'select', options: ['flex-start','center','flex-end','space-between','space-around','space-evenly'] }, gap: { control: 'text' }, wrap: { control: 'boolean' } },
+  argTypes: { ...commonArgTypes, direction: { control: 'select', options: ['row','row-reverse','column','column-reverse'] }, align: { control: 'select', options: ['stretch','flex-start','center','flex-end','baseline'] }, justify: { control: 'select', options: ['flex-start','center','flex-end','space-between','space-around','space-evenly'] }, gap: { control: 'text' }, wrap: { control: 'boolean' } },
 };
 
 export const Playground = {

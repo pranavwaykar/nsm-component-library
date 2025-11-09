@@ -11,13 +11,41 @@ Charts(FusionCharts);
 PowerCharts(FusionCharts);
 FusionTheme(FusionCharts);
 
-const Chart = forwardRef(({ as, style, hidden, type, width = '100%', height = '100%', dataSource, events, ...rest }, ref) => {
+const Chart = forwardRef(({
+  as,
+  style,
+  hidden,
+  type,
+  width = '100%',
+  height = '100%',
+  dataSource,
+  events,
+  id,
+  className,
+  role,
+  tabIndex,
+  title,
+  draggable,
+  dir,
+  lang,
+  ...rest
+}, ref) => {
   const Container = as || 'div';
   const containerStyle = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && containerStyle.display === undefined) containerStyle.display = 'none';
-  const { id, className, ...other } = rest;
   return (
-    <Container id={id} className={className} style={containerStyle}>
+    <Container
+      id={id}
+      className={className}
+      style={containerStyle}
+      role={role}
+      tabIndex={tabIndex}
+      title={title}
+      draggable={draggable}
+      dir={dir}
+      lang={lang}
+      hidden={hidden}
+    >
       <ReactFusioncharts
         ref={ref}
         type={type}
@@ -26,7 +54,6 @@ const Chart = forwardRef(({ as, style, hidden, type, width = '100%', height = '1
         dataFormat="JSON"
         dataSource={dataSource}
         {...(events ? { events } : {})}
-        {...other}
       />
     </Container>
   );

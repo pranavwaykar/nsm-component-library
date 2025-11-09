@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton } from '../components/Skeleton/Skeleton';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-skeleton',
@@ -8,7 +8,7 @@ export default {
   component: Skeleton,
   tags: ['autodocs'],
   parameters: { layout: 'centered', docs: { description: { component: 'Skeleton provides lightweight placeholders while content loads. Use rect or circle styles with width/height to match final layout. All universal/style props are supported to control spacing and layout without extra wrappers.' } } },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes, width: { control: 'text' }, height: { control: 'text' }, circle: { control: 'boolean' } }
+  argTypes: { ...commonArgTypes, width: { control: 'text' }, height: { control: 'text' }, circle: { control: 'boolean' } }
 };
 
 export const Rect = {

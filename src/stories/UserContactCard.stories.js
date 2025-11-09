@@ -1,7 +1,7 @@
 import React from 'react';
 import '../index.scss';
 import UserContactCard from '../components/UserContactCard/UserContactCard';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'user-contact-card',
@@ -12,7 +12,7 @@ export default {
     layout: 'centered',
     docs: { source: { language: 'jsx', code: '<UserContactCard user={{ firstname: "Pranav", lastname: "Waykar", email: "test@example.com" }} />' } },
   },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
+  argTypes: { ...commonArgTypes },
 };
 
 export const Default = {

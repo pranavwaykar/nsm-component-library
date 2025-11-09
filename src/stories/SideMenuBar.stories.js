@@ -1,7 +1,7 @@
 import React from 'react';
 import '../index.scss';
 import SideMenuBar from '../components/SideMenuBar/SideMenuBar';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'side-menubar',
@@ -15,7 +15,7 @@ export default {
       description: { component: 'SideMenuBar provides primary navigation with an active state, optional per‑item counters, and logo/profile affordances. The API exposes click handlers for logo/profile and `onMenuClick` for items. Universal/style props can be used to position the aside or adapt it inside layouts.' },
     },
   },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
+  argTypes: { ...commonArgTypes },
 };
 
 export const Default = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../index.scss';
 import UserControlsPopup from '../components/UserControlsPopup/UserControlsPopup';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'user-controls-popup',
@@ -12,7 +12,7 @@ export default {
     layout: 'centered',
     docs: { source: { language: 'jsx', code: '<UserControlsPopup />' } },
   },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
+  argTypes: { ...commonArgTypes },
 };
 
 export const Default = {

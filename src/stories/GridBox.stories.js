@@ -1,6 +1,6 @@
 import React from 'react';
 import { GridBox } from '../components/GridBox/GridBox';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-gridbox',
@@ -8,7 +8,7 @@ export default {
   component: GridBox,
   parameters: { layout: 'centered', docs: { description: { component: 'GridBox exposes a minimal API for CSS Grid layouts (columns/rows/gap). Use it for cards, dashboards, and responsive compositions. Universal/style props let you control spacing and responsiveness without extra wrappers.' } } },
   tags: ['autodocs'],
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes, columns: { control: 'text' }, rows: { control: 'text' }, gap: { control: 'text' } },
+  argTypes: { ...commonArgTypes, columns: { control: 'text' }, rows: { control: 'text' }, gap: { control: 'text' } },
 };
 
 export const Playground = {

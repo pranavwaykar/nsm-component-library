@@ -1,6 +1,6 @@
 import '../index.scss';
 import { PageNotFound } from '../components/PageNotFound/PageNotFound';
-import { styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'page-not-found',
@@ -17,7 +17,7 @@ export default {
   argTypes: {
     primaryOnClick: { action: 'primaryOnClick' },
     secondaryOnClick: { action: 'secondaryOnClick' },
-    ...styleSystemArgTypes,
+    ...commonArgTypes,
   },
 };
 

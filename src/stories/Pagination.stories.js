@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Pagination } from '../components/Pagination/Pagination';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-pagination',
@@ -9,8 +9,7 @@ export default {
   parameters: { layout: 'centered', docs: { description: { component: 'Pagination controls page navigation with size selection and numbered buttons. It supports disabled state and forwards universal/style props for positioning within toolbars or footers.' } } },
   tags: ['autodocs'],
   argTypes: {
-    ...universalArgTypes,
-    ...styleSystemArgTypes,
+    ...commonArgTypes,
     pageSizeOptions: { control: 'object' },
   },
 };

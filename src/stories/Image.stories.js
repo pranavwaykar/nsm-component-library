@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from '../components/Image/Image';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 import sampleImage from '../assets/avif-test-image.avif';
 
 export default {
@@ -17,8 +17,7 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
-    ...universalArgTypes,
-    ...styleSystemArgTypes,
+    ...commonArgTypes,
     fit: { control: 'select', options: ['cover', 'contain', 'fill', 'none', 'scale-down'] },
     radius: { control: 'select', options: ['none', 'sm', 'md', 'lg', 'pill'] },
     width: { control: 'text' },

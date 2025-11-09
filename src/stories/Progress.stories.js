@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProgressBar, ProgressRing } from '../components/Progress/Progress';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-progress',
@@ -11,7 +11,7 @@ export default {
     layout: 'centered',
     docs: { description: { component: 'Progress conveys the status of ongoing operations. Use the linear ProgressBar for horizontal flows and the ProgressRing for compact, radial feedback. Both support an indeterminate state, a11y roles/aria, and full container styling via the universal props and shorthand style-system.' } },
   },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes, value: { control: 'number' }, max: { control: 'number' }, indeterminate: { control: 'boolean' } }
+  argTypes: { ...commonArgTypes, value: { control: 'number' }, max: { control: 'number' }, indeterminate: { control: 'boolean' } }
 };
 
 export const Bar = {

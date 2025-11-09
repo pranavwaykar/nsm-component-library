@@ -1,6 +1,6 @@
 import React from 'react';
 import Chart from '../charts/Chart';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 import './chart.stories.scss';
 import { mockBarData, mockDoughnutData, mockPieData, mockStackedData, mockLineData, mockHeatmapData, mockAreaData, mockParetoData, mockRadarData, mockBubbleData } from '../charts/mockData';
 
@@ -15,7 +15,7 @@ export default {
       description: { component: 'Chart is a thin wrapper around FusionCharts configured for this library. It accepts `type`, `width`, `height`, `dataSource`, and forwards the full universal/style prop set to a wrapping container so charts can participate in responsive/Flex/Grid layouts. Licensing is initialized once per app.' },
     },
   },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
+  argTypes: { ...commonArgTypes },
   args: { as: 'div', id: 'chart-1', 'data-testid': 'chart', m: '0' },
 };
 

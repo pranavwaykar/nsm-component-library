@@ -1,7 +1,7 @@
 import React from 'react';
 import '../index.scss';
 import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'breadcrumb',
@@ -15,7 +15,7 @@ export default {
       description: { component: 'Breadcrumb communicates the user\'s location in the app hierarchy. Provide `items` as an ordered array of labels. The container supports universal/style props for spacing and placement within headers or pages.' },
     },
   },
-  argTypes: { ...universalArgTypes, ...styleSystemArgTypes },
+  argTypes: { ...commonArgTypes },
 };
 
 export const Default = {

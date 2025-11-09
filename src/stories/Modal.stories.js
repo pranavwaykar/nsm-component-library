@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from '../components/Modal/Modal';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-modal',
@@ -9,8 +9,7 @@ export default {
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
   argTypes: {
-    ...universalArgTypes,
-    ...styleSystemArgTypes,
+    ...commonArgTypes,
     open: { control: 'boolean' },
     width: { control: 'number' },
     closeOnEsc: { control: 'boolean' },

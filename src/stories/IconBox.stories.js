@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconBox } from '../components/IconBox/IconBox';
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: 'example-iconbox',
@@ -16,8 +16,7 @@ export default {
     },
   },
   argTypes: {
-    ...universalArgTypes,
-    ...styleSystemArgTypes,
+    ...commonArgTypes,
     variant: { control: 'select', options: ['neutral','primary','success','warning','error','info'] },
     size: { control: 'select', options: ['sm','md','lg'] },
     icon: { control: false },

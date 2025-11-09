@@ -2,7 +2,7 @@ import React from "react";
 import { fn } from "storybook/test";
 
 import { Button as ButtonComponent } from "../components/Button/Button";
-import { universalArgTypes, styleSystemArgTypes } from './helpers/controls';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   id: "example-button",
@@ -20,8 +20,7 @@ export default {
 
   tags: ["autodocs"],
   argTypes: {
-    ...universalArgTypes,
-    ...styleSystemArgTypes,
+    ...commonArgTypes,
     as: { control: "text" },
     id: { control: "text" },
     tabIndex: { control: "number" },

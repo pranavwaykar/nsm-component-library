@@ -20,6 +20,12 @@ export const Badge = forwardRef(
       elevation = 0,
       shadow,
       tone,
+      disabled = false,
+      loading = false,
+      indicator,
+      icon,
+      onClick,
+      onKeyDown,
       style,
       tabIndex,
       title,
@@ -49,28 +55,56 @@ export const Badge = forwardRef(
       toneClass,
       shadow ? `sb-shadow-${shadow}` : null,
       className,
+      disabled ? 'is-disabled' : null,
+      loading ? 'is-loading' : null,
     ].filter(Boolean).join(" ");
 
     const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
     if (typeof radius === "number") mergedStyle.borderRadius = radius;
     if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
 
+    const showIndicator = (indicator ?? dot) === true;
+    const isInteractive = typeof onClick === 'function' && !disabled;
+    const computedRole = role || (isInteractive ? 'button' : undefined);
+    const computedTabIndex = tabIndex ?? (isInteractive ? 0 : undefined);
+    const isNativeButton = (Component === 'button');
+    const isLoading = !!loading;
+    const handleKeyDown = (e) => {
+      if (typeof onKeyDown === 'function') onKeyDown(e);
+      if (e.defaultPrevented) return;
+      if (isInteractive && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        onClick?.(e);
+      }
+    };
+
     return (
       <Component
         ref={ref}
         className={classes}
         style={mergedStyle}
-        role={role}
-        tabIndex={tabIndex}
+        role={computedRole}
+        tabIndex={computedTabIndex}
+        aria-disabled={disabled || undefined}
+        aria-busy={isLoading || undefined}
+        disabled={isNativeButton && disabled ? true : undefined}
         title={title}
         draggable={draggable}
         contentEditable={contentEditable}
         dir={dir}
         lang={lang}
         hidden={hidden}
+        onClick={disabled ? undefined : onClick}
+        onKeyDown={handleKeyDown}
         {...rest}
       >
-        {dot ? <span className="sb-badge__dot" /> : null}
+        {isLoading ? (
+          <span className="sb-badge__spinner" aria-hidden />
+        ) : icon ? (
+          <span className="sb-badge__icon" aria-hidden>{icon}</span>
+        ) : (
+          showIndicator ? <span className="sb-badge__dot" /> : null
+        )}
         {children ?? label}
       </Component>
     );
@@ -90,6 +124,12 @@ Badge.propTypes = {
   tone: PropTypes.oneOf(["default","subtle","strong"]),
   dot: PropTypes.bool,
   pill: PropTypes.bool,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  indicator: PropTypes.bool,
+  icon: PropTypes.node,
+  onClick: PropTypes.func,
+  onKeyDown: PropTypes.func,
   className: PropTypes.string,
   style: PropTypes.object,
   tabIndex: PropTypes.number,
