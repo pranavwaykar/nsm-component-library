@@ -1,0 +1,159 @@
+@import "../../../styles/mixins.scss";
+
+.sidebar-calendar-comp {
+  @include verticalFlex();
+  gap: 20px;
+}
+.mini-calendar {
+  background-color: #fff;
+  box-shadow: 0px 10px 25px #161f2726;
+  border-radius: 5px;
+  padding: 15px;
+  opacity: 0.5;
+  transition: all 150ms ease-in-out;
+
+  &.selected-month {
+    opacity: 1;
+    box-shadow: 0px 10px 25px #161f2726;
+    background-color: #eaf3ff;
+    .mc-dates {
+      .mcd-row {
+        .msd-date {
+          .highlight {
+            background-color: #7a8c9880;
+            &.not-currentmonth {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .mc-header {
+    @include flexAlign();
+    gap: 10px;
+    .mch-date {
+      @include fontProperties(14px, 600, #141724);
+    }
+    .mch-arrow {
+      .icon-arrow-up-right {
+        width: 20px;
+        height: 20px;
+        @include setToCenter();
+        font-size: 35px;
+        rotate: 45deg;
+        translate: 0 -2px;
+        cursor: pointer;
+        color: #141724;
+      }
+    }
+  }
+  .mc-days {
+    margin: 10px 0;
+    @include flexAlign();
+
+    .mcd-day {
+      flex: 1;
+      text-align: center;
+      @include fontProperties(11px, normal, #7e8b9f);
+    }
+  }
+
+  .mc-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    .mcd-row {
+      @include flexAlign();
+    }
+
+    .msd-date {
+      flex: 1;
+      @include setToCenter();
+
+      .msd-date-box {
+        width: 22px;
+        height: 22px;
+        @include fontProperties(11px, normal, #141724);
+        @include setToCenter();
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.highlight {
+          background-color: #969da7;
+          color: white;
+        }
+
+        &.today {
+          background-color: #cfd3f2;
+        }
+
+        &.selected-date {
+          background-color: #465aea !important;
+          color: #fff;
+        }
+
+        &.not-currentmonth {
+          background-color: transparent;
+          color: rgba(20, 23, 36, 0.3);
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+.mini-calendar-skeleton {
+  background-color: #fff;
+  box-shadow: 0px 10px 25px #161f2726;
+  border-radius: 5px;
+  padding: 15px;
+
+  .mcs-header {
+    @include flexAlign();
+    gap: 10px;
+    .mcsh-content {
+      width: 100px;
+      height: 20px;
+      @include skeletonAnimate();
+    }
+
+    .mcsh-arrow {
+      width: 20px;
+      height: 20px;
+      @include skeletonAnimate();
+    }
+  }
+
+  .mcs-days {
+    margin: 10px 0;
+    @include flexAlign();
+    justify-content: space-between;
+    gap: 5px;
+
+    .mcs-day {
+      height: 15.7px;
+      flex: 1;
+      @include skeletonAnimate();
+    }
+  }
+
+  .mcs-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 7px;
+
+    .mcs-date {
+      @include setToCenter();
+      .mcsd-box {
+        width: 22px;
+        height: 22px;
+        @include skeletonAnimate();
+      }
+    }
+  }
+}
+
+

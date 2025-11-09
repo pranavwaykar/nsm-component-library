@@ -1,0 +1,128 @@
+@import "../../../styles/mixins.scss";
+
+.month-calendar-comp {
+  position: absolute;
+  inset: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  border-radius: 5px;
+  @include verticalFlex();
+  gap: 1px;
+
+  .cc-days {
+    @include flexAlign();
+    background-color: #fff;
+    z-index: 1;
+
+    .ccd-day {
+      flex: 1;
+      height: 40px;
+      position: relative;
+
+      .ccdd-inset {
+        position: absolute;
+        inset: -1px;
+        border: 1px solid var(--border);
+        padding: 6px 11px;
+        @include flexAlign();
+        @include fontProperties(13px, normal, var(--textDark));
+      }
+    }
+  }
+  .mcc-body {
+    flex: 1;
+    position: relative;
+
+    .mccb-inset {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      @include hideScrollbar();
+      @include verticalFlex();
+    }
+
+    .cc-week {
+      width: 100%;
+      min-height: 140px;
+      flex: 1;
+      display: flex;
+
+      .ccw-day {
+        flex: 1;
+        position: relative;
+
+        &.disabled {
+          background-color: rgba(240, 244, 249, 0.4);
+          .ccw-day-inset {
+            overflow: hidden;
+            z-index: 1;
+
+            .ccwd-date {
+              color: #7e8b9f;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .ccw-day-inset {
+          position: absolute;
+          inset: -1px;
+          border: 1px solid var(--border);
+          @include verticalFlex();
+          gap: 5px;
+          padding: 6px 11px;
+
+          .ccwd-date {
+            @include setSpaceBetween();
+            .ccwdd-main {
+              @include fontProperties(13px, 600, var(--textNormal));
+            }
+          }
+
+          &.currentDate {
+            border: 2px solid rgba(134, 117, 250, 0.5);
+            z-index: 5;
+          }
+
+          .ccwd-list {
+            flex: 1;
+            @include verticalFlex();
+            gap: 3px;
+            overflow-y: auto;
+            @include hideScrollbar();
+          }
+        }
+      }
+    }
+  }
+}
+
+.shreded-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  opacity: 0.1;
+
+  .sbg-inset {
+    position: absolute;
+    left: -100px;
+    top: -200px;
+    width: 200%;
+    transform-origin: center;
+    transform: rotate(-45deg);
+    overflow: hidden;
+
+    .sbgi-line {
+      height: 5px;
+      border-bottom: 1px solid var(--primary);
+
+      &.disabled {
+        z-index: 2;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+      }
+    }
+  }
+}
+
+

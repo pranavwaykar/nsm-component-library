@@ -13,6 +13,7 @@ import {
   MultiSelect,
   SingleSelect,
   DateRange,
+  SearchInput,
 } from "../components/Inputs/Inputs";
 
 export default {
@@ -252,5 +253,28 @@ export const DateRangePicker = {
     value: { start: "", end: "" },
     id: "dr-1",
     "data-testid": "dr",
+  },
+};
+
+export const Search = {
+  name: "Search",
+  render: (args) => {
+    const [v, setV] = useState(args.value);
+    const [cat, setCat] = useState(args.category);
+    return React.createElement(SearchInput, { ...args, value: v, onChange: setV, category: cat, onCategoryChange: setCat });
+  },
+  args: {
+    label: "",
+    value: "",
+    placeholder:
+      "Search within all folders and content, or a specific folder’s content",
+    category: "all",
+    categories: [
+      { value: "all", label: "All" },
+      { value: "stages", label: "Stages" },
+      { value: "tc", label: "Transaction Chronicles" },
+      { value: "email", label: "E-Mail" },
+      { value: "issue", label: "Issue Chronicles" },
+    ],
   },
 };

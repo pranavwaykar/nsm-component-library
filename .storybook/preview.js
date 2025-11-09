@@ -1,5 +1,6 @@
 import '@flaticon/flaticon-uicons/css/all/all.css';
 import '@flaticon/flaticon-uicons/css/brands/all.css';
+// Revert global tokens in preview to avoid impacting addon panels
 // Removed remote icon CSS due to CORS in Storybook. Icons are provided via Flaticon or inline SVG.
 /** @type { import('@storybook/react-vite').Preview } */
 const preview = {
@@ -9,6 +10,13 @@ const preview = {
        color: /(background|color)$/i,
        date: /Date$/i,
       },
+    },
+
+    // Docs first, hide canvas tab to keep preview within Docs
+    viewMode: 'docs',
+    previewTabs: {
+      'storybook/docs/panel': { index: 0 },
+      canvas: { hidden: true },
     },
 
     a11y: {

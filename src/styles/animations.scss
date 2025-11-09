@@ -1,0 +1,43 @@
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalFadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes skeletonAnimation {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+@keyframes stageCardAnimation {
+  from {
+    transform: skew(90deg);
+  }
+  to {
+    transform: skew(0deg);
+  }
+}
+
+@keyframes pageTransition {
+}
+
+

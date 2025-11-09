@@ -1,0 +1,22 @@
+@import "../../../styles/mixins.scss";
+
+.date-picker-comp {
+  .year-incre-decre { display: flex; align-items: center; justify-content: center; }
+  .next-prev-button { height: 35px; background-color: #f9fafd; padding-inline: .3rem; border: 0; cursor: pointer; }
+  .next-prev-button i { font-size: 22px; }
+  .next-prev-button:hover { background-color: #e0edfa; }
+  .next-prev-button:hover i { color: #1f94ff; font-weight: 600; }
+  .next-prev-button:first-child { border-radius: 5px 0 0 5px; }
+  .next-prev-button:last-child { border-radius: 0 5px 5px 0; }
+
+  .dpc-input { height: 35px; width: 170px; background-color: #f9fafd; display: flex; align-items: center; cursor: pointer; }
+  .dpc-value { padding: 0 10px; flex: 1; font-size: 13px; font-weight: 600; color: var(--textNormal); text-align: center; }
+  .dpc-dropdown { position: absolute; z-index: 50; margin-top: 6px; background: #fff; border: 1px solid #e6ebf2; border-radius: 8px; box-shadow: 0 16px 40px rgba(0,0,0,.12); padding: 12px; }
+  .dpc-year { display: grid; grid-template-columns: 24px 1fr 24px; align-items: center; margin-bottom: 8px; }
+  .dpc-year-btn { width: 24px; height: 24px; border-radius: 50%; border: 0; background: transparent; color: #6b7280; cursor: pointer; }
+  .dpc-month-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .dpc-month { border: 1px solid #e6ebf2; border-radius: 6px; padding: 6px 8px; background: #fff; cursor: pointer; }
+  .dpc-month.is-active { background: #eaf3ff; border-color: #cdd8f6; }
+}
+
+

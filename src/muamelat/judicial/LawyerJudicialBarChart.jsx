@@ -1,0 +1,47 @@
+import React from 'react';
+import Chart from '../../charts/Chart';
+
+const defaultDs = {
+  chart: {
+    theme: 'fusion',
+    caption: 'Lawyer Judicial Bar Chart',
+    xAxisName: 'Category',
+    yAxisName: 'Count',
+    showValues: '1',
+  },
+  data: [
+    { label: 'A', value: '12' },
+    { label: 'B', value: '9' },
+    { label: 'C', value: '15' },
+    { label: 'D', value: '7' },
+  ],
+};
+
+const LawyerJudicialBarChart = ({
+  width = '100%',
+  height = '400',
+  type = 'bar2d',
+  caption = defaultDs.chart.caption,
+  xAxisName = defaultDs.chart.xAxisName,
+  yAxisName = defaultDs.chart.yAxisName,
+  showValues = true,
+  paletteColors,
+  data = defaultDs.data,
+}) => {
+  const ds = {
+    chart: {
+      ...defaultDs.chart,
+      caption,
+      xAxisName,
+      yAxisName,
+      showValues: showValues ? '1' : '0',
+      ...(paletteColors ? { paletteColors } : {}),
+    },
+    data,
+  };
+  return <Chart type={type} width={width} height={height} dataSource={ds} />;
+};
+
+export default LawyerJudicialBarChart;
+
+

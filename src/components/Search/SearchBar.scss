@@ -1,0 +1,12 @@
+/* mixins are not required here; removed deprecated @import */
+
+.search-comp { display: flex; align-items: center; background: #fff; border: 1px solid #e7edf6; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.sc-icon { width: 35px; height: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #9aa3ad; }
+.sc-folder-select { display: flex; align-items: center; padding-left: 10px; min-width: 220px; width: 220px; border-right: 1px solid #e7edf6; cursor: pointer; background: #f9fbff; }
+.sc-folder-select-content { flex: 1; color: #0b1419; font-size: 16px; font-weight: 600; }
+.sc-input { display: flex; align-items: center; flex: 1; }
+.sc-input-content { flex: 1; color: #0b1419; font-size: 16px; cursor: pointer; padding: 0 8px; }
+.sc-input-content input { width: 100%; outline: 0; border: 0; font-size: 16px; color: #0b1419; }
+.search-comp.active { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(31,148,255,.1); }
+
+
