@@ -1,7 +1,9 @@
 import React from 'react';
 import Chart from '../charts/Chart';
 import DocumentFlowChart from '../muamelat/documentFlow/DocumentFlowChart';
+import documentFlowMock from '../muamelat/documentFlow/mockData';
 import TreeChart from '../muamelat/treeMap/TreeChart';
+import treeMapMock from '../muamelat/treeMap/mockData';
 import LawyerJudicialBarChart from '../muamelat/judicial/LawyerJudicialBarChart';
 import Calendar from '../muamelat/calendar/Calendar';
 import { commonArgTypes } from './helpers/controls';
@@ -25,7 +27,9 @@ export default {
 
 export const Bar = {
   name: 'Bar',
-  render: () =>
+  args: { dataSource: mockBarData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -33,14 +37,16 @@ export const Bar = {
         type: 'bar2d',
         width: '80%',
         height: '60%',
-        dataSource: mockBarData,
+        dataSource,
       }),
     ),
 };
 
 export const Doughnut = {
   name: 'Doughnut',
-  render: () =>
+  args: { dataSource: mockDoughnutData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -48,14 +54,16 @@ export const Doughnut = {
         type: 'doughnut2d',
         width: '80%',
         height: '70%',
-        dataSource: mockDoughnutData,
+        dataSource,
       }),
     ),
 };
 
 export const StackedColumn = {
   name: 'Stacked Column',
-  render: () =>
+  args: { dataSource: mockStackedData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -63,14 +71,16 @@ export const StackedColumn = {
         type: 'scrollstackedcolumn2d',
         width: '80%',
         height: '70%',
-        dataSource: mockStackedData,
+        dataSource,
       }),
     ),
 };
 
 export const Line = {
   name: 'Line',
-  render: () =>
+  args: { dataSource: mockLineData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -78,14 +88,16 @@ export const Line = {
         type: 'msline',
         width: '70%',
         height: '70%',
-        dataSource: mockLineData,
+        dataSource,
       }),
     ),
 };
 
 export const Heatmap = {
   name: 'Heatmap',
-  render: () =>
+  args: { dataSource: mockHeatmapData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -93,7 +105,7 @@ export const Heatmap = {
         type: 'heatmap',
         width: '80%',
         height: '70%',
-        dataSource: mockHeatmapData,
+        dataSource,
       }),
     ),
 };
@@ -101,7 +113,9 @@ export const Heatmap = {
 
 export const Area = {
   name: 'Area',
-  render: () =>
+  args: { dataSource: mockAreaData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -109,14 +123,16 @@ export const Area = {
         type: 'area2d',
         width: '70%',
         height: '60%',
-        dataSource: mockAreaData,
+        dataSource,
       }),
     ),
 };
 
 export const Pareto = {
   name: 'Pareto',
-  render: () =>
+  args: { dataSource: mockParetoData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -124,14 +140,16 @@ export const Pareto = {
         type: 'pareto2d',
         width: '70%',
         height: '60%',
-        dataSource: mockParetoData,
+        dataSource,
       }),
     ),
 };
 
 export const Radar = {
   name: 'Radar',
-  render: () =>
+  args: { dataSource: mockRadarData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -139,14 +157,16 @@ export const Radar = {
         type: 'radar',
         width: '70%',
         height: '60%',
-        dataSource: mockRadarData,
+        dataSource,
       }),
     ),
 };
 
 export const Bubble = {
   name: 'Bubble',
-  render: () =>
+  args: { dataSource: mockBubbleData },
+  argTypes: { dataSource: { control: 'object' } },
+  render: ({ dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
@@ -154,7 +174,7 @@ export const Bubble = {
         type: 'bubble',
         width: '70%',
         height: '60%',
-        dataSource: mockBubbleData,
+        dataSource,
       }),
     ),
 };
@@ -166,6 +186,7 @@ export const DocumentFlow = {
     id: 'documentflow-root',
     width: 1200,
     height: 480,
+    chartData: documentFlowMock,
     color: '#2a9cff',
     baseInterval: { timeUnit: 'hour', count: 1 },
     xMinGridDistance: 70,
@@ -176,6 +197,7 @@ export const DocumentFlow = {
   argTypes: {
     width: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
     height: { control: { type: 'range', min: 320, max: 800, step: 20 } },
+    chartData: { control: 'object' },
     color: { control: 'color' },
     'baseInterval.timeUnit': { name: 'baseInterval.timeUnit', control: { type: 'select' }, options: ['millisecond','second','minute','hour','day','week','month','year'] },
     'baseInterval.count': { name: 'baseInterval.count', control: { type: 'number', min: 1, step: 1 } },
@@ -199,6 +221,7 @@ export const TreeMap = {
   args: {
     width: 1200,
     height: 480,
+    data: treeMapMock,
     downDepth: 1,
     upDepth: 0,
     initialDepth: 1,
@@ -211,6 +234,7 @@ export const TreeMap = {
   argTypes: {
     width: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
     height: { control: { type: 'range', min: 320, max: 800, step: 20 } },
+    data: { control: 'object' },
     downDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },
     upDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },
     initialDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },

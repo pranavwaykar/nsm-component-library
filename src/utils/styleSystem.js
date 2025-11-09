@@ -104,6 +104,7 @@ export function expandStyleProps(props = {}) {
     borderStyle,
     rounded,
     borderRadius,
+    radius,
     outline,
     outlineOffset,
     boxShadow,
@@ -238,6 +239,11 @@ export function expandStyleProps(props = {}) {
   set("borderWidth", borderWidth);
   set("borderStyle", borderStyle);
   set("borderRadius", borderRadius ?? rounded);
+  if (radius !== undefined && radius !== null) {
+    const token = String(radius).trim();
+    const tokenMap = new Set(["none", "sm", "md", "lg", "pill", "full"]);
+    s.borderRadius = tokenMap.has(token) ? `var(--sb-radius-${token})` : token;
+  }
   set("outline", outline);
   set("outlineOffset", outlineOffset);
   set("boxShadow", boxShadow);

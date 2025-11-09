@@ -1,7 +1,7 @@
 import React from 'react';
 import './Calendar.scss';
 import { DateRange } from '../../components/Inputs/Inputs';
-import { classNames, firstDayOfWeek, formatDate, getWeeksInMonth } from '../../utils/util.services';
+import { classNames, firstDayOfWeek, formatDate, getWeeksInMonth, dateKeyYMD } from '../../utils/util.services';
 import SidebarCalendar from './SidebarCalendar/SidebarCalendar';
 import MonthCalendar from './MonthCalendar/MonthCalendar';
 import data from './calendarData';
@@ -40,7 +40,7 @@ const Calendar = () => {
   const setCalendarStates = (tasksArray = []) => {
     const map = new Map();
     tasksArray.forEach((t) => {
-      const key = formatDate(new Date(t.created_at));
+      const key = dateKeyYMD(new Date(t.created_at));
       const val = map.get(key);
       if (val) map.set(key, { date: key, tasks: [...val.tasks, t] });
       else map.set(key, { date: key, tasks: [t] });

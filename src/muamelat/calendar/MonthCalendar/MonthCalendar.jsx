@@ -1,6 +1,6 @@
 import React from 'react';
 import './MonthCalendar.scss';
-import { classNames, formatDate } from '../../../utils/util.services';
+import { classNames, dateKeyYMD } from '../../../utils/util.services';
 
 const weekEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -25,7 +25,7 @@ const MonthCalendar = ({ monthData = [], currentDate = new Date(), calendarTasks
                       dayData={dayData}
                       key={`ccw-day-${index}-${dayIndex + 1}`}
                       currentDate={currentDate}
-                      tasks={calendarTasks[formatDate(dayData?.date)]}
+                      tasks={calendarTasks[dateKeyYMD(dayData?.date)]}
                     />
                   ))}
                 </div>
@@ -57,7 +57,13 @@ const CalendarDayCard = ({ dayData, currentDate = new Date(), tasks = {} }) => {
               <div className="ccwdd-main">{new Date(dayData?.date).getDate()}</div>
               <div className="ccwdd-more">{taskList?.length > 4 ? `+${taskList?.length - 4} More` : ''}</div>
             </div>
-            <div className="ccwd-list"></div>
+            <div className="ccwd-list">
+              {taskList.slice(0, 4).map((t) => (
+                <div className="ccwd-item" key={t.id} title={t.title}>
+                  {t.title}
+                </div>
+              ))}
+            </div>
           </>
         )}
       </div>

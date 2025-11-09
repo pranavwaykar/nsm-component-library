@@ -107,6 +107,15 @@ export function formatDate(date = new Date(), separater = ".") {
   return `${day}${"."}${month}${"."}${year}`;
 }
 
+// Stable key for day-level comparisons, avoids locale/format issues
+export function dateKeyYMD(dateInput = new Date()) {
+  const d = new Date(dateInput);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 export const formatUTCDateTime = (utcDateString) => {
   const date = new Date(utcDateString);
   const day = String(date.getDate()).padStart(2, "0");

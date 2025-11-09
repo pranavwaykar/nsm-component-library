@@ -90,6 +90,16 @@
             gap: 3px;
             overflow-y: auto;
             @include hideScrollbar();
+            .ccwd-item {
+              padding: 2px 6px;
+              border-radius: 4px;
+              background: rgba(38, 99, 255, 0.06);
+              border: 1px solid rgba(38, 99, 255, 0.18);
+              @include fontProperties(11px, 500, var(--textDark));
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
           }
         }
       }
