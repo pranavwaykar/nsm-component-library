@@ -4,6 +4,7 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5hierarchy from '@amcharts/amcharts5/hierarchy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import mockData from './mockData';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 const TreeChart = ({
   data = mockData,
@@ -15,13 +16,30 @@ const TreeChart = ({
   showLabels = true,
   labelMaxWidth = 125,
   tooltipText = '{category}: [bold]{sum}[/]',
+  as,
+  style,
+  hidden,
+  id,
+  className,
+  role,
+  tabIndex,
+  title,
+  draggable,
+  dir,
+  lang,
+  ...rest
 }) => {
   const rootRef = React.useRef(null);
   const seriesRef = React.useRef(null);
+  const bodyRef = React.useRef(null);
+  const Container = as || 'div';
+  const containerStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && containerStyle.display === undefined) containerStyle.display = 'none';
 
   React.useEffect(() => {
     if (rootRef.current) rootRef.current.dispose();
-    const root = am5.Root.new('treechart-body');
+    if (!bodyRef.current) return;
+    const root = am5.Root.new(bodyRef.current);
     root.setThemes([am5themes_Animated.new(root)]);
     rootRef.current = root;
 
@@ -63,11 +81,11 @@ const TreeChart = ({
   }, [data, downDepth, upDepth, initialDepth, cornerRadius, strokeWidth, showLabels, labelMaxWidth, tooltipText]);
 
   return (
-    <div className="treechart">
+    <Container id={id} className={`treechart ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden}>
       <div className="t-body">
-        <div className="tb-inset" id="treechart-body" />
+        <div className="tb-inset" ref={bodyRef} style={{ width: '100%', height: '100%' }} />
       </div>
-    </div>
+    </Container>
   );
 };
 

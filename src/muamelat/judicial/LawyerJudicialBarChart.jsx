@@ -27,6 +27,10 @@ const LawyerJudicialBarChart = ({
   showValues = true,
   paletteColors,
   data = defaultDs.data,
+  as,
+  style,
+  hidden,
+  ...rest
 }) => {
   const ds = {
     chart: {
@@ -39,7 +43,7 @@ const LawyerJudicialBarChart = ({
     },
     data,
   };
-  return <Chart type={type} width={width} height={height} dataSource={ds} />;
+  return <Chart as={as} style={style} hidden={hidden} type={type} width={width} height={height} dataSource={ds} {...rest} />;
 };
 
 export default LawyerJudicialBarChart;

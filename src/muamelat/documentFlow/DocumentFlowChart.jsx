@@ -4,6 +4,7 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import mockData from './mockData';
+import { expandStyleProps } from '../../utils/styleSystem';
 
 const DocumentFlowChart = ({
   chartData = mockData,
@@ -14,7 +15,21 @@ const DocumentFlowChart = ({
   xOpposite = true,
   yMinGridDistance = 30,
   tooltipText = '{category}',
+  as,
+  style,
+  hidden,
+  className,
+  role,
+  tabIndex,
+  title,
+  draggable,
+  dir,
+  lang,
+  ...rest
 }) => {
+  const Container = as || 'div';
+  const containerStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (hidden === true && containerStyle.display === undefined) containerStyle.display = 'none';
   React.useLayoutEffect(() => {
     const root = am5.Root.new(id);
     root.setThemes([am5themes_Animated.new(root)]);
@@ -63,7 +78,8 @@ const DocumentFlowChart = ({
       }),
     );
 
-    const barColor = am5.color(am5.Color.fromString(color).toNumber());
+    const colorStr = (typeof color === 'string' && color.trim()) ? color : '#2a9cff';
+    const barColor = am5.color(colorStr);
     const data = (chartData || []).map((item) => {
       const [sYear, sMonth, sDay] = (item.fromDate || item.date).split('-');
       const start = new Date(sYear, sMonth - 1, sDay).setHours(0, 0, 0, 0);
@@ -93,9 +109,9 @@ const DocumentFlowChart = ({
   }, [chartData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText]);
 
   return (
-    <div className="documentflowchart-container">
-      <div id={id} />
-    </div>
+    <Container id={`${id}-wrap`} className={`documentflowchart-container ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden}>
+      <div id={id} style={{ width: '100%', height: '100%' }} />
+    </Container>
   );
 };
 
