@@ -40,6 +40,7 @@ const CalendarDayCard = ({ dayData, currentDate = new Date(), tasks = {} }) => {
   const dayRef = React.useRef(null);
   const popoverRef = React.useRef(null);
   const [openTaskId, setOpenTaskId] = React.useState(null);
+  const [placement, setPlacement] = React.useState({ x: 'right', y: 'bottom' });
   const isToday =
     currentDate.getDate() === new Date(dayData?.date).getDate() &&
     currentDate.getMonth() === new Date(dayData?.date).getMonth() &&
@@ -61,6 +62,23 @@ const CalendarDayCard = ({ dayData, currentDate = new Date(), tasks = {} }) => {
     };
     document.addEventListener('mousedown', onDocClick);
     return () => document.removeEventListener('mousedown', onDocClick);
+  }, [openTaskId]);
+
+  React.useEffect(() => {
+    if (!openTaskId) return;
+    const host = dayRef.current;
+    if (!host) return;
+    const container = host.closest('.month-calendar-comp');
+    if (!container) return;
+    const r = host.getBoundingClientRect();
+    const cr = container.getBoundingClientRect();
+    const midX = cr.left + cr.width / 2;
+    const midY = cr.top + cr.height / 2;
+    const centerX = (r.left + r.right) / 2;
+    const centerY = (r.top + r.bottom) / 2;
+    const x = centerX < midX ? 'right' : 'left';
+    const y = centerY < midY ? 'bottom' : 'top';
+    setPlacement({ x, y });
   }, [openTaskId]);
 
   return (
@@ -86,57 +104,57 @@ const CalendarDayCard = ({ dayData, currentDate = new Date(), tasks = {} }) => {
                   {t.title}
                 </button>
               ))}
-              {openTaskId && (
-                <div className="ccwd-popover" ref={popoverRef}>
-                  {(() => {
-                    const t = taskList.find((x) => x.id === openTaskId);
-                    if (!t) return null;
-                    const created = new Date(t.created_at);
-                    const createdText = `${created.toLocaleDateString(undefined, {
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric',
-                    })}`;
-                    return (
-                      <div className="ccwd-popover-inset">
-                        <div className="ccwd-popover-head">
-                          <i className="fi fi-rr-file" />
-                          <span className="name">{t.documentName || t.title || '-'}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">Document Name</span>
-                          <span className="val">{t.documentName || '-'}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">Subject</span>
-                          <span className="val">{t.subject || '-'}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">Created User</span>
-                          <span className="val">{t.createdUser || '-'}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">Created Date</span>
-                          <span className="val">{createdText}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">From</span>
-                          <span className="val">{t.from || '-'}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">To</span>
-                          <span className="val">{t.to || '-'}</span>
-                        </div>
-                        <div className="ccwd-popover-row">
-                          <span className="lbl">Document Type</span>
-                          <span className="val">{t.documentType || '-'}</span>
-                        </div>
-                      </div>
-                    );
-                  })()}
-                </div>
-              )}
             </div>
+            {openTaskId && (
+              <div className={`ccwd-popover pos-x-${placement.x} pos-y-${placement.y}`} ref={popoverRef}>
+                {(() => {
+                  const t = taskList.find((x) => x.id === openTaskId);
+                  if (!t) return null;
+                  const created = new Date(t.created_at);
+                  const createdText = `${created.toLocaleDateString(undefined, {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  })}`;
+                  return (
+                    <div className="ccwd-popover-inset">
+                      <div className="ccwd-popover-head">
+                        <i className="fi fi-rr-file" />
+                        <span className="name">{t.documentName || t.title || '-'}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">Document Name</span>
+                        <span className="val">{t.documentName || '-'}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">Subject</span>
+                        <span className="val">{t.subject || '-'}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">Created User</span>
+                        <span className="val">{t.createdUser || '-'}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">Created Date</span>
+                        <span className="val">{createdText}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">From</span>
+                        <span className="val">{t.from || '-'}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">To</span>
+                        <span className="val">{t.to || '-'}</span>
+                      </div>
+                      <div className="ccwd-popover-row">
+                        <span className="lbl">Document Type</span>
+                        <span className="val">{t.documentType || '-'}</span>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
           </>
         )}
       </div>

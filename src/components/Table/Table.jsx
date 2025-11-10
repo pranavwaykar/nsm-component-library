@@ -60,6 +60,7 @@ export const Table = forwardRef(({
   expandedContent,
   rowMenu,
   onRowMenu,
+  optionsMenu,
   // existing features
   initialSort,
   expandable = false,
@@ -205,6 +206,11 @@ export const Table = forwardRef(({
   if (resolvedFg) rootStyle['--sb-table-fg'] = resolvedFg;
   if (borderColor) rootStyle['--sb-table-border'] = borderColor;
 
+  const hasOptionsMenu = (() => {
+    if (typeof optionsMenu === 'boolean') return optionsMenu;
+    return !!(rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0));
+  })();
+
   return (
     <Root ref={ref} className={`${responsive ? 'sb-table__wrap' : ''} ${className || ''}`.trim()} id={id} role={role} style={{ ...(maxHeight ? { maxHeight, overflow: 'auto' } : {}), ...rootStyle }} {...rest}>
       {(filterable || showColumnControls || toolbarRight) ? (
@@ -270,7 +276,7 @@ export const Table = forwardRef(({
                 </th>
               );
             })}
-            {(rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) && <th className="sb-table__opthd" aria-label="options" />}
+            {hasOptionsMenu && <th className="sb-table__opthd" aria-label="options" />}
           </tr>
         </thead>
         <tbody>
@@ -285,7 +291,7 @@ export const Table = forwardRef(({
           ) : null}
           {!loading && pageRows.length === 0 ? (
             <tr>
-              <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + ((rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) ? 1 : 0) + (showIndex ? 1 : 0)} style={{ textAlign: 'center', color: '#64748b' }}>
+              <td colSpan={(visibleCols.filter((c) => !c.hidden).length) + (expandable ? 1 : 0) + (selectable ? 1 : 0) + (hasOptionsMenu ? 1 : 0) + (showIndex ? 1 : 0)} style={{ textAlign: 'center', color: '#64748b' }}>
                 {typeof emptyMessage === 'string' ? emptyMessage : emptyMessage}
               </td>
             </tr>
@@ -324,7 +330,7 @@ export const Table = forwardRef(({
                       )}
                     </td>
                   ))}
-                  {(rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) && (
+                  {hasOptionsMenu && (
                     <td className="sb-table__options" data-menu onClick={(e) => e.stopPropagation()}>
                       <button type="button" className="sb-table__optbtn" aria-haspopup="menu" aria-expanded={openMenuId === rowId} onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === rowId ? null : rowId); }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -365,7 +371,7 @@ export const Table = forwardRef(({
                     const span = (visibleCols.filter((c) => !c.hidden).length)
                       + (expandable ? 1 : 0)
                       + (selectable ? 1 : 0)
-                      + ((rowActions || (Array.isArray(rowMenu) && rowMenu.length > 0)) ? 1 : 0)
+                      + (hasOptionsMenu ? 1 : 0)
                       + (showIndex ? 1 : 0);
                     return (
                       <tr className="sb-table__subrow">
@@ -436,6 +442,7 @@ Table.propTypes = {
   rowActions: PropTypes.func,
   responsive: PropTypes.bool,
   renderSubRow: PropTypes.func,
+  optionsMenu: PropTypes.bool,
   page: PropTypes.number,
   pageSize: PropTypes.number,
   totalPages: PropTypes.number,

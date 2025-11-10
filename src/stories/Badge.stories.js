@@ -57,7 +57,6 @@ export const Primary = {
     draggable: false,
     hidden: false,
     dir: "ltr",
-    lang: "en",
     "data-testid": "badge",
     title: "Active",
     children: "Active",

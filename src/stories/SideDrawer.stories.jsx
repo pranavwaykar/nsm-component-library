@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import SideDrawer from '../components/SideDrawer/SideDrawer';
 import Card from '../components/Card/Card';
+import { commonArgTypes } from './helpers/controls';
 
 export default {
   title: 'Side Drawer Component',
   component: SideDrawer,
   parameters: { layout: 'centered' },
+  argTypes: {
+    ...commonArgTypes,
+    opened: { control: 'boolean' },
+    position: { control: 'select', options: ['left','right'] },
+    width: { control: 'number' },
+    title: { control: 'text' },
+  },
 };
 
 export const Basic = () => {

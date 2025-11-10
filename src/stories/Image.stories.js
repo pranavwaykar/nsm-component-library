@@ -26,17 +26,6 @@ export default {
     rootMargin: { control: 'text' },
     fallback: { control: false, table: { type: { summary: 'ReactNode' }, defaultValue: { summary: 'Loading…' } } },
     errorFallback: { control: false, table: { type: { summary: 'ReactNode' } } },
-    as: { control: 'text' },
-    id: { control: 'text' },
-    tabIndex: { control: 'number' },
-    role: { control: 'text' },
-    title: { control: 'text' },
-    hidden: { control: 'boolean' },
-    draggable: { control: 'boolean' },
-    'data-testid': { control: 'text', name: 'data-testid' },
-    onClick: { action: 'clicked' },
-    onFocus: { action: 'focus' },
-    onBlur: { action: 'blur' },
   },
   args: {},
 };
@@ -44,7 +33,7 @@ export default {
 export const Primary = {
   name: 'Image',
   args: {
-    as: 'div', id: 'image-1', 'data-testid': 'image', tabIndex: 0, dir: 'ltr', lang: 'en', hidden: false,
+    as: 'div', id: 'image-1', 'data-testid': 'image', tabIndex: 0, dir: 'ltr', hidden: false,
     src: sampleImage,
     alt: 'Sample',
     fit: 'cover',

@@ -28,7 +28,7 @@ const bell = React.createElement('span', { 'aria-hidden': 'true' }, '🔔');
 export const Primary = {
   name: 'Icon Box',
   args: {
-    as: 'div', id: 'iconbox-1', 'data-testid': 'iconbox', tabIndex: 0, dir: 'ltr', lang: 'en', hidden: false,
+    as: 'div', id: 'iconbox-1', 'data-testid': 'iconbox', tabIndex: 0, dir: 'ltr', hidden: false,
     icon: bell,
     count: 12,
     label: 'Notifications',

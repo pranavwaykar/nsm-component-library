@@ -1,6 +1,7 @@
 import React from 'react';
 import '../index.scss';
 import { Table } from '../components/Table/Table';
+import { commonArgTypes } from './helpers/controls';
 
 const columns = [
   { header: 'Name', accessor: 'name' },
@@ -22,10 +23,7 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
-    as: { control: 'text' }, id: { control: 'text' }, 'data-testid': { control: 'text', name: 'data-testid' },
-    role: { control: 'text' }, tabIndex: { control: 'number' }, title: { control: 'text' }, hidden: { control: 'boolean' }, draggable: { control: 'boolean' },
-    onClick: { action: 'clicked' }, onFocus: { action: 'focus' }, onBlur: { action: 'blur' }, onKeyDown: { action: 'keydown' }, onKeyUp: { action: 'keyup' },
-    style: { control: 'object' }, className: { control: 'text' },
+    ...commonArgTypes,
     variant: { control: 'select', options: ['surface','flat'] },
     size: { control: 'select', options: ['sm','md','lg'] },
     striped: { control: 'boolean' },
@@ -33,6 +31,9 @@ export default {
     hoverable: { control: 'boolean' },
     stickyHeader: { control: 'boolean' },
     showIndex: { control: 'boolean' },
+    selectable: { control: 'boolean' },
+    expandable: { control: 'boolean' },
+    optionsMenu: { control: 'boolean' },
     // column augmentation
     extraColumns: { control: 'object', description: 'Extra columns to insert. Each item: { header, accessor, render?, at? } where at is number | "start" | "end".' },
     extraColumnsPlacement: { control: 'select', options: ['start','end'], description: 'Default placement when extra column item has no at.' },
@@ -41,10 +42,10 @@ export default {
     rowMenu: { control: 'object' },
     onRowMenu: { action: 'rowMenu' },
     // styling props
-    radius: { control: 'select', options: ['none','sm','md','lg','full'] },
+    radius: { control: 'text' },
     elevation: { control: 'select', options: [0,1,2,3,4,5] },
     shadow: { control: 'select', options: ['none','sm','md','lg'] },
-    m: { control: 'text' }, px: { control: 'text' }, py: { control: 'text' }, w: { control: 'text' }, maxHeight: { control: 'text' },
+    maxHeight: { control: 'text' },
     bgColor: { control: 'color' },
     borderColor: { control: 'color' },
   }

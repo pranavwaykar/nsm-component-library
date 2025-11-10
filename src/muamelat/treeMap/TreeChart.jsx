@@ -55,7 +55,7 @@ const TreeChart = ({
     );
 
     series.labels.template.setAll(showLabels ? {
-      text: '{category}',
+      text: '{title}',
       oversizedBehavior: 'truncate',
       maxWidth: labelMaxWidth,
       ellipsis: '...'

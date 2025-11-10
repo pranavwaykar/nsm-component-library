@@ -438,22 +438,24 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 8px;
-  width: 280px;
+  width: 320px;
   background: #fff;
   border: 1px solid #e7edf6;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  padding: 8px;
+  box-shadow: 0 14px 30px rgba(16, 24, 40, 0.12);
+  padding: 10px;
   z-index: 30;
 }
 .sb-search__item {
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 16px;
 }
 .sb-search__item:hover {
   background: #f5f8ff;
 }
+.sb-search__item + .sb-search__item { margin-top: 6px; }
 .sb-search__input {
   display: flex;
   align-items: center;

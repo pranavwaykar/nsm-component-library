@@ -21,17 +21,6 @@ export default {
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes,
-    as: { control: "text" },
-    id: { control: "text" },
-    tabIndex: { control: "number" },
-    title: { control: "text" },
-    hidden: { control: "boolean" },
-    draggable: { control: "boolean" },
-    dir: { control: "text" },
-    lang: { control: "text" },
-    "aria-label": { control: "text", name: "aria-label" },
-    className: { control: "text" },
-    style: { control: "object" },
     sx: { control: "object" },
     primary: { control: false, table: { disable: true } },
     variant: {
@@ -79,7 +68,6 @@ export default {
     hidden: false,
     "aria-label": "Button",
     dir: "ltr",
-    lang: "en",
     m: '0', w: 'auto',
   },
 };

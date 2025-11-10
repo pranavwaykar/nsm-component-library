@@ -101,6 +101,26 @@ const DocumentFlowChart = ({
       strokeOpacity: 0,
       tooltipText,
     });
+    // Improve tooltip styling for better visual appearance
+    const tt = series.get('tooltip');
+    if (tt) {
+      tt.label.setAll({
+        fontSize: 12,
+        fill: am5.color(0xffffff),
+        paddingTop: 6,
+        paddingRight: 10,
+        paddingBottom: 6,
+        paddingLeft: 10,
+        textAlign: 'center',
+      });
+      tt.get('background')?.setAll({
+        fill: am5.color(0x2563eb),
+        fillOpacity: 0.95,
+        stroke: am5.color(0x1e40af),
+        strokeOpacity: 1,
+        cornerRadius: 8,
+      });
+    }
     series.data.setAll(data);
 
     series.appear();

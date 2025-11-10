@@ -27,16 +27,20 @@ export default {
 
 export const Bar = {
   name: 'Bar',
-  args: { dataSource: mockBarData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 500, dataSource: mockBarData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'bar2d',
-        width: '80%',
-        height: '60%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -44,16 +48,20 @@ export const Bar = {
 
 export const Doughnut = {
   name: 'Doughnut',
-  args: { dataSource: mockDoughnutData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 520, dataSource: mockDoughnutData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'doughnut2d',
-        width: '80%',
-        height: '70%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -61,16 +69,20 @@ export const Doughnut = {
 
 export const StackedColumn = {
   name: 'Stacked Column',
-  args: { dataSource: mockStackedData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 1000, height: 520, dataSource: mockStackedData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'scrollstackedcolumn2d',
-        width: '80%',
-        height: '70%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -78,16 +90,20 @@ export const StackedColumn = {
 
 export const Line = {
   name: 'Line',
-  args: { dataSource: mockLineData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 520, dataSource: mockLineData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'msline',
-        width: '70%',
-        height: '70%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -95,16 +111,20 @@ export const Line = {
 
 export const Heatmap = {
   name: 'Heatmap',
-  args: { dataSource: mockHeatmapData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 1000, height: 520, dataSource: mockHeatmapData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'heatmap',
-        width: '80%',
-        height: '70%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -113,16 +133,20 @@ export const Heatmap = {
 
 export const Area = {
   name: 'Area',
-  args: { dataSource: mockAreaData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 480, dataSource: mockAreaData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'area2d',
-        width: '70%',
-        height: '60%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -130,16 +154,20 @@ export const Area = {
 
 export const Pareto = {
   name: 'Pareto',
-  args: { dataSource: mockParetoData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 480, dataSource: mockParetoData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'pareto2d',
-        width: '70%',
-        height: '60%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -147,16 +175,20 @@ export const Pareto = {
 
 export const Radar = {
   name: 'Radar',
-  args: { dataSource: mockRadarData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 520, dataSource: mockRadarData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'radar',
-        width: '70%',
-        height: '60%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -164,16 +196,20 @@ export const Radar = {
 
 export const Bubble = {
   name: 'Bubble',
-  args: { dataSource: mockBubbleData },
-  argTypes: { dataSource: { control: 'object' } },
-  render: ({ dataSource }) =>
+  args: { width: 900, height: 520, dataSource: mockBubbleData },
+  argTypes: {
+    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
+    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
+    dataSource: { control: 'object' },
+  },
+  render: ({ width, height, dataSource }) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
       React.createElement(Chart, {
         type: 'bubble',
-        width: '70%',
-        height: '60%',
+        width,
+        height,
         dataSource,
       }),
     ),
@@ -282,14 +318,12 @@ export const CalendarChart = {
   render: ({ width, height, ...rest }) =>
     React.createElement(
       'div',
-      {
-        style: {
-          width,
-          minHeight: height,
-          margin: '0 auto',
-        },
-      },
-      React.createElement(Calendar, { ...rest }),
+      { style: { display: 'flex', justifyContent: 'center', width: '100%' } },
+      React.createElement(
+        'div',
+        { style: { width, minHeight: height } },
+        React.createElement(Calendar, { ...rest }),
+      )
     ),
 };
 
