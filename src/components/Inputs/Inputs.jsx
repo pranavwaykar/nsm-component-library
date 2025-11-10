@@ -903,6 +903,7 @@ export const DateRange = ({
   error,
   helper,
   closeOnSelect = true,
+  granularity = "day", // 'day' | 'month'
   as = "label",
   style,
   hidden,
@@ -913,6 +914,7 @@ export const DateRange = ({
   const startDate = fromIso(value?.start);
   const endDate = fromIso(value?.end);
   const [view, setView] = useState(toStartOfMonth(startDate || new Date()));
+  const [yearView, setYearView] = useState((startDate || new Date()).getFullYear());
 
   useEffect(() => {
     function handleDocumentClick(e) {
@@ -966,29 +968,60 @@ export const DateRange = ({
   }
   function pickPreset(kind) {
     const now = new Date();
-    let from = startOfDay(now);
-    let to = endOfDay(now);
-    if (kind === "last7")
-      from = startOfDay(
-        new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6)
-      );
-    if (kind === "last30")
-      from = startOfDay(
-        new Date(now.getFullYear(), now.getMonth(), now.getDate() - 29)
-      );
-    if (kind === "thisMonth") {
-      from = startOfDay(new Date(now.getFullYear(), now.getMonth(), 1));
-      to = endOfDay(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+    if (granularity === "month") {
+      let from, to;
+      if (kind === "thisMonth") {
+        from = new Date(now.getFullYear(), now.getMonth(), 1);
+        to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      } else if (kind === "last3") {
+        from = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+        to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      } else if (kind === "last6") {
+        from = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+        to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      } else if (kind === "last12") {
+        from = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+        to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      } else {
+        from = new Date(now.getFullYear(), now.getMonth(), 1);
+        to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      }
+      onChange?.({ start: toIso(from), end: toIso(to) });
+      if (closeOnSelect) setOpen(false);
+      return;
+    } else {
+      let from = startOfDay(now);
+      let to = endOfDay(now);
+      if (kind === "last7")
+        from = startOfDay(
+          new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6)
+        );
+      if (kind === "last30")
+        from = startOfDay(
+          new Date(now.getFullYear(), now.getMonth(), now.getDate() - 29)
+        );
+      if (kind === "thisMonth") {
+        from = startOfDay(new Date(now.getFullYear(), now.getMonth(), 1));
+        to = endOfDay(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+      }
+      onChange?.({ start: toIso(from), end: toIso(to) });
+      if (closeOnSelect) setOpen(false);
     }
-    onChange?.({ start: toIso(from), end: toIso(to) });
-    if (closeOnSelect) setOpen(false);
   }
 
-  const startText = startDate ? formatMdY(startDate) : "";
-  const endText = endDate ? formatMdY(endDate) : "";
+  const startText = startDate
+    ? granularity === "month"
+      ? `${String(startDate.getMonth() + 1).padStart(2, "0")}/${startDate.getFullYear()}`
+      : formatMdY(startDate)
+    : "";
+  const endText = endDate
+    ? granularity === "month"
+      ? `${String(endDate.getMonth() + 1).padStart(2, "0")}/${endDate.getFullYear()}`
+      : formatMdY(endDate)
+    : "";
   const display =
     startText || endText
-      ? `${startText || "MM/DD/YYYY"} – ${endText || "MM/DD/YYYY"}`
+      ? `${startText || (granularity === "month" ? "MM/YYYY" : "MM/DD/YYYY")} – ${endText || (granularity === "month" ? "MM/YYYY" : "MM/DD/YYYY")}`
       : "";
 
   const monthA = view;
@@ -1062,6 +1095,77 @@ export const DateRange = ({
     );
   }
 
+  function isSameMonth(a, b) {
+    return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+  }
+
+  function pickMonth(monthIndex, year) {
+    if (disabled) return;
+    const startOfPicked = new Date(year, monthIndex, 1);
+    const endOfPicked = new Date(year, monthIndex + 1, 0);
+    if (!startDate || (startDate && endDate)) {
+      onChange?.({ start: toIso(startOfPicked), end: "" });
+    } else if (startDate && !endDate) {
+      const startCandidate = new Date(startDate);
+      const isBefore = startOfPicked.getTime() < startCandidate.getTime();
+      if (isBefore) {
+        onChange?.({ start: toIso(startOfPicked), end: "" });
+      } else {
+        onChange?.({ start: toIso(startCandidate), end: toIso(endOfPicked) });
+        if (closeOnSelect) setOpen(false);
+      }
+    }
+  }
+
+  function renderMonthMode() {
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return (
+      <div className="sb-dr-months">
+        <div className="sb-dr-month__head">
+          <button
+            type="button"
+            className="sb-dr-nav"
+            aria-label="Previous year"
+            onClick={() => setYearView((y) => y - 1)}
+          >
+            ◀
+          </button>
+          <span className="sb-dr-month__title">{yearView}</span>
+          <button
+            type="button"
+            className="sb-dr-nav"
+            aria-label="Next year"
+            onClick={() => setYearView((y) => y + 1)}
+          >
+            ▶
+          </button>
+        </div>
+        <div className="sb-dr-grid sb-dr-grid--months">
+          {months.map((label, idx) => {
+            const current = new Date(yearView, idx, 1);
+            const isStart = startDate ? isSameMonth(current, startDate) : false;
+            const isEnd = endDate ? isSameMonth(current, endDate) : false;
+            const inMid =
+              startDate &&
+              endDate &&
+              current > new Date(startDate.getFullYear(), startDate.getMonth(), 1) &&
+              current < new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+            return (
+              <button
+                key={label}
+                type="button"
+                className={`sb-dr-day ${isStart ? "is-start" : ""} ${isEnd ? "is-end" : ""} ${inMid ? "is-mid" : ""}`.trim()}
+                onClick={() => pickMonth(idx, yearView)}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
@@ -1099,30 +1203,48 @@ export const DateRange = ({
             }}
           >
             <div className="sb-dr-presets">
-              <button type="button" onClick={() => pickPreset("today")}>
-                Today
-              </button>
-              <button type="button" onClick={() => pickPreset("last7")}>
-                Last 7 Days
-              </button>
-              <button type="button" onClick={() => pickPreset("thisMonth")}>
-                This Month
-              </button>
-              <button type="button" onClick={() => pickPreset("last30")}>
-                Last 30 Days
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  onChange?.({ start: "", end: "" });
-                  setOpen(false);
-                }}
-              >
-                Clear
-              </button>
+              {granularity === "month" ? (
+                <>
+                  <button type="button" onClick={() => pickPreset("thisMonth")}>This Month</button>
+                  <button type="button" onClick={() => pickPreset("last3")}>Last 3 Months</button>
+                  <button type="button" onClick={() => pickPreset("last6")}>Last 6 Months</button>
+                  <button type="button" onClick={() => pickPreset("last12")}>Last 12 Months</button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange?.({ start: "", end: "" });
+                      setOpen(false);
+                    }}
+                  >
+                    Clear
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button type="button" onClick={() => pickPreset("today")}>Today</button>
+                  <button type="button" onClick={() => pickPreset("last7")}>Last 7 Days</button>
+                  <button type="button" onClick={() => pickPreset("thisMonth")}>This Month</button>
+                  <button type="button" onClick={() => pickPreset("last30")}>Last 30 Days</button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange?.({ start: "", end: "" });
+                      setOpen(false);
+                    }}
+                  >
+                    Clear
+                  </button>
+                </>
+              )}
             </div>
-            {renderMonth(monthA, true, false)}
-            {renderMonth(monthB, false, true)}
+            {granularity === "month" ? (
+              renderMonthMode()
+            ) : (
+              <>
+                {renderMonth(monthA, true, false)}
+                {renderMonth(monthB, false, true)}
+              </>
+            )}
           </div>
         ) : null}
       </div>

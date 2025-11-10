@@ -331,6 +331,11 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
 }
+.sb-dr-grid--months {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
 .sb-dr-grid--dow {
   color: var(--sb-muted-color);
   font-size: 12px;

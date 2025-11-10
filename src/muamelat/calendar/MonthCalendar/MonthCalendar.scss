@@ -99,6 +99,48 @@
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
+              text-align: left;
+              cursor: pointer;
+            }
+            .ccwd-popover {
+              position: absolute;
+              right: 8px;
+              top: 38px;
+              z-index: 20;
+              width: 280px;
+              background: #fff;
+              border: 1px solid var(--border);
+              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+              border-radius: 8px;
+              .ccwd-popover-inset {
+                padding: 10px 12px;
+                @include verticalFlex();
+                gap: 8px;
+                .ccwd-popover-head {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding-bottom: 6px;
+                  border-bottom: 1px solid #eef1f5;
+                  i {
+                    color: #ffbb21;
+                  }
+                  .name {
+                    @include fontProperties(13px, 600, var(--textDark));
+                  }
+                }
+                .ccwd-popover-row {
+                  @include setSpaceBetween();
+                  gap: 10px;
+                  .lbl {
+                    @include fontProperties(12px, 600, var(--textMuted));
+                  }
+                  .val {
+                    @include fontProperties(12px, 500, var(--textDark));
+                    text-align: right;
+                  }
+                }
+              }
             }
           }
         }

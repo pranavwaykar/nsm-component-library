@@ -276,10 +276,21 @@ export const CalendarChart = {
   name: 'Calendar',
   args: { width: 1400, height: 700 },
   argTypes: {
-    width: { control: { type: 'range', min: 900, max: 1600, step: 50 } },
+    width: { control: { type: 'range', min: 1000, max: 1800, step: 50 } },
     height: { control: { type: 'range', min: 480, max: 1000, step: 20 } },
   },
-  render: ({ width, height, ...rest }) => React.createElement('div', { style: { maxWidth: width, minHeight: height } }, React.createElement(Calendar, { ...rest })),
+  render: ({ width, height, ...rest }) =>
+    React.createElement(
+      'div',
+      {
+        style: {
+          width,
+          minHeight: height,
+          margin: '0 auto',
+        },
+      },
+      React.createElement(Calendar, { ...rest }),
+    ),
 };
 
 

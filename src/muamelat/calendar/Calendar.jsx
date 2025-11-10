@@ -102,7 +102,7 @@ const Calendar = () => {
     <div className="calendar-page">
       <div className="cp-header">
         <div className="cph-date">
-          <DateRange value={dateRange} onChange={setDateRange} />
+          <DateRange value={dateRange} onChange={setDateRange} granularity="month" placeholder="MM/YYYY – MM/YYYY" />
         </div>
       </div>
       <div className="cp-body">
