@@ -100,8 +100,9 @@ const DocumentFlowChart = ({
       templateField: 'columnSettings',
       strokeOpacity: 0,
       tooltipText,
+      tooltipX: am5.percent(50),
+      tooltipY: am5.percent(100),
     });
-    // Improve tooltip styling for better visual appearance
     const tt = series.get('tooltip');
     if (tt) {
       tt.label.setAll({
@@ -123,7 +124,7 @@ const DocumentFlowChart = ({
         strokeOpacity: 1,
         cornerRadius: 8,
       });
-    }
+      }
     series.data.setAll(data);
 
     series.appear();
