@@ -223,7 +223,7 @@ export const DocumentFlow = {
     width: 1200,
     height: 480,
     chartData: documentFlowMock,
-    color: '#2a9cff',
+    color: '#092370',
     baseInterval: { timeUnit: 'hour', count: 1 },
     xMinGridDistance: 70,
     xOpposite: true,

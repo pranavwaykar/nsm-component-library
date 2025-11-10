@@ -87,6 +87,14 @@ const Calendar = () => {
     setCalendarStates(filteredData);
   }, [filteredData]);
 
+  // When a custom month is picked via the month filter, sync the visible month
+  React.useEffect(() => {
+    if (dateRange?.start) {
+      const d = new Date(dateRange.start);
+      if (!isNaN(d)) setSelectedDate(new Date(d.getFullYear(), d.getMonth(), 1));
+    }
+  }, [dateRange.start]);
+
   const highlightDatesByMonth = React.useMemo(() => {
     const months = Array(12)
       .fill('')

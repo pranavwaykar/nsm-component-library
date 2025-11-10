@@ -9,7 +9,7 @@ import { expandStyleProps } from '../../utils/styleSystem';
 const DocumentFlowChart = ({
   chartData = mockData,
   id = 'DOCUMENTFLOWCHART',
-  color = '#2a9cff',
+  color = '#092370',
   baseInterval = { timeUnit: 'hour', count: 1 },
   xMinGridDistance = 70,
   xOpposite = true,
@@ -107,12 +107,15 @@ const DocumentFlowChart = ({
       tt.label.setAll({
         fontSize: 12,
         fill: am5.color(0xffffff),
+        maxWidth: 180,
+        oversizedBehavior: 'wrap',
         paddingTop: 6,
         paddingRight: 10,
         paddingBottom: 6,
         paddingLeft: 10,
         textAlign: 'center',
       });
+      tt.set('pointerOrientation', 'vertical');
       tt.get('background')?.setAll({
         fill: am5.color(0x2563eb),
         fillOpacity: 0.95,

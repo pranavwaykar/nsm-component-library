@@ -1009,20 +1009,29 @@ export const DateRange = ({
     }
   }
 
-  const startText = startDate
-    ? granularity === "month"
-      ? `${String(startDate.getMonth() + 1).padStart(2, "0")}/${startDate.getFullYear()}`
-      : formatMdY(startDate)
-    : "";
-  const endText = endDate
-    ? granularity === "month"
-      ? `${String(endDate.getMonth() + 1).padStart(2, "0")}/${endDate.getFullYear()}`
-      : formatMdY(endDate)
-    : "";
-  const display =
-    startText || endText
-      ? `${startText || (granularity === "month" ? "MM/YYYY" : "MM/DD/YYYY")} – ${endText || (granularity === "month" ? "MM/YYYY" : "MM/DD/YYYY")}`
+  function monthLong(d) {
+    return d
+      ? `${d.toLocaleString(undefined, { month: "long" })}, ${d.getFullYear()}`
       : "";
+  }
+  const display = (() => {
+    if (granularity === "month") {
+      if (startDate && endDate) {
+        const sameMonth =
+          startDate.getFullYear() === endDate.getFullYear() &&
+          startDate.getMonth() === endDate.getMonth();
+        return sameMonth
+          ? monthLong(startDate)
+          : `${monthLong(startDate)} – ${monthLong(endDate)}`;
+      }
+      return "";
+    }
+    const startText = startDate ? formatMdY(startDate) : "";
+    const endText = endDate ? formatMdY(endDate) : "";
+    return startText || endText
+      ? `${startText || "MM/DD/YYYY"} – ${endText || "MM/DD/YYYY"}`
+      : "";
+  })();
 
   const monthA = view;
   const monthB = addMonths(view, 1);
@@ -1101,20 +1110,11 @@ export const DateRange = ({
 
   function pickMonth(monthIndex, year) {
     if (disabled) return;
+    // Single-month selection: set start to first day and end to last day of the same month, then close
     const startOfPicked = new Date(year, monthIndex, 1);
     const endOfPicked = new Date(year, monthIndex + 1, 0);
-    if (!startDate || (startDate && endDate)) {
-      onChange?.({ start: toIso(startOfPicked), end: "" });
-    } else if (startDate && !endDate) {
-      const startCandidate = new Date(startDate);
-      const isBefore = startOfPicked.getTime() < startCandidate.getTime();
-      if (isBefore) {
-        onChange?.({ start: toIso(startOfPicked), end: "" });
-      } else {
-        onChange?.({ start: toIso(startCandidate), end: toIso(endOfPicked) });
-        if (closeOnSelect) setOpen(false);
-      }
-    }
+    onChange?.({ start: toIso(startOfPicked), end: toIso(endOfPicked) });
+    if (closeOnSelect) setOpen(false);
   }
 
   function renderMonthMode() {
@@ -1130,7 +1130,13 @@ export const DateRange = ({
           >
             ◀
           </button>
-          <span className="sb-dr-month__title">{yearView}</span>
+          <span className="sb-dr-month__title">
+            {(() => {
+              // Show current selection if any, else show current year
+              const m = startDate ? startDate.getMonth() : new Date().getMonth();
+              return `${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m]}, ${yearView}`;
+            })()}
+          </span>
           <button
             type="button"
             className="sb-dr-nav"
@@ -1169,6 +1175,16 @@ export const DateRange = ({
   const Component = as;
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+
+  function shiftMonth(delta) {
+    if (disabled || granularity !== "month") return;
+    const base = startDate || new Date();
+    const nextStart = new Date(base.getFullYear(), base.getMonth() + delta, 1);
+    const nextEnd = new Date(nextStart.getFullYear(), nextStart.getMonth() + 1, 0);
+    onChange?.({ start: toIso(nextStart), end: toIso(nextEnd) });
+    setYearView(nextStart.getFullYear());
+  }
+
   return (
     <Component
       ref={rootRef}
@@ -1178,21 +1194,47 @@ export const DateRange = ({
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-dr ${disabled ? "is-disabled" : ""}`}>
-        <button
-          type="button"
-          className="sb-ms-trigger sb-dr-trigger"
-          onClick={() => setOpen((o) => !o)}
-          disabled={disabled}
-          aria-haspopup="dialog"
-          aria-expanded={open}
-        >
-          {display ? (
-            <span>{display}</span>
-          ) : (
-            <span className="sb-ms-placeholder">{placeholder}</span>
-          )}
-          <span className="sb-ms-caret">📅</span>
-        </button>
+        <div className="sb-ms-trigger sb-dr-trigger" aria-haspopup="dialog" aria-expanded={open}>
+          <button
+            type="button"
+            className="sb-dr-inline sb-dr-prev"
+            aria-label="Previous month"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              shiftMonth(-1);
+            }}
+            disabled={disabled || granularity !== "month"}
+          >
+            <i className="fi fi-rr-angle-small-left" />
+          </button>
+          <button
+            type="button"
+            className="sb-dr-label"
+            onClick={() => setOpen((o) => !o)}
+            disabled={disabled}
+          >
+            {display ? (
+              <span>{display}</span>
+            ) : (
+              <span className="sb-ms-placeholder">{placeholder}</span>
+            )}
+          </button>
+          <button
+            type="button"
+            className="sb-dr-inline sb-dr-next"
+            aria-label="Next month"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              shiftMonth(1);
+            }}
+            disabled={disabled || granularity !== "month"}
+          >
+            <i className="fi fi-rr-angle-small-right" />
+          </button>
+          {/* <span className="sb-ms-caret" aria-hidden>📅</span> */}
+        </div>
 
         {open ? (
           <div
@@ -1202,25 +1244,11 @@ export const DateRange = ({
               e.stopPropagation();
             }}
           >
-            <div className="sb-dr-presets">
-              {granularity === "month" ? (
-                <>
-                  <button type="button" onClick={() => pickPreset("thisMonth")}>This Month</button>
-                  <button type="button" onClick={() => pickPreset("last3")}>Last 3 Months</button>
-                  <button type="button" onClick={() => pickPreset("last6")}>Last 6 Months</button>
-                  <button type="button" onClick={() => pickPreset("last12")}>Last 12 Months</button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onChange?.({ start: "", end: "" });
-                      setOpen(false);
-                    }}
-                  >
-                    Clear
-                  </button>
-                </>
-              ) : (
-                <>
+            {granularity === "month" ? (
+              renderMonthMode()
+            ) : (
+              <>
+                <div className="sb-dr-presets">
                   <button type="button" onClick={() => pickPreset("today")}>Today</button>
                   <button type="button" onClick={() => pickPreset("last7")}>Last 7 Days</button>
                   <button type="button" onClick={() => pickPreset("thisMonth")}>This Month</button>
@@ -1234,13 +1262,7 @@ export const DateRange = ({
                   >
                     Clear
                   </button>
-                </>
-              )}
-            </div>
-            {granularity === "month" ? (
-              renderMonthMode()
-            ) : (
-              <>
+                </div>
                 {renderMonth(monthA, true, false)}
                 {renderMonth(monthB, false, true)}
               </>

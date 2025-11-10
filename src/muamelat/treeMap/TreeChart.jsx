@@ -56,9 +56,14 @@ const TreeChart = ({
 
     series.labels.template.setAll(showLabels ? {
       text: '{title}',
-      oversizedBehavior: 'truncate',
+      textAlign: 'center',
+      centerX: am5.p50,
+      centerY: am5.p50,
+      oversizedBehavior: 'wrap',
       maxWidth: labelMaxWidth,
-      ellipsis: '...'
+      ellipsis: '...',
+      paddingLeft: 6,
+      paddingRight: 6
     } : { visible: false });
 
     series.rectangles.template.setAll({
