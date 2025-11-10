@@ -20,6 +20,7 @@ const Chart = forwardRef(({
   height = '100%',
   dataSource,
   events,
+  customProps,
   id,
   className,
   role,
@@ -45,6 +46,7 @@ const Chart = forwardRef(({
       dir={dir}
       lang={lang}
       hidden={hidden}
+      {...(customProps || {})}
     >
       <ReactFusioncharts
         ref={ref}

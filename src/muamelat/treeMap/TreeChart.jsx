@@ -19,6 +19,7 @@ const TreeChart = ({
   as,
   style,
   hidden,
+  customProps,
   id,
   className,
   role,
@@ -86,7 +87,7 @@ const TreeChart = ({
   }, [data, downDepth, upDepth, initialDepth, cornerRadius, strokeWidth, showLabels, labelMaxWidth, tooltipText]);
 
   return (
-    <Container id={id} className={`treechart ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden}>
+    <Container id={id} className={`treechart ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden} {...(customProps || {})}>
       <div className="t-body">
         <div className="tb-inset" ref={bodyRef} style={{ width: '100%', height: '100%' }} />
       </div>

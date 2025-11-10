@@ -341,4 +341,5 @@ export const commonArgTypes = {
   ...universalArgTypes,
   ...styleSystemArgTypes,
   ...visualCommonArgTypes,
+  customProps: { control: "object", description: "Extra attributes to spread onto the component root (e.g. {\"data-qa\":\"foo\"})" },
 };

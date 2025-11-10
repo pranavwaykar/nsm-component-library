@@ -18,6 +18,7 @@ const DocumentFlowChart = ({
   as,
   style,
   hidden,
+  customProps,
   className,
   role,
   tabIndex,
@@ -133,7 +134,7 @@ const DocumentFlowChart = ({
   }, [chartData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText]);
 
   return (
-    <Container id={`${id}-wrap`} className={`documentflowchart-container ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden}>
+    <Container id={`${id}-wrap`} className={`documentflowchart-container ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden} {...(customProps || {})}>
       <div id={id} style={{ width: '100%', height: '100%' }} />
     </Container>
   );
