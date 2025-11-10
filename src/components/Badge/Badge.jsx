@@ -60,6 +60,7 @@ export const Badge = forwardRef(
     ].filter(Boolean).join(" ");
 
     const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+    if (draggable && mergedStyle.cursor === undefined && !disabled && !loading) mergedStyle.cursor = 'grab';
     if (typeof radius === "number") mergedStyle.borderRadius = radius;
     if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
 

@@ -1,16 +1,31 @@
-import React from 'react';
-import Card from '../components/Card/Card';
-import { commonArgTypes } from './helpers/controls';
+import React from "react";
+import Card from "../components/Card/Card";
+import { commonArgTypes } from "./helpers/controls";
 
 export default {
-  title: 'Card Component',
+  title: "Card Component",
   component: Card,
-  parameters: { layout: 'centered' },
-  args: { title: 'Card Title', padding: 16 },
+  parameters: {
+    layout: "centered",
+    docs: {
+      source: {
+        language: "jsx",
+        code:
+`<Card title="Card Title">
+  <p>This is a generic container. Place any JSX inside.</p>
+</Card>`,
+      },
+      description: {
+        component:
+          "Card is a container component used to display content. It accepts the full set of universal/style props so you can control spacing, layout and theming consistently across the library.",
+      },
+    },
+  },
+  args: { title: "Card Title", padding: 16 },
   argTypes: {
     ...commonArgTypes,
-    padding: { control: { type: 'range', min: 0, max: 40, step: 2 } },
-    title: { control: 'text' },
+    padding: { table: { disable: true } },
+    title: { control: "text" },
   },
 };
 
@@ -21,5 +36,3 @@ export const Basic = (args) => (
     </Card>
   </div>
 );
-
-

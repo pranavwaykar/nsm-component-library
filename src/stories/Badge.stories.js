@@ -32,7 +32,6 @@ export default {
     icon: { control: "text" },
     label: { control: "text" },
     as: { control: "select", options: ["span", "a", "button", "div"] },
-    colorScheme: { table: { disable: true } },
   },
 };
 

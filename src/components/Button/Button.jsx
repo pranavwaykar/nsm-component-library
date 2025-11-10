@@ -32,7 +32,6 @@ export const Button = ({
   hidden,
   dir,
   lang,
-  color,
   tone,
   elevation,
   ...props
@@ -49,7 +48,6 @@ export const Button = ({
     disabled ? "is-disabled" : null,
     loading ? "is-loading" : null,
     typeof elevation === "number" ? `storybook-button--elev-${Math.max(0, Math.min(5, elevation))}` : null,
-    color ? `storybook-button--color-${color}` : null,
     tone && tone !== 'default' ? `storybook-button--tone-${tone}` : null,
     className,
   ]
@@ -60,6 +58,7 @@ export const Button = ({
   if (backgroundColor) inlineStyle.backgroundColor = backgroundColor;
   if (textColor) inlineStyle.color = textColor;
   if (typeof radius === 'number') inlineStyle.borderRadius = radius;
+  if (draggable && inlineStyle.cursor === undefined && !disabled && !loading) inlineStyle.cursor = 'grab';
   if (inlineStyle.opacity === undefined && inlineStyle['--sb-opacity']) {
     inlineStyle.opacity = inlineStyle['--sb-opacity'];
   }

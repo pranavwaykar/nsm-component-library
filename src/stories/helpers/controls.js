@@ -185,14 +185,10 @@ export const styleSystemArgTypes = {
   },
   color: { control: "color" },
   opacity: { control: "text" },
-  bg: { control: "text" },
-  bgColor: { control: "color" },
+  background: { control: "text" },
   backgroundColor: { control: "color" },
-  bgImage: { control: "text" },
-  bgGradient: { control: "text" },
   bgClip: { control: "text" },
   bgPos: { control: "text" },
-  bgSize: { control: "select", options: ["auto", "cover", "contain"] },
   bgRepeat: {
     control: "select",
     options: ["repeat", "repeat-x", "repeat-y", "no-repeat", "space", "round"],
@@ -302,10 +298,7 @@ export const styleSystemArgTypes = {
   aspectRatio: { control: "text" },
   visibility: { control: "select", options: ["visible", "hidden", "collapse"] },
   isolation: { control: "select", options: ["auto", "isolate"] },
-  contain: {
-    control: "select",
-    options: ["none", "content", "strict", "size", "layout", "paint", "style"],
-  },
+  // contain removed globally
   contentVisibility: {
     control: "select",
     options: ["visible", "auto", "hidden"],
@@ -332,7 +325,6 @@ export const visualCommonArgTypes = {
   elevation: { control: "select", options: [0, 1, 2, 3, 4, 5] },
   shadow: { control: "select", options: ["none", "sm", "md", "lg"] },
   tone: { control: "select", options: ["default", "subtle", "strong"] },
-  colorScheme: { control: "text" },
   disabled: { control: "boolean" },
   loading: { control: "boolean" },
 };

@@ -15,7 +15,12 @@ export default {
       description: { component: 'Breadcrumb communicates the user\'s location in the app hierarchy. Provide `items` as an ordered array of labels. The container supports universal/style props for spacing and placement within headers or pages.' },
     },
   },
-  argTypes: { ...commonArgTypes, separator: { control: 'text' } },
+  argTypes: {
+    ...commonArgTypes,
+    separator: { control: 'text' },
+    tone: { table: { disable: true } },
+    colorScheme: { table: { disable: true } },
+  },
 };
 
 export const Default = {

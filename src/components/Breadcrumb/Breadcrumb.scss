@@ -5,6 +5,7 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: var(--sb-radius-md);
+  transition: box-shadow .15s, background-color .15s, opacity .15s;
 }
 .crumb {
   color: #0f172a;
@@ -12,6 +13,7 @@
   font-weight: 600;
   display: inline-flex;
   align-items: center;
+  &.is-clickable { cursor: pointer; }
 }
 .sep {
   margin: 0 8px;
@@ -19,4 +21,24 @@
   display: inline-flex;
   align-items: center;
   line-height: 1;
+}
+
+/* variants */
+.breadcrumb--variant-ghost { background: transparent; }
+.breadcrumb--variant-solid { background: #fff; }
+/* tone removed for breadcrumb */
+
+/* sizes */
+.breadcrumb--size-sm { padding: 6px 10px; }
+.breadcrumb--size-sm .crumb { font-size: 11px; }
+.breadcrumb--size-md { padding: 10px 12px; }
+.breadcrumb--size-lg { padding: 14px 16px; }
+.breadcrumb--size-lg .crumb { font-size: 13px; }
+
+.breadcrumb.is-disabled {
+  opacity: .6;
+  pointer-events: none;
+}
+.breadcrumb.is-loading {
+  cursor: progress;
 }
