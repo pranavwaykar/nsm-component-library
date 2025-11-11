@@ -1,5 +1,5 @@
 :root {
-    --sb-font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    --sb-font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Helvetica, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
     --sb-text-color: #111827;
     --sb-muted-color: #6b7280;
     --sb-border-color: #e5e7eb;
@@ -57,12 +57,49 @@
   --iconDisabled2: #7e8b9f;
 }
   
-/* Global affordance for draggable components */
+body {
+  font-family: var(--sb-font-family);
+}
+
 [draggable="true"] {
   cursor: grab;
 }
 [draggable="true"]:active {
   cursor: grabbing;
+}
+
+.is-disabled {
+  opacity: .6;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+.is-loading {
+  opacity: .7;
+  position: relative;
+}
+.is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.0);
+}
+.is-loading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  margin-top: -14px;
+  margin-left: -14px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,0,0,.2);
+  border-top-color: rgba(0,0,0,.6);
+  animation: sbspin 700ms linear infinite;
+}
+@keyframes sbspin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
   

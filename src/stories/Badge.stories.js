@@ -18,12 +18,10 @@ export default {
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes,
-    // Badge-specific or overrides
     variant: { control: "select", options: ["solid", "outline", "ghost", "link"] },
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
     color: { control: "select", options: ["neutral", "primary", "success", "warning", "error", "info"] },
     tone: { control: "select", options: ["default", "subtle", "strong"] },
-    radius: { control: "text" },
     elevation: { control: "select", options: [0, 1, 2, 3, 4, 5] },
     shadow: { control: "select", options: ["none", "sm", "md", "lg"] },
     pill: { control: "boolean" },
@@ -45,7 +43,6 @@ export const Primary = {
     variant: "solid",
     color: "success",
     size: "sm",
-    radius: "md",
     tone: "default",
     elevation: 0,
     shadow: "none",

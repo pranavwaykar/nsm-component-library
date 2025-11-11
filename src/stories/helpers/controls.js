@@ -10,6 +10,7 @@ export const universalArgTypes = {
   dir: { control: "select", options: ["ltr", "rtl", "auto"] },
   "aria-label": { control: "text", name: "aria-label" },
   "data-testid": { control: "text", name: "data-testid" },
+  style: { control: "object" },
   onClick: { action: "click" },
   onDoubleClick: { action: "doubleClick" },
   onFocus: { action: "focus" },
@@ -322,9 +323,7 @@ export const styleSystemArgTypes = {
 export const visualCommonArgTypes = {
   variant: { control: "select", options: ["solid", "outline", "ghost", "link"] },
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
-  radius: { control: "text" },
   shadow: { control: "select", options: ["none", "sm", "md", "lg"] },
-  tone: { control: "select", options: ["default", "subtle", "strong"] },
   disabled: { control: "boolean" },
   loading: { control: "boolean" },
 };

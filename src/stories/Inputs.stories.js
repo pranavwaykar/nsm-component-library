@@ -25,45 +25,63 @@ export default {
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes,
-    sx: { control: "object" },
-    containerProps: { control: "object" },
+    style: { control: "object" },
+    containerProps: { table: { disable: true }  },
+    inputProps: { table: { disable: true }  },
+    inputColor: { control: "color", description: "Color of the input text" },
+    inputBorder: { control: "color", description: "Border color of the input control" },
+    inputBgColor: { control: "color", description: "Background color of the input control" },
+    leftSection: { control: "text", description: "Text/icon content shown on the left side of the control" },
+    rightSection: { control: "text", description: "Text/icon content shown on the right side of the control" },
+    caretDown: { control: "text", description: "Custom caret (closed state) for Single/Multi Select" },
+    caretUp: { control: "text", description: "Custom caret (open state) for Single/Multi Select" },
+    variant: { table: { disable: true }  },
   },
 };
 
 export const Text = {
   name: "Text",
   render: (args) => {
-    const [v, setV] = useState(args.value);
+    const [v, setV] = useState(args.text ?? "");
+    React.useEffect(() => {
+      setV(args.text ?? "");
+    }, [args.text]);
     return React.createElement(TextInput, {
       ...args,
-      value: v,
+      text: v,
       onChange: setV,
     });
   },
   args: {
     label: "Name",
-    value: "",
+    text: "",
     placeholder: "Enter name",
     id: "text-1",
     tabIndex: 0,
     "data-testid": "text-input",
   },
+  argTypes: { text: { control: "text" } },
 };
 
 export const Area = {
   name: "TextArea",
   render: (args) => {
-    const [v, setV] = useState(args.value);
+    const [v, setV] = useState(args.value ?? args.text ?? "");
+    React.useEffect(() => {
+      setV(args.value ?? args.text ?? "");
+    }, [args.value, args.text]);
     return React.createElement(TextArea, { ...args, value: v, onChange: setV });
   },
   args: {
     label: "Bio",
     value: "",
+    text: "",
     placeholder: "Write something…",
     rows: 4,
     id: "area-1",
     "data-testid": "area",
   },
+  argTypes: { text: { control: "text" } },
 };
 
 export const SelectSingle = {
@@ -245,13 +263,17 @@ export const DateRangePicker = {
 export const Search = {
   name: "Search",
   render: (args) => {
-    const [v, setV] = useState(args.value);
+    const [v, setV] = useState(args.value ?? args.text ?? "");
+    React.useEffect(() => {
+      setV(args.value ?? args.text ?? "");
+    }, [args.value, args.text]);
     const [cat, setCat] = useState(args.category);
     return React.createElement(SearchInput, { ...args, value: v, onChange: setV, category: cat, onCategoryChange: setCat });
   },
   args: {
     label: "",
     value: "",
+    text: "",
     placeholder:
       "Search within all folders and content, or a specific folder’s content",
     category: "all",
@@ -263,4 +285,5 @@ export const Search = {
       { value: "issue", label: "Issue Chronicles" },
     ],
   },
+  argTypes: { text: { control: "text" } },
 };

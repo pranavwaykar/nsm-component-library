@@ -19,9 +19,15 @@ const isRenderable = (v) =>
           React.isValidElement(x)
       )));
 
+function resolveElementType(as, fallback) {
+  if (!as) return fallback;
+  if (typeof as === "string") return as.trim() ? as : fallback;
+  return as;
+}
+
 export const TextInput = ({
   label,
-  value,
+  text,
   placeholder,
   error,
   helper,
@@ -33,9 +39,18 @@ export const TextInput = ({
   containerProps = {},
   inputProps = {},
   children,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  leftSection,
+  rightSection,
+  disabled = false,
+  loading = false,
+  size,
+  shadow,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const mergedStyle = {
     ...expandStyleProps(rest),
     ...(style || {}),
@@ -46,6 +61,7 @@ export const TextInput = ({
   const rootClass = [
     `sb-field`,
     error ? "is-error" : "",
+    disabled ? "is-disabled" : "",
     containerProps.className,
     className,
   ]
@@ -56,6 +72,25 @@ export const TextInput = ({
     className: _omitClass,
     ...containerRest
   } = containerProps;
+  const effectiveValue =
+    text !== undefined ? String(text) : undefined;
+  const sizeMap = {
+    xs: { padding: "4px 8px", fontSize: "12px" },
+    sm: { padding: "6px 10px", fontSize: "13px" },
+    md: { padding: "8px 10px", fontSize: "14px" },
+    lg: { padding: "10px 12px", fontSize: "16px" },
+    xl: { padding: "12px 14px", fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
+  const inputInlineStyle = {
+    ...(inputProps?.style || {}),
+    ...(inputColor !== undefined ? { color: inputColor } : {}),
+    ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+    ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+    ...(size && sizeMap[size] ? sizeMap[size] : {}),
+    ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+    ...(loading ? { paddingRight: "28px" } : {}),
+  };
   return (
     <Component
       className={rootClass}
@@ -64,13 +99,28 @@ export const TextInput = ({
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <input
-        className="sb-input"
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => onChange?.(e.target.value)}
-        {...inputProps}
-      />
+      <div className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}>
+        {leftSection ? (
+          <span className="sb-field__section sb-field__section--left" aria-hidden>
+            {leftSection}
+          </span>
+        ) : null}
+        <input
+          className={`sb-input ${leftSection ? "has-left-section" : ""} ${rightSection ? "has-right-section" : ""}`.trim()}
+          value={effectiveValue}
+          placeholder={placeholder}
+          onChange={(e) => onChange?.(e.target.value)}
+          disabled={disabled || loading}
+          style={inputInlineStyle}
+          {...inputProps}
+        />
+        {rightSection ? (
+          <span className="sb-field__section sb-field__section--right" aria-hidden>
+            {rightSection}
+          </span>
+        ) : null}
+        {loading ? <span className="sb-input-spinner" aria-hidden /> : null}
+      </div>
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
       ) : null}
@@ -84,16 +134,26 @@ export const TextInput = ({
 
 TextInput.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   error: PropTypes.string,
   helper: PropTypes.string,
   onChange: PropTypes.func,
+  inputColor: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
+  leftSection: PropTypes.node,
+  rightSection: PropTypes.node,
 };
 
 export const TextArea = ({
   label,
   value,
+  text,
   placeholder,
   rows = 4,
   error,
@@ -106,9 +166,16 @@ export const TextArea = ({
   containerProps = {},
   inputProps = {},
   children,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  leftSection,
+  rightSection,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const mergedStyle = {
     ...expandStyleProps(rest),
     ...(style || {}),
@@ -119,6 +186,8 @@ export const TextArea = ({
   const rootClass = [
     `sb-field`,
     error ? "is-error" : "",
+    disabled ? "is-disabled" : "",
+    loading ? "is-loading" : "",
     containerProps.className,
     className,
   ]
@@ -129,6 +198,14 @@ export const TextArea = ({
     className: _omitClass,
     ...containerRest
   } = containerProps;
+  const effectiveValue =
+    value !== undefined ? value : text !== undefined ? String(text) : undefined;
+  const textareaInlineStyle = {
+    ...(inputProps?.style || {}),
+    ...(inputColor !== undefined ? { color: inputColor } : {}),
+    ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+    ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+  };
   return (
     <Component
       className={rootClass}
@@ -137,14 +214,28 @@ export const TextArea = ({
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <textarea
-        className="sb-input sb-input--area"
-        rows={rows}
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => onChange?.(e.target.value)}
-        {...inputProps}
-      />
+      <div className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}>
+        {leftSection ? (
+          <span className="sb-field__section sb-field__section--left" aria-hidden>
+            {leftSection}
+          </span>
+        ) : null}
+        <textarea
+          className={`sb-input sb-input--area ${leftSection ? "has-left-section" : ""} ${rightSection ? "has-right-section" : ""}`.trim()}
+          rows={rows}
+          value={effectiveValue}
+          placeholder={placeholder}
+          onChange={(e) => onChange?.(e.target.value)}
+          disabled={disabled}
+          style={textareaInlineStyle}
+          {...inputProps}
+        />
+        {rightSection ? (
+          <span className="sb-field__section sb-field__section--right" aria-hidden>
+            {rightSection}
+          </span>
+        ) : null}
+      </div>
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
       ) : null}
@@ -176,9 +267,14 @@ export const Select = ({
   containerProps = {},
   selectProps = {},
   children,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const mergedStyle = {
     ...expandStyleProps(rest),
     ...(style || {}),
@@ -189,6 +285,8 @@ export const Select = ({
   const rootClass = [
     `sb-field`,
     error ? "is-error" : "",
+    disabled ? "is-disabled" : "",
+    loading ? "is-loading" : "",
     containerProps.className,
     className,
   ]
@@ -226,6 +324,7 @@ export const Select = ({
           }`.trim()}
           multiple={multiple}
           value={value}
+          disabled={disabled}
           onChange={(e) => {
             if (multiple) {
               const v = Array.from(e.target.selectedOptions).map(
@@ -235,6 +334,11 @@ export const Select = ({
             } else {
               onChange?.(e.target.value);
             }
+          }}
+          style={{
+            ...(selectProps?.style || {}),
+            ...(inputColor !== undefined ? { color: inputColor } : {}),
+            ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
           }}
           {...selectProps}
         >
@@ -283,6 +387,11 @@ Select.propTypes = {
   helper: PropTypes.string,
   leftSection: PropTypes.node,
   rightSection: PropTypes.node,
+  inputColor: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export const Checkbox = ({
@@ -294,17 +403,20 @@ export const Checkbox = ({
   as = "label",
   style,
   hidden,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
-    <Component className="sb-check" style={merged} {...rest}>
+    <Component className={`sb-check ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
+        disabled={disabled}
       />
       <span>{label}</span>
       {isRenderable(helper) ? (
@@ -321,6 +433,10 @@ Checkbox.propTypes = {
   label: PropTypes.string,
   checked: PropTypes.bool,
   onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
+  helper: PropTypes.string,
 };
 
 export const Toggle = ({
@@ -332,17 +448,20 @@ export const Toggle = ({
   as = "label",
   style,
   hidden,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
-    <Component className="sb-toggle" style={merged} {...rest}>
+    <Component className={`sb-toggle ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
+        disabled={disabled}
       />
       <span className="sb-toggle__track">
         <span className="sb-toggle__thumb" />
@@ -371,16 +490,18 @@ export const RadioGroup = ({
   as = "div",
   style,
   hidden,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "div");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
-    <Component className="sb-radio" style={merged} {...rest}>
+    <Component className={`sb-radio ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       {options.map((opt) => (
-        <label key={opt.value} onClick={() => onChange?.(opt.value)}>
+        <label key={opt.value} onClick={() => { if (disabled) return; onChange?.(opt.value); }}>
           <span>{opt.label}</span>
         </label>
       ))}
@@ -402,6 +523,8 @@ RadioGroup.propTypes = {
   onChange: PropTypes.func,
   error: PropTypes.string,
   helper: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export const RangeInput = ({
@@ -416,13 +539,17 @@ export const RangeInput = ({
   as = "label",
   style,
   hidden,
+  inputBorder,
+  inputBgColor,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
-    <Component className="sb-field" style={merged} {...rest}>
+    <Component className={`sb-field ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <input
         className="sb-range"
@@ -432,6 +559,12 @@ export const RangeInput = ({
         step={step}
         value={value}
         onChange={(e) => onChange?.(Number(e.target.value))}
+        disabled={disabled}
+        style={{
+          ...(rest?.styleForRange || {}),
+          ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+          ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+        }}
       />
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
@@ -452,6 +585,10 @@ RangeInput.propTypes = {
   onChange: PropTypes.func,
   error: PropTypes.string,
   helper: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export const FileInput = ({
@@ -462,6 +599,9 @@ export const FileInput = ({
   as = "div",
   style,
   hidden,
+  inputBgColor,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
   const ref = useRef(null);
@@ -472,12 +612,12 @@ export const FileInput = ({
     if (e.dataTransfer?.files?.length)
       onFiles?.(Array.from(e.dataTransfer.files));
   }
-  const Component = as;
+  const Component = resolveElementType(as, "div");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
     <Component
-      className={`sb-file ${hover ? "is-hover" : ""}`}
+      className={`sb-file ${hover ? "is-hover" : ""} ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
       style={merged}
       onDragOver={(e) => {
         e.preventDefault();
@@ -492,6 +632,8 @@ export const FileInput = ({
         className="sb-file__btn"
         type="button"
         onClick={() => ref.current?.click()}
+        disabled={disabled}
+        style={{ ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}) }}
       >
         Choose file
       </button>
@@ -502,6 +644,7 @@ export const FileInput = ({
         multiple={multiple}
         onChange={(e) => onFiles?.(Array.from(e.target.files || []))}
         hidden
+        disabled={disabled}
       />
       <div className="sb-file__hint">Drag & drop files here</div>
     </Component>
@@ -524,19 +667,29 @@ export const ColorPicker = ({
   as = "label",
   style,
   hidden,
+  inputBorder,
+  inputBgColor,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
-    <Component className="sb-field" style={merged} {...rest}>
+    <Component className={`sb-field ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <input
         className="sb-color"
         type="color"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        disabled={disabled}
+        style={{
+          ...(rest?.styleForColor || {}),
+          ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+          ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+        }}
       />
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
@@ -554,11 +707,16 @@ ColorPicker.propTypes = {
   onChange: PropTypes.func,
   error: PropTypes.string,
   helper: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export const DateInput = ({
   label,
   value,
+  text,
   onChange,
   placeholder = "",
   error,
@@ -566,20 +724,34 @@ export const DateInput = ({
   as = "label",
   style,
   hidden,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const effectiveValue =
+    value !== undefined ? value : text !== undefined ? String(text) : undefined;
   return (
-    <Component className="sb-field" style={merged} {...rest}>
+    <Component className={`sb-field ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
       {label ? <span className="sb-field__label">{label}</span> : null}
       <input
         className="sb-ms-trigger"
         type="date"
-        value={value}
+        value={effectiveValue}
         placeholder={placeholder}
         onChange={(e) => onChange?.(e.target.value)}
+        disabled={disabled}
+        style={{
+          ...(rest?.styleForDate || {}),
+          ...(inputColor !== undefined ? { color: inputColor } : {}),
+          ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+          ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+        }}
       />
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
@@ -594,10 +766,16 @@ export const DateInput = ({
 DateInput.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   error: PropTypes.string,
   helper: PropTypes.string,
+  inputColor: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export const MultiSelect = ({
@@ -614,6 +792,14 @@ export const MultiSelect = ({
   className,
   style,
   hidden,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  leftSection,
+  rightSection,
+  caretDown,
+  caretUp,
+  loading = false,
   ...rest
 }) => {
   const rootRef = useRef(null);
@@ -646,28 +832,37 @@ export const MultiSelect = ({
 
   const selectedOptions = options.filter((o) => value.includes(o.value));
 
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
     <Component
       ref={rootRef}
-      className={`sb-field ${error ? "is-error" : ""} ${
-        className || ""
-      }`.trim()}
+      className={`sb-field ${error ? "is-error" : ""} ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""} ${className || ""}`.trim()}
       style={merged}
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className={`sb-ms ${disabled ? "is-disabled" : ""}`}>
+      <div className={`sb-ms ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}>
         <button
           type="button"
-          className="sb-ms-trigger"
+          className={`sb-ms-trigger ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}
           onClick={() => setOpen((o) => !o)}
           disabled={disabled}
           aria-haspopup="listbox"
           aria-expanded={open}
+          style={{
+            ...(rest?.styleForTrigger || {}),
+            ...(inputColor !== undefined ? { color: inputColor } : {}),
+            ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+            ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+          }}
         >
+          {leftSection ? (
+            <span className="sb-field__section sb-field__section--left" aria-hidden>
+              {leftSection}
+            </span>
+          ) : null}
           {selectedOptions.length === 0 ? (
             <span className="sb-ms-placeholder">{placeholder}</span>
           ) : (
@@ -688,7 +883,14 @@ export const MultiSelect = ({
               </span>
             ))
           )}
-          <span className="sb-ms-caret">▾</span>
+          {rightSection ? (
+            <span className="sb-field__section sb-field__section--right" aria-hidden>
+              {rightSection}
+            </span>
+          ) : null}
+          <span className="sb-ms-caret" style={{ right: rightSection ? 34 : 10 }} aria-hidden>
+            {open ? (caretUp ?? "▴") : (caretDown ?? "▾")}
+          </span>
         </button>
 
         {open ? (
@@ -742,6 +944,14 @@ export const SingleSelect = ({
   className,
   style,
   hidden,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  leftSection,
+  rightSection,
+  caretDown,
+  caretUp,
+  loading = false,
   ...rest
 }) => {
   const rootRef = useRef(null);
@@ -764,34 +974,50 @@ export const SingleSelect = ({
     setOpen(false);
   }
 
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   return (
     <Component
       ref={rootRef}
-      className={`sb-field ${error ? "is-error" : ""} ${
-        className || ""
-      }`.trim()}
+      className={`sb-field ${error ? "is-error" : ""} ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""} ${className || ""}`.trim()}
       style={merged}
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className={`sb-ms ${disabled ? "is-disabled" : ""}`}>
+      <div className={`sb-ms ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}>
         <button
           type="button"
-          className="sb-ms-trigger"
+          className={`sb-ms-trigger ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}
           onClick={() => setOpen((o) => !o)}
           disabled={disabled}
           aria-haspopup="listbox"
           aria-expanded={open}
+          style={{
+            ...(rest?.styleForTrigger || {}),
+            ...(inputColor !== undefined ? { color: inputColor } : {}),
+            ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+            ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+          }}
         >
+          {leftSection ? (
+            <span className="sb-field__section sb-field__section--left" aria-hidden>
+              {leftSection}
+            </span>
+          ) : null}
           {selected ? (
             <span>{selected.label}</span>
           ) : (
             <span className="sb-ms-placeholder">{placeholder}</span>
           )}
-          <span className="sb-ms-caret">▾</span>
+          {rightSection ? (
+            <span className="sb-field__section sb-field__section--right" aria-hidden>
+              {rightSection}
+            </span>
+          ) : null}
+          <span className="sb-ms-caret" style={{ right: rightSection ? 34 : 10 }} aria-hidden>
+            {open ? (caretUp ?? "▴") : (caretDown ?? "▾")}
+          </span>
         </button>
 
         {open ? (
@@ -846,6 +1072,14 @@ SingleSelect.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
   helper: PropTypes.string,
+  inputColor: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  leftSection: PropTypes.node,
+  rightSection: PropTypes.node,
+  caretDown: PropTypes.node,
+  caretUp: PropTypes.node,
+  loading: PropTypes.bool,
 };
 
 function toStartOfMonth(d) {
@@ -900,6 +1134,8 @@ export const DateRange = ({
   placeholder = "MM/DD/YYYY – MM/DD/YYYY",
   onChange,
   disabled = false,
+  loading = false,
+  inputBgColor,
   error,
   helper,
   closeOnSelect = true,
@@ -1172,7 +1408,7 @@ export const DateRange = ({
     );
   }
 
-  const Component = as;
+  const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
 
@@ -1188,13 +1424,13 @@ export const DateRange = ({
   return (
     <Component
       ref={rootRef}
-      className={`sb-field ${error ? "is-error" : ""}`}
+      className={`sb-field ${error ? "is-error" : ""} ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
       style={merged}
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className={`sb-dr ${disabled ? "is-disabled" : ""}`}>
-        <div className="sb-ms-trigger sb-dr-trigger" aria-haspopup="dialog" aria-expanded={open}>
+      <div className={`sb-dr ${disabled ? "is-disabled" : ""}`.trim()}>
+        <div className="sb-ms-trigger sb-dr-trigger" aria-haspopup="dialog" aria-expanded={open} style={{ ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}) }}>
           <button
             type="button"
             className="sb-dr-inline sb-dr-prev"
@@ -1286,6 +1522,8 @@ DateRange.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  inputBgColor: PropTypes.string,
   error: PropTypes.string,
   helper: PropTypes.string,
   closeOnSelect: PropTypes.bool,
@@ -1294,6 +1532,7 @@ DateRange.propTypes = {
 export const SearchInput = ({
   label,
   value = "",
+  text,
   onChange,
   placeholder = "Search within all folders",
   categories = [
@@ -1308,9 +1547,14 @@ export const SearchInput = ({
   as = "div",
   style,
   hidden,
+  inputColor,
+  inputBorder,
+  inputBgColor,
+  disabled = false,
+  loading = false,
   ...rest
 }) => {
-  const Component = as;
+  const Component = resolveElementType(as, "div");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
   const [open, setOpen] = useState(false);
@@ -1330,17 +1574,20 @@ export const SearchInput = ({
     return () => document.removeEventListener("mousedown", handleDoc);
   }, []);
   const current = categories.find((c) => c.value === category) || categories[0];
+  const effectiveValue =
+    value !== undefined && value !== null
+      ? value
+      : text !== undefined
+      ? String(text)
+      : "";
 
-  // Speech-to-text (Web Speech API)
   const [listening, setListening] = useState(false);
   const recogRef = useRef(null);
   function startSpeech() {
     try {
-      // Standard / webkit variants
       const Recognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!Recognition) {
-        // No API support
         setListening(false);
         return;
       }
@@ -1370,16 +1617,17 @@ export const SearchInput = ({
   return (
     <Component
       ref={containerRef}
-      className="sb-search"
+      className={`sb-search ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
       style={merged}
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className="sb-search__inset">
+      <div className="sb-search__inset" style={{ ...(inputBorder !== undefined ? { border: inputBorder } : {}), ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}) }}>
         <button
           type="button"
           className={`sb-search__cat ${open ? "is-open" : ""}`}
           onClick={() => setOpen((o) => !o)}
+          disabled={disabled}
           aria-haspopup="listbox"
           aria-expanded={open}
         >
@@ -1422,8 +1670,10 @@ export const SearchInput = ({
               <input
                 ref={ref}
                 type="text"
-                value={value}
+                value={effectiveValue}
                 onChange={(e) => onChange?.(e.target.value)}
+                disabled={disabled}
+                style={{ ...(inputColor !== undefined ? { color: inputColor } : {}) }}
                 onBlur={() => setActive(false)}
               />
             ) : (
@@ -1434,6 +1684,7 @@ export const SearchInput = ({
             type="button"
             className="sb-search__mic"
             onClick={() => (listening ? stopSpeech() : startSpeech())}
+            disabled={disabled}
             aria-pressed={listening}
             aria-label="Voice search"
           >

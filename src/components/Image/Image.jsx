@@ -59,6 +59,12 @@ export const Image = ({
     setHasError(false);
   }, [isVisible, src]);
 
+  useEffect(() => {
+    if (!src || typeof src !== 'string' || !src.trim()) {
+      setIsVisible(true);
+      setHasError(true);
+    }
+  }, [src]);
   const classNames = [
     'sb-image',
     `sb-image--radius-${radius}`,
@@ -73,7 +79,6 @@ export const Image = ({
   ].filter(Boolean).join(' ');
 
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
-  // shadow prop support
   if (rest.shadow) {
     const map = { none: '0', sm: '1', md: '3', lg: '5' };
     const key = map[String(rest.shadow)];
@@ -84,6 +89,7 @@ export const Image = ({
   const Container = as || 'div';
   return (
     <Container ref={containerRef} className={classNames} style={mergedStyle} {...rest}>
+      {rest.loading ? <div className="sb-image__spinner" aria-hidden /> : null}
       {!isVisible && fallback ? (
         <div className="sb-image__fallback" aria-hidden="true">{fallback}</div>
       ) : null}

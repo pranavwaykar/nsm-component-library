@@ -19,7 +19,6 @@ export default {
   argTypes: {
     ...commonArgTypes,
     fit: { control: 'select', options: ['cover', 'contain', 'fill', 'none', 'scale-down'] },
-    radius: { control: 'select', options: ['none', 'sm', 'md', 'lg', 'pill'] },
     w: { control: 'text', description: 'container width' },
     h: { control: 'text', description: 'container height' },
     variant: { control: 'select', options: ['solid','outline','ghost'] },
@@ -45,7 +44,6 @@ export const Primary = {
     src: sampleImage,
     alt: 'Sample',
     fit: 'cover',
-    radius: 'md',
     fallback: 'Loading…',
     errorFallback: 'Failed to load',
     threshold: 0.1,

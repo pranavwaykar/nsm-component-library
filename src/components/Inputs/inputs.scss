@@ -7,8 +7,11 @@
   border-color: #ef4444;
 }
 .sb-field__label {
-  font-size: var(--sb-font-size-label);
-  color: #374151;
+  font-size: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
 }
 .sb-field__help {
   font-size: var(--sb-font-size-caption);
@@ -20,6 +23,11 @@
 }
 
 .sb-input {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   padding: 8px 10px;
@@ -37,10 +45,36 @@
   min-height: 96px;
 }
 
-/* adornments for select */
 .sb-field--select .sb-input-wrap {
   position: relative;
   display: inline-block;
+}
+
+.sb-input-wrap {
+  position: relative;
+  display: inline-block;
+  width: auto;
+}
+
+.sb-input-spinner {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+.sb-input-spinner::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.2);
+  border-top-color: rgba(0,0,0,.6);
+  animation: sbspin 700ms linear infinite;
+  will-change: transform;
 }
 .sb-field__section {
   position: absolute;
@@ -114,7 +148,11 @@
   left: 20px;
 }
 .sb-toggle__label {
-  font-size: var(--sb-font-size-base);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  color: inherit;
 }
 
 .sb-radio {
@@ -146,7 +184,11 @@
   font-size: var(--sb-font-size-base);
 }
 .sb-file__label {
-  font-size: var(--sb-font-size-label);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  color: inherit;
 }
 .sb-file.is-hover {
   background: #f9fafb;
@@ -190,6 +232,8 @@
   cursor: pointer;
   text-align: left;
 }
+.sb-ms-trigger.has-left { padding-left: 32px; }
+.sb-ms-trigger.has-right { padding-right: 56px; }
 .sb-ms-trigger:focus-visible {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;

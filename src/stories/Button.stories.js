@@ -41,10 +41,6 @@ export default {
       control: "select",
       options: ["xsmall", "small", "medium", "large", "xlarge"],
     },
-    radius: {
-      control: "select",
-      options: ["none", "sm", "md", "lg", "pill"],
-    },
     shadow: {
       control: "select",
       options: ["none", "sm", "md", "lg"],

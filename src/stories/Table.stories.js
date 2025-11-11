@@ -34,15 +34,11 @@ export default {
     selectable: { control: 'boolean' },
     expandable: { control: 'boolean' },
     optionsMenu: { control: 'boolean' },
-    // column augmentation
     extraColumns: { control: 'object', description: 'Extra columns to insert. Each item: { header, accessor, render?, at? } where at is number | "start" | "end".' },
     extraColumnsPlacement: { control: 'select', options: ['start','end'], description: 'Default placement when extra column item has no at.' },
-    // expansion and row menu
     expandedContent: { control: 'text', description: 'String or render function(row) returning content for expanded row.' },
     rowMenu: { control: 'object' },
     onRowMenu: { action: 'rowMenu' },
-    // styling props
-    radius: { control: 'text' },
     elevation: { control: 'select', options: [0,1,2,3,4,5] },
     shadow: { control: 'select', options: ['none','sm','md','lg'] },
     maxHeight: { control: 'text' },
@@ -78,7 +74,6 @@ export const Basic = {
       { label: 'Edit', value: 'edit' },
       { label: 'Delete', value: 'delete' },
     ],
-    radius: 'md',
     elevation: 0,
     shadow: 'none',
     m: '0',
