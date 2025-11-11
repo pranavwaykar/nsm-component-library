@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 import '../../index.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
 
-export const GridBox = forwardRef(({ columns = 'repeat(3, minmax(0, 1fr))', rows, gap = 12, style, hidden, children, as, ...rest }, ref) => {
+export const GridBox = forwardRef(({
+  columns = 'repeat(3, minmax(0, 1fr))',
+  rows,
+  gap = 12,
+  className,
+  style,
+  hidden,
+  disabled = false,
+  loading = false,
+  children,
+  as,
+  ...rest
+}, ref) => {
   const merged = {
     display: 'grid',
     gridTemplateColumns: columns,
@@ -14,14 +26,19 @@ export const GridBox = forwardRef(({ columns = 'repeat(3, minmax(0, 1fr))', rows
   };
   if (hidden === true && merged.display === undefined) merged.display = 'none';
   const Component = as || 'div';
-  return <Component ref={ref} style={merged} {...rest}>{children}</Component>;
+  const cls = `${className || ''} ${disabled ? 'is-disabled' : ''} ${loading ? 'is-loading' : ''}`.trim();
+  return <Component ref={ref} className={cls} style={merged} {...rest}>{children}</Component>;
 });
 
 GridBox.propTypes = {
   columns: PropTypes.string,
   rows: PropTypes.string,
   gap: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  className: PropTypes.string,
   style: PropTypes.object,
+  hidden: PropTypes.bool,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
   children: PropTypes.node,
   as: PropTypes.elementType,
 };

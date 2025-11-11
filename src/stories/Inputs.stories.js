@@ -25,6 +25,7 @@ export default {
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes,
+    showLabel: { control: "boolean", description: "Show or hide the field label" },
     style: { control: "object" },
     containerProps: { table: { disable: true }  },
     inputProps: { table: { disable: true }  },
@@ -146,6 +147,7 @@ export const SelectMulti = {
     chipRemovable: { control: "boolean" },
     inputColor: { table: { disable: true } },
     searchable: { control: "boolean" },
+    value: { table: { disable: true } },
   },
 };
 
@@ -172,6 +174,8 @@ export const Check = {
     inputBorder: { table: { disable: true } },
     inputBgColor: { table: { disable: true } },
     leftSection: { table: { disable: true } },
+    controlCheckboxSize: { control: "text", description: "Checkbox size (e.g., 18px, 1.2rem)" },
+    controlColor: { control: "color", description: "Checkbox check color (accent-color)" },
     w: { table: { disable: true } },
     h: { table: { disable: true } },
     minW: { table: { disable: true } },
@@ -200,6 +204,10 @@ export const ToggleSwitch = {
     inputBorder: { table: { disable: true } },
     inputBgColor: { table: { disable: true } },
     leftSection: { table: { disable: true } },
+    controlToggleSize: { control: "text", description: "Toggle height (e.g., 24px, 1.5rem, 120%)" },
+    toggleOnColor: { control: "color", description: "Track color when ON" },
+    toggleOffColor: { control: "color", description: "Track color when OFF" },
+    knobColor: { control: "color", description: "Thumb color" },
     w: { table: { disable: true } },
     h: { table: { disable: true } },
     minW: { table: { disable: true } },
@@ -220,6 +228,7 @@ export const Radio = {
     });
   },
   args: {
+    label: "Options",
     name: "grp",
     value: "a",
     options: [
@@ -229,19 +238,27 @@ export const Radio = {
     id: "radio-1",
     "data-testid": "radio",
   },
+  argTypes: {
+    value: { table: { disable: true } },
+    name: { table: { disable: true } },
+    text: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    inputBorder: { table: { disable: true } },
+    inputBgColor: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    rightSection: { table: { disable: true } },
+    controlRadioSize: { control: "text", description: "Radio control size (e.g., 16px, 1rem)" },
+  },
 };
 
-export const ChecksTogglesRadios = Check;
+
 
 export const Range = {
   name: "Range",
   render: (args) => {
-    const [v, setV] = useState(args.value);
-    return React.createElement(RangeInput, {
-      ...args,
-      value: v,
-      onChange: setV,
-    });
+    const [v, setV] = React.useState(args.value);
+    React.useEffect(() => { setV(args.value); }, [args.value]);
+    return React.createElement(RangeInput, { ...args, value: v, onChange: setV });
   },
   args: {
     label: "Volume",
@@ -251,18 +268,46 @@ export const Range = {
     step: 1,
     id: "range-1",
     "data-testid": "range",
+    sliderColor: "#2a44ca",
+    sliderThumbSize: "20px",
+  },
+  argTypes: {
+    step: { table: { disable: true } },
+    text: { table: { disable: true } },
+    placeholder: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    inputBgColor: { table: { disable: true } },
+    inputBorder: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    rightSection: { table: { disable: true } },
+    sliderColor: { control: "color", description: "Fill color of the slider" },
+    sliderThumbSize: { control: "text", description: "Thumb size (e.g., 18px, 1.2rem)" },
   },
 };
 
 export const File = {
   name: "File Input",
-  render: () =>
-    React.createElement(FileInput, {
-      label: "Upload files",
-      onFiles: () => {},
-      id: "file-1",
-      "data-testid": "file",
-    }),
+  render: (args) => React.createElement(FileInput, { ...args }),
+  args: {
+    label: "Upload files",
+    placeholder: "Choose file",
+    helper: "Drag & drop files here",
+    showLabel: true,
+    showHelper: true,
+    showPlaceholder: true,
+    fileRemovable: true,
+    error: "",
+    id: "file-1",
+    "data-testid": "file",
+  },
+  argTypes: {
+    text: { table: { disable: true } },
+    onFiles: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    inputBorder: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    rightSection: { table: { disable: true } },
+  },
 };
 
 export const Color = {
@@ -276,6 +321,15 @@ export const Color = {
     });
   },
   args: { label: "Pick color", id: "color-1", "data-testid": "color" },
+  argTypes: {
+    text: { table: { disable: true } },
+    placeholder: { table: { disable: true } },
+    helper: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    rightSection: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+  }
 };
 
 // export const DateField = {
@@ -303,6 +357,34 @@ export const DateRangePicker = {
     id: "dr-1",
     "data-testid": "dr",
   },
+  argTypes: {
+    value: { table: { disable: true } },
+    text: { table: { disable: true } },
+    placeholder: { control: "text" },
+    helper: { control: "text" },
+    error: { control: "text" },
+    triggerBgColor: { control: "color" },
+    menuBgColor: { control: "color" },
+    menuTextColor: { control: "color" },
+    menuBorderColor: { control: "color" },
+    placeholderColor: { control: "color" },
+    menuTitleColor: { control: "color" },
+    menuDowColor: { control: "color" },
+    menuDayColor: { control: "color" },
+    presetBgColor: { control: "color" },
+    presetButtonBgColor: { control: "color" },
+    presetButtonTextColor: { control: "color" },
+    prevArrowColor: { control: "color" },
+    nextArrowColor: { control: "color" },
+    menuW: { control: "text" },
+    menuH: { control: "text" },
+    menuMinW: { control: "text" },
+    menuMaxW: { control: "text" },
+    menuMinH: { control: "text" },
+    menuMaxH: { control: "text" },
+    menuPadding: { control: "text" },
+    menuMargin: { control: "text" },
+  }
 };
 
 export const Search = {
@@ -330,5 +412,27 @@ export const Search = {
       { value: "issue", label: "Issue Chronicles" },
     ],
   },
-  argTypes: { text: { control: "text" } },
+  argTypes: {
+    value: { table: { disable: true } },
+    text: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    category: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    inputTextColor: { control: "color" },
+    inputBgColor: { control: "color" },
+    inputBorder: { control: "text" },
+    placeholderColor: { control: "color" },
+    categoryBgColor: { control: "color" },
+    categoryTextColor: { control: "color" },
+    categoryIconColor: { control: "color" },
+    categoryChevronColor: { control: "color" },
+    menuBgColor: { control: "color" },
+    menuTextColor: { control: "color" },
+    menuBorderColor: { control: "color" },
+    menuW: { control: "text" },
+    menuH: { control: "text" },
+    searchIcon: { control: "text" },
+    micIcon: { control: "text" },
+    categoryChevronIcon: { control: "text" },
+  },
 };

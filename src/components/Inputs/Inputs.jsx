@@ -33,6 +33,7 @@ export const TextInput = ({
   helper,
   onChange,
   as = "label",
+  showLabel = true,
   className,
   style,
   hidden,
@@ -98,7 +99,7 @@ export const TextInput = ({
       {...containerRest}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}>
         {leftSection ? (
           <span className="sb-field__section sb-field__section--left" aria-hidden>
@@ -134,6 +135,7 @@ export const TextInput = ({
 
 TextInput.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   error: PropTypes.string,
@@ -159,6 +161,7 @@ export const TextArea = ({
   helper,
   onChange,
   as = "label",
+  showLabel = true,
   className,
   style,
   hidden,
@@ -234,7 +237,7 @@ export const TextArea = ({
       {...containerRest}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()} style={inputDims}>
         {leftSection ? (
           <span className="sb-field__section sb-field__section--left" aria-hidden>
@@ -281,6 +284,7 @@ export const Select = ({
   helper,
   caretIcon,
   as = "label",
+  showLabel = true,
   className,
   style,
   hidden,
@@ -344,7 +348,7 @@ export const Select = ({
       {...containerRest}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div
         className="sb-input-wrap"
         style={inputDims}
@@ -406,6 +410,7 @@ export const Select = ({
 
 Select.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
@@ -434,6 +439,7 @@ export const Checkbox = ({
   error,
   helper,
   as = "label",
+  showLabel = true,
   style,
   hidden,
   disabled = false,
@@ -441,6 +447,8 @@ export const Checkbox = ({
   rightSection,
   size,
   shadow,
+  controlCheckboxSize,
+  controlColor,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
@@ -465,9 +473,15 @@ export const Checkbox = ({
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
         disabled={disabled}
-        style={shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : undefined}
+        style={{
+          ...(shadowKey
+            ? { boxShadow: `var(--sb-shadow-${shadowKey}), 0 6px 18px rgba(0,0,0,.10)` }
+            : {}),
+          ...(controlCheckboxSize ? { width: controlCheckboxSize, height: controlCheckboxSize } : {}),
+          ...(controlColor ? { accentColor: controlColor } : {}),
+        }}
       />
-      <span>{label}</span>
+      {showLabel !== false && label ? <span>{label}</span> : null}
       {rightSection ? (
         <span className="sb-field__section sb-field__section--right" aria-hidden>
           {rightSection}
@@ -485,6 +499,7 @@ export const Checkbox = ({
 
 Checkbox.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   checked: PropTypes.bool,
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
@@ -494,6 +509,8 @@ Checkbox.propTypes = {
   rightSection: PropTypes.node,
   size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
   shadow: PropTypes.oneOf(["none","sm","md","lg"]),
+  controlCheckboxSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  controlColor: PropTypes.string,
 };
 
 export const Toggle = ({
@@ -503,6 +520,7 @@ export const Toggle = ({
   error,
   helper,
   as = "label",
+  showLabel = true,
   style,
   hidden,
   disabled = false,
@@ -510,6 +528,10 @@ export const Toggle = ({
   rightSection,
   size,
   shadow,
+  controlToggleSize,
+  toggleOnColor,
+  toggleOffColor,
+  knobColor,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
@@ -523,10 +545,20 @@ export const Toggle = ({
     xl: { fontSize: "18px" },
   };
   const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
+  const cssControlSize =
+    controlToggleSize !== undefined
+      ? typeof controlToggleSize === "number"
+        ? `${controlToggleSize}px`
+        : String(controlToggleSize)
+      : undefined;
   return (
     <Component
       className={`sb-toggle ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
-      style={{ ...merged, ...(size && sizeMap[size] ? sizeMap[size] : {}) }}
+      style={{
+        ...merged,
+        ...(size && sizeMap[size] ? sizeMap[size] : {}),
+        ...(cssControlSize ? { ["--t-h"]: cssControlSize } : {}),
+      }}
       {...rest}
     >
       <input
@@ -535,10 +567,23 @@ export const Toggle = ({
         onChange={(e) => onChange?.(e.target.checked)}
         disabled={disabled}
       />
-      <span className="sb-toggle__track" style={shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : undefined}>
-        <span className="sb-toggle__thumb" />
+      <span
+        className="sb-toggle__track"
+        style={{
+          ...(shadowKey
+            ? { boxShadow: `var(--sb-shadow-${shadowKey}), 0 6px 18px rgba(0,0,0,.10)` }
+            : {}),
+          background: checked ? (toggleOnColor || "#111827") : (toggleOffColor || "#e5e7eb"),
+        }}
+      >
+        <span
+          className="sb-toggle__thumb"
+          style={{
+            ...(knobColor ? { background: knobColor } : {}),
+          }}
+        />
       </span>
-      {label ? <span className="sb-toggle__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-toggle__label">{label}</span> : null}
       {rightSection ? (
         <span className="sb-field__section sb-field__section--right" aria-hidden>
           {rightSection}
@@ -554,7 +599,13 @@ export const Toggle = ({
   );
 };
 
-Toggle.propTypes = Checkbox.propTypes;
+Toggle.propTypes = {
+  ...Checkbox.propTypes,
+  controlToggleSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  toggleOnColor: PropTypes.string,
+  toggleOffColor: PropTypes.string,
+  knobColor: PropTypes.string,
+};
 
 export const RadioGroup = ({
   label,
@@ -565,23 +616,63 @@ export const RadioGroup = ({
   error,
   helper,
   as = "div",
+  showLabel = true,
   style,
   hidden,
   disabled = false,
   loading = false,
+  size,
+  shadow,
+  rightSection,
+  controlRadioSize,
+  radioInnerColor,
+  radioOuterColor,
   ...rest
 }) => {
   const Component = resolveElementType(as, "div");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { fontSize: "12px" },
+    sm: { fontSize: "13px" },
+    md: { fontSize: "14px" },
+    lg: { fontSize: "16px" },
+    xl: { fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
+  const cssRadioSize =
+    controlRadioSize !== undefined
+      ? typeof controlRadioSize === "number"
+        ? `${controlRadioSize}px`
+        : String(controlRadioSize)
+      : undefined;
   return (
-    <Component className={`sb-radio ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
-      {label ? <span className="sb-field__label">{label}</span> : null}
+    <Component className={`sb-radio ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={{ ...merged, ...(size && sizeMap[size] ? sizeMap[size] : {}) }} {...rest}>
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       {options.map((opt) => (
-        <label key={opt.value} onClick={() => { if (disabled) return; onChange?.(opt.value); }}>
+        <label key={opt.value}>
+          <input
+            type="radio"
+            name={name}
+            value={opt.value}
+            checked={value === opt.value}
+            onChange={() => { if (disabled) return; onChange?.(opt.value); }}
+            disabled={disabled}
+            style={{
+              ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+              ...(cssRadioSize ? { ["--radio-size"]: cssRadioSize } : {}),
+              ...(radioOuterColor ? { ["--radio-outer"]: radioOuterColor } : {}),
+              ...(radioInnerColor ? { ["--radio-inner"]: radioInnerColor } : {}),
+            }}
+          />
           <span>{opt.label}</span>
         </label>
       ))}
+      {rightSection ? (
+        <span className="sb-field__section sb-field__section--right" aria-hidden>
+          {rightSection}
+        </span>
+      ) : null}
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
       ) : null}
@@ -594,6 +685,7 @@ export const RadioGroup = ({
 
 RadioGroup.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   name: PropTypes.string,
   value: PropTypes.string,
   options: PropTypes.array,
@@ -602,6 +694,12 @@ RadioGroup.propTypes = {
   helper: PropTypes.string,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
+  rightSection: PropTypes.node,
+  controlRadioSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  radioInnerColor: PropTypes.string,
+  radioOuterColor: PropTypes.string,
 };
 
 export const RangeInput = ({
@@ -614,20 +712,50 @@ export const RangeInput = ({
   error,
   helper,
   as = "label",
+  showLabel = true,
   style,
   hidden,
   inputBorder,
   inputBgColor,
+  sliderColor,
+  sliderThumbSize,
+  size,
+  shadow,
   disabled = false,
   loading = false,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
-  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  const expanded = expandStyleProps(rest);
+  const dimKeys = [
+    "width","height","minWidth","maxWidth","minHeight","maxHeight",
+    "margin","marginTop","marginRight","marginBottom","marginLeft",
+    "padding","paddingTop","paddingRight","paddingBottom","paddingLeft"
+  ];
+  const inputDims = {};
+  const merged = { ...expanded, ...(style || {}) };
+  dimKeys.forEach((k) => {
+    if (merged[k] !== undefined) {
+      inputDims[k] = merged[k];
+      delete merged[k];
+    }
+  });
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { track: "4px", thumb: "12px" },
+    sm: { track: "5px", thumb: "14px" },
+    md: { track: "6px", thumb: "16px" },
+    lg: { track: "7px", thumb: "18px" },
+    xl: { track: "8px", thumb: "20px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
+  const percent =
+    typeof value === "number" && typeof min === "number" && typeof max === "number" && max > min
+      ? Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
+      : 0;
   return (
     <Component className={`sb-field ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <input
         className="sb-range"
         type="range"
@@ -641,6 +769,26 @@ export const RangeInput = ({
           ...(rest?.styleForRange || {}),
           ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
           ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+          ...(size && sizeMap[size]
+            ? { ["--range-h"]: sizeMap[size].track, ["--range-thumb-d"]: sizeMap[size].thumb }
+            : {}),
+          ...(sliderThumbSize !== undefined
+            ? {
+                ["--range-thumb-d"]:
+                  typeof sliderThumbSize === "number"
+                    ? `${sliderThumbSize}px`
+                    : String(sliderThumbSize),
+              }
+            : {}),
+          ...(shadowKey ? { ["--range-thumb-shadow"]: `var(--sb-shadow-${shadowKey})` } : {}),
+          ...(sliderColor
+            ? {
+                // Proper two-color gradient with duplicated stops for crisp split
+                background: `linear-gradient(to right, ${sliderColor} 0%, ${sliderColor} ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`,
+                ["--range-slider-color"]: sliderColor,
+              }
+            : {}),
+          ...inputDims,
         }}
       />
       {isRenderable(helper) ? (
@@ -655,6 +803,7 @@ export const RangeInput = ({
 
 RangeInput.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   value: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
@@ -664,6 +813,10 @@ RangeInput.propTypes = {
   helper: PropTypes.string,
   inputBorder: PropTypes.string,
   inputBgColor: PropTypes.string,
+  sliderColor: PropTypes.string,
+  sliderThumbSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
 };
@@ -674,28 +827,58 @@ export const FileInput = ({
   accept,
   multiple = false,
   as = "div",
+  showLabel = true,
+  showHelper = true,
+  showPlaceholder = true,
+  placeholder = "Choose file",
+  helper,
+  error,
   style,
   hidden,
   inputBgColor,
+  inputBorder,
+  size,
+  shadow,
+  fileRemovable = true,
   disabled = false,
   loading = false,
   ...rest
 }) => {
   const ref = useRef(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [hover, setHover] = useState(false);
   function onDrop(e) {
     e.preventDefault();
     setHover(false);
-    if (e.dataTransfer?.files?.length)
-      onFiles?.(Array.from(e.dataTransfer.files));
+    if (e.dataTransfer?.files?.length) {
+      const f = Array.from(e.dataTransfer.files);
+      setSelectedFiles(f);
+      onFiles?.(f);
+    }
   }
   const Component = resolveElementType(as, "div");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const inputId = rest?.id;
+  const sizeMap = {
+    xs: { fontSize: "12px" },
+    sm: { fontSize: "13px" },
+    md: { fontSize: "14px" },
+    lg: { fontSize: "16px" },
+    xl: { fontSize: "18px" },
+  };
+  const padMap = {
+    xs: "4px 8px",
+    sm: "5px 9px",
+    md: "6px 10px",
+    lg: "8px 12px",
+    xl: "10px 14px",
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   return (
     <Component
-      className={`sb-file ${hover ? "is-hover" : ""} ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
-      style={merged}
+      className={`sb-file ${hover ? "is-hover" : ""} ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""} ${error ? "is-error" : ""}`.trim()}
+      style={{ ...merged, ...(size && sizeMap[size] ? sizeMap[size] : {}) }}
       onDragOver={(e) => {
         e.preventDefault();
         setHover(true);
@@ -704,32 +887,92 @@ export const FileInput = ({
       onDrop={onDrop}
       {...rest}
     >
-      {label ? <div className="sb-file__label">{label}</div> : null}
-      <button
-        className="sb-file__btn"
-        type="button"
-        onClick={() => ref.current?.click()}
-        disabled={disabled}
-        style={{ ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}) }}
-      >
-        Choose file
-      </button>
+      {showLabel !== false && label ? (
+        inputId ? (
+          <label className="sb-file__label" htmlFor={inputId}>
+            {label}
+          </label>
+        ) : (
+          <div className="sb-file__label" onClick={() => ref.current?.click()}>{label}</div>
+        )
+      ) : null}
+      {showPlaceholder !== false ? (
+        <button
+          className="sb-file__btn"
+          type="button"
+          onClick={() => ref.current?.click()}
+          disabled={disabled || loading}
+          style={{
+            ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+            ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+            ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+            ...(size && padMap[size] ? { padding: padMap[size] } : {}),
+          }}
+        >
+          {placeholder}
+        </button>
+      ) : null}
       <input
         ref={ref}
         type="file"
+        id={inputId}
         accept={accept}
         multiple={multiple}
-        onChange={(e) => onFiles?.(Array.from(e.target.files || []))}
+        onChange={(e) => {
+          const f = Array.from(e.target.files || []);
+          setSelectedFiles(f);
+          onFiles?.(f);
+        }}
         hidden
-        disabled={disabled}
+        disabled={disabled || loading}
       />
-      <div className="sb-file__hint">Drag & drop files here</div>
+      {showHelper !== false ? (
+        <div className="sb-file__hint">{helper || "Drag & drop files here"}</div>
+      ) : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
+      {selectedFiles.length ? (
+        <ul className="sb-file__list">
+          {selectedFiles.map((f, i) => (
+            <li key={`${f.name}-${i}`}>
+              {f.name}
+              {fileRemovable ? (
+                <button
+                  type="button"
+                  className="sb-file__remove"
+                  aria-label={`Remove ${f.name}`}
+                  onClick={() => {
+                    const next = selectedFiles.filter((_, idx) => idx !== i);
+                    setSelectedFiles(next);
+                    onFiles?.(next);
+                    if (next.length === 0 && ref.current) {
+                      try { ref.current.value = ""; } catch (_) {}
+                    }
+                  }}
+                  disabled={disabled || loading}
+                >
+                  ×
+                </button>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </Component>
   );
 };
 
 FileInput.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
+  showHelper: PropTypes.bool,
+  showPlaceholder: PropTypes.bool,
+  placeholder: PropTypes.string,
+  helper: PropTypes.string,
+  error: PropTypes.string,
+  inputBorder: PropTypes.string,
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
+  fileRemovable: PropTypes.bool,
   onFiles: PropTypes.func,
   accept: PropTypes.string,
   multiple: PropTypes.bool,
@@ -742,20 +985,40 @@ export const ColorPicker = ({
   error,
   helper,
   as = "label",
+  showLabel = true,
   style,
   hidden,
   inputBorder,
   inputBgColor,
+  size,
+  shadow,
   disabled = false,
   loading = false,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
-  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  const expanded = expandStyleProps(rest);
+  const dimKeys = ["width","height","minWidth","maxWidth","minHeight","maxHeight"];
+  const inputDims = {};
+  const merged = { ...expanded, ...(style || {}) };
+  dimKeys.forEach((k) => {
+    if (merged[k] !== undefined) {
+      inputDims[k] = merged[k];
+      delete merged[k];
+    }
+  });
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { padding: "2px 4px", fontSize: "12px" },
+    sm: { padding: "3px 6px", fontSize: "13px" },
+    md: { padding: "3px 6px", fontSize: "14px" },
+    lg: { padding: "4px 8px", fontSize: "16px" },
+    xl: { padding: "5px 10px", fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   return (
     <Component className={`sb-field ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <input
         className="sb-color"
         type="color"
@@ -766,6 +1029,9 @@ export const ColorPicker = ({
           ...(rest?.styleForColor || {}),
           ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
           ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+          ...(size && sizeMap[size] ? sizeMap[size] : {}),
+          ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+          ...inputDims,
         }}
       />
       {isRenderable(helper) ? (
@@ -780,12 +1046,15 @@ export const ColorPicker = ({
 
 ColorPicker.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   value: PropTypes.string,
   onChange: PropTypes.func,
   error: PropTypes.string,
   helper: PropTypes.string,
   inputBorder: PropTypes.string,
   inputBgColor: PropTypes.string,
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
 };
@@ -799,6 +1068,7 @@ export const DateInput = ({
   error,
   helper,
   as = "label",
+  showLabel = true,
   style,
   hidden,
   inputColor,
@@ -815,7 +1085,7 @@ export const DateInput = ({
     value !== undefined ? value : text !== undefined ? String(text) : undefined;
   return (
     <Component className={`sb-field ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <input
         className="sb-ms-trigger"
         type="date"
@@ -842,6 +1112,7 @@ export const DateInput = ({
 
 DateInput.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   value: PropTypes.string,
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
@@ -866,6 +1137,7 @@ export const MultiSelect = ({
   helper,
   closeOnSelect = true,
   as = "label",
+  showLabel = true,
   className,
   style,
   hidden,
@@ -962,7 +1234,7 @@ export const MultiSelect = ({
       style={merged}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-ms ${disabled ? "is-disabled" : ""}`.trim()}>
         <button
           type="button"
@@ -1125,6 +1397,7 @@ export const SingleSelect = ({
   error,
   helper,
   as = "label",
+  showLabel = true,
   className,
   style,
   hidden,
@@ -1190,7 +1463,7 @@ export const SingleSelect = ({
       style={merged}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-ms ${disabled ? "is-disabled" : ""}`.trim()}>
         <button
           type="button"
@@ -1282,6 +1555,7 @@ export const SingleSelect = ({
 
 SingleSelect.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   value: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
@@ -1362,14 +1636,39 @@ export const DateRange = ({
   onChange,
   disabled = false,
   loading = false,
-  inputBgColor,
+  triggerBgColor,
   error,
   helper,
   closeOnSelect = true,
   granularity = "day", // 'day' | 'month'
   as = "label",
+  showLabel = true,
   style,
   hidden,
+  menuBgColor,
+  menuTextColor,
+  menuBorderColor,
+  placeholderColor,
+  // fine grained menu colors
+  menuTitleColor,
+  menuDowColor,
+  menuDayColor,
+  // presets and arrows
+  presetBgColor,
+  presetButtonBgColor,
+  presetButtonTextColor,
+  prevArrowColor,
+  nextArrowColor,
+  // dropdown sizing/spacing
+  menuW,
+  menuH,
+  menuMinW,
+  menuMaxW,
+  menuMinH,
+  menuMaxH,
+  menuPadding,
+  menuMargin,
+  menuPlacement = "bottom-left",
   ...rest
 }) => {
   const rootRef = useRef(null);
@@ -1636,8 +1935,18 @@ export const DateRange = ({
   }
 
   const Component = resolveElementType(as, "label");
-  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  const expanded = expandStyleProps(rest);
+  const merged = { ...expanded, ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  // Move padding to trigger; keep margins on wrapper
+  const triggerStyle = {};
+  ["padding","paddingTop","paddingRight","paddingBottom","paddingLeft",
+   "width","minWidth","maxWidth","height","minHeight","maxHeight"].forEach((k) => {
+    if (merged[k] !== undefined) {
+      triggerStyle[k] = merged[k];
+      delete merged[k];
+    }
+  });
 
   function shiftMonth(delta) {
     if (disabled || granularity !== "month") return;
@@ -1655,9 +1964,18 @@ export const DateRange = ({
       style={merged}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div className={`sb-dr ${disabled ? "is-disabled" : ""}`.trim()}>
-        <div className="sb-ms-trigger sb-dr-trigger" aria-haspopup="dialog" aria-expanded={open} style={{ ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}) }}>
+        <div
+          className="sb-ms-trigger sb-dr-trigger"
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+          style={{
+            ...(triggerBgColor !== undefined ? { backgroundColor: triggerBgColor } : {}),
+            ...triggerStyle,
+          }}
+        >
           <button
             type="button"
             className="sb-dr-inline sb-dr-prev"
@@ -1668,19 +1986,20 @@ export const DateRange = ({
               shiftMonth(-1);
             }}
             disabled={disabled || granularity !== "month"}
+            style={{ ...(prevArrowColor ? { color: prevArrowColor } : {}) }}
           >
             <i className="fi fi-rr-angle-small-left" />
           </button>
           <button
             type="button"
             className="sb-dr-label"
-            onClick={() => setOpen((o) => !o)}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpen((o) => !o); }}
             disabled={disabled}
           >
             {display ? (
               <span>{display}</span>
             ) : (
-              <span className="sb-ms-placeholder">{placeholder}</span>
+              <span className="sb-ms-placeholder" style={{ ...(placeholderColor ? { color: placeholderColor } : {}) }}>{placeholder}</span>
             )}
           </button>
           <button
@@ -1693,6 +2012,7 @@ export const DateRange = ({
               shiftMonth(1);
             }}
             disabled={disabled || granularity !== "month"}
+            style={{ ...(nextArrowColor ? { color: nextArrowColor } : {}) }}
           >
             <i className="fi fi-rr-angle-small-right" />
           </button>
@@ -1705,6 +2025,34 @@ export const DateRange = ({
             onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
+            }}
+            style={{
+              ...(menuBgColor !== undefined ? { background: menuBgColor } : {}),
+              ...(menuTextColor !== undefined ? { color: menuTextColor } : {}),
+              ...(menuBorderColor !== undefined ? { borderColor: menuBorderColor } : {}),
+              ...(menuBgColor !== undefined ? { ["--dr-menu-bg"]: menuBgColor } : {}),
+              ...(menuTextColor !== undefined ? { ["--dr-menu-text"]: menuTextColor } : {}),
+              ...(menuBorderColor !== undefined ? { ["--dr-menu-border"]: menuBorderColor } : {}),
+              ...(menuTitleColor !== undefined ? { ["--dr-title-color"]: menuTitleColor } : {}),
+              ...(menuDowColor !== undefined ? { ["--dr-dow-color"]: menuDowColor } : {}),
+              ...(menuDayColor !== undefined ? { ["--dr-day-color"]: menuDayColor } : {}),
+              ...(presetBgColor !== undefined ? { ["--dr-preset-bg"]: presetBgColor } : {}),
+              ...(presetButtonBgColor !== undefined ? { ["--dr-preset-btn-bg"]: presetButtonBgColor } : {}),
+              ...(presetButtonTextColor !== undefined ? { ["--dr-preset-btn-text"]: presetButtonTextColor } : {}),
+              ...(prevArrowColor !== undefined ? { ["--dr-prev-color"]: prevArrowColor } : {}),
+              ...(nextArrowColor !== undefined ? { ["--dr-next-color"]: nextArrowColor } : {}),
+              ...(menuW ? { width: menuW } : {}),
+              ...(menuH ? { height: menuH } : {}),
+              ...(menuMinW ? { minWidth: menuMinW } : {}),
+              ...(menuMaxW ? { maxWidth: menuMaxW } : {}),
+              ...(menuMinH ? { minHeight: menuMinH } : {}),
+              ...(menuMaxH ? { maxHeight: menuMaxH } : {}),
+              ...(menuPadding ? { padding: menuPadding } : {}),
+              ...(menuMargin ? { margin: menuMargin } : {}),
+              ...(menuPlacement === "bottom-left" ? { top: "calc(100% + 4px)", bottom: "auto", left: 0, right: "auto" } : {}),
+              ...(menuPlacement === "bottom-right" ? { top: "calc(100% + 4px)", bottom: "auto", left: "auto", right: 0 } : {}),
+              ...(menuPlacement === "top-left" ? { top: "auto", bottom: "calc(100% + 4px)", left: 0, right: "auto" } : {}),
+              ...(menuPlacement === "top-right" ? { top: "auto", bottom: "calc(100% + 4px)", left: "auto", right: 0 } : {}),
             }}
           >
             {granularity === "month" ? (
@@ -1745,12 +2093,34 @@ export const DateRange = ({
 
 DateRange.propTypes = {
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   value: PropTypes.shape({ start: PropTypes.string, end: PropTypes.string }),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
-  inputBgColor: PropTypes.string,
+  triggerBgColor: PropTypes.string,
+  menuBgColor: PropTypes.string,
+  menuTextColor: PropTypes.string,
+  menuBorderColor: PropTypes.string,
+  placeholderColor: PropTypes.string,
+  menuTitleColor: PropTypes.string,
+  menuDowColor: PropTypes.string,
+  menuDayColor: PropTypes.string,
+  presetBgColor: PropTypes.string,
+  presetButtonBgColor: PropTypes.string,
+  presetButtonTextColor: PropTypes.string,
+  prevArrowColor: PropTypes.string,
+  nextArrowColor: PropTypes.string,
+  menuW: PropTypes.string,
+  menuH: PropTypes.string,
+  menuMinW: PropTypes.string,
+  menuMaxW: PropTypes.string,
+  menuMinH: PropTypes.string,
+  menuMaxH: PropTypes.string,
+  menuPadding: PropTypes.string,
+  menuMargin: PropTypes.string,
+  menuPlacement: PropTypes.oneOf(["bottom-left","bottom-right","top-left","top-right"]),
   error: PropTypes.string,
   helper: PropTypes.string,
   closeOnSelect: PropTypes.bool,
@@ -1772,11 +2142,28 @@ export const SearchInput = ({
   category = "all",
   onCategoryChange,
   as = "div",
+  showLabel = true,
   style,
   hidden,
-  inputColor,
+  inputTextColor,
+  inputColor, /* backward compat -> inputTextColor */
   inputBorder,
   inputBgColor,
+  placeholderColor,
+  categoryBgColor,
+  categoryTextColor,
+  categoryIconColor,
+  categoryChevronColor,
+  searchIcon,
+  micIcon,
+  categoryChevronIcon,
+  menuBgColor,
+  menuTextColor,
+  menuBorderColor,
+  menuW,
+  menuH,
+  helper,
+  error,
   disabled = false,
   loading = false,
   ...rest
@@ -1848,7 +2235,7 @@ export const SearchInput = ({
       style={merged}
       {...rest}
     >
-      {label ? <span className="sb-field__label">{label}</span> : null}
+      {showLabel !== false && label ? <span className="sb-field__label">{label}</span> : null}
       <div className="sb-search__inset" style={{ ...(inputBorder !== undefined ? { border: inputBorder } : {}), ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}) }}>
         <button
           type="button"
@@ -1857,17 +2244,19 @@ export const SearchInput = ({
           disabled={disabled}
           aria-haspopup="listbox"
           aria-expanded={open}
+          style={{ ...(categoryBgColor !== undefined ? { background: categoryBgColor } : {}), ...(categoryTextColor !== undefined ? { color: categoryTextColor } : {}) }}
         >
           <div className="sb-search__cat-content">
-            <i className="fi fi-rr-folder" />
+            {searchIcon === undefined ? <i className="fi fi-rr-folder" style={{ ...(categoryIconColor ? { color: categoryIconColor } : {}) }} /> : searchIcon}
             <span>{current.label}</span>
           </div>
-          <i className="fi fi-rr-angle-small-down" aria-hidden />
+          {categoryChevronIcon !== undefined ? categoryChevronIcon : <i className="fi fi-rr-angle-small-down" aria-hidden style={{ ...(categoryChevronColor ? { color: categoryChevronColor } : {}) }} />}
         </button>
         {open ? (
           <div
             className="sb-search__menu"
             role="listbox"
+            style={{ ...(menuBgColor ? { background: menuBgColor } : {}), ...(menuTextColor ? { color: menuTextColor } : {}), ...(menuBorderColor ? { borderColor: menuBorderColor } : {}), ...(menuW ? { width: menuW } : {}), ...(menuH ? { height: menuH, overflow: "auto" } : {}) }}
             onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -1891,7 +2280,7 @@ export const SearchInput = ({
         ) : null}
 
         <div className="sb-search__input">
-          <i className="fi fi-rr-search" onClick={() => setActive(true)} />
+          {searchIcon !== undefined ? <span onClick={() => setActive(true)}>{searchIcon}</span> : <i className="fi fi-rr-search" onClick={() => setActive(true)} />}
           <div className="sb-search__content">
             {active || value ? (
               <input
@@ -1900,11 +2289,12 @@ export const SearchInput = ({
                 value={effectiveValue}
                 onChange={(e) => onChange?.(e.target.value)}
                 disabled={disabled}
-                style={{ ...(inputColor !== undefined ? { color: inputColor } : {}) }}
+                style={{ ...(inputTextColor !== undefined ? { color: inputTextColor } : {}), ...(inputTextColor === undefined && inputColor !== undefined ? { color: inputColor } : {}) }}
                 onBlur={() => setActive(false)}
+                placeholder={placeholder}
               />
             ) : (
-              <div onClick={() => setActive(true)}>{placeholder}</div>
+              <div onClick={() => setActive(true)} style={{ ...(placeholderColor ? { color: placeholderColor } : {}) }}>{placeholder}</div>
             )}
           </div>
           <button
@@ -1915,10 +2305,46 @@ export const SearchInput = ({
             aria-pressed={listening}
             aria-label="Voice search"
           >
-            <i className="fi fi-tr-circle-microphone" />
+            {micIcon !== undefined ? micIcon : <i className="fi fi-tr-circle-microphone" />}
           </button>
         </div>
       </div>
+      {isRenderable(helper) ? <span className="sb-field__help">{helper}</span> : null}
+      {isRenderable(error) ? <span className="sb-field__error">{error}</span> : null}
     </Component>
   );
+};
+
+SearchInput.propTypes = {
+  label: PropTypes.string,
+  showLabel: PropTypes.bool,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string,
+  categories: PropTypes.array,
+  category: PropTypes.string,
+  onCategoryChange: PropTypes.func,
+  as: PropTypes.string,
+  style: PropTypes.object,
+  hidden: PropTypes.bool,
+  inputTextColor: PropTypes.string,
+  inputBorder: PropTypes.string,
+  inputBgColor: PropTypes.string,
+  placeholderColor: PropTypes.string,
+  categoryBgColor: PropTypes.string,
+  categoryTextColor: PropTypes.string,
+  categoryIconColor: PropTypes.string,
+  categoryChevronColor: PropTypes.string,
+  searchIcon: PropTypes.node,
+  micIcon: PropTypes.node,
+  categoryChevronIcon: PropTypes.node,
+  menuBgColor: PropTypes.string,
+  menuTextColor: PropTypes.string,
+  menuBorderColor: PropTypes.string,
+  menuW: PropTypes.string,
+  menuH: PropTypes.string,
+  helper: PropTypes.string,
+  error: PropTypes.string,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };

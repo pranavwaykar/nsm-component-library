@@ -41,11 +41,11 @@ export const Primary = {
   name: 'Image',
   args: {
     as: 'div', id: 'image-1', 'data-testid': 'image', tabIndex: 0, dir: 'ltr', hidden: false,
-    src: sampleImage,
+    src: "/src/assetshfsvj/avif-test-image.avif",
     alt: 'Sample',
     fit: 'cover',
     fallback: 'Loading…',
-    errorFallback: 'Failed to load',
+    errorFallback: 'Failed to load image',
     threshold: 0.1,
     rootMargin: '200px',
     m: '0', w: '320px', h: '200px',
