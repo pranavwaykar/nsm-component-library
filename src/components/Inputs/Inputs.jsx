@@ -152,7 +152,6 @@ TextInput.propTypes = {
 
 export const TextArea = ({
   label,
-  value,
   text,
   placeholder,
   rows = 4,
@@ -173,14 +172,26 @@ export const TextArea = ({
   rightSection,
   disabled = false,
   loading = false,
+  size,
+  shadow,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
+  const expanded = expandStyleProps(rest);
+  const dimKeys = ["width","height","minWidth","maxWidth","minHeight","maxHeight"];
+  const inputDims = {};
   const mergedStyle = {
-    ...expandStyleProps(rest),
+    ...expanded,
     ...(style || {}),
     ...(containerProps.style || {}),
   };
+  // Move dimension-related props to the input container instead of the outer wrapper
+  dimKeys.forEach((k) => {
+    if (mergedStyle[k] !== undefined) {
+      inputDims[k] = mergedStyle[k];
+      delete mergedStyle[k];
+    }
+  });
   if (hidden === true && mergedStyle.display === undefined)
     mergedStyle.display = "none";
   const rootClass = [
@@ -198,13 +209,23 @@ export const TextArea = ({
     className: _omitClass,
     ...containerRest
   } = containerProps;
-  const effectiveValue =
-    value !== undefined ? value : text !== undefined ? String(text) : undefined;
+  const effectiveValue = text !== undefined ? String(text) : undefined;
+  const sizeMap = {
+    xs: { padding: "4px 8px", fontSize: "12px" },
+    sm: { padding: "6px 10px", fontSize: "13px" },
+    md: { padding: "8px 10px", fontSize: "14px" },
+    lg: { padding: "10px 12px", fontSize: "16px" },
+    xl: { padding: "12px 14px", fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   const textareaInlineStyle = {
     ...(inputProps?.style || {}),
     ...(inputColor !== undefined ? { color: inputColor } : {}),
     ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
     ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+    ...(size && sizeMap[size] ? sizeMap[size] : {}),
+    ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+    ...inputDims,
   };
   return (
     <Component
@@ -214,7 +235,7 @@ export const TextArea = ({
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}>
+      <div className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()} style={inputDims}>
         {leftSection ? (
           <span className="sb-field__section sb-field__section--left" aria-hidden>
             {leftSection}
@@ -226,7 +247,7 @@ export const TextArea = ({
           value={effectiveValue}
           placeholder={placeholder}
           onChange={(e) => onChange?.(e.target.value)}
-          disabled={disabled}
+          disabled={disabled || loading}
           style={textareaInlineStyle}
           {...inputProps}
         />
@@ -235,6 +256,7 @@ export const TextArea = ({
             {rightSection}
           </span>
         ) : null}
+        {loading ? <span className="sb-input-spinner sb-input-spinner--center" aria-hidden /> : null}
       </div>
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
@@ -251,15 +273,13 @@ TextArea.propTypes = TextInput.propTypes;
 
 export const Select = ({
   label,
-  value,
   options = [],
   onChange,
   multiple = false,
   placeholder,
   error,
   helper,
-  leftSection,
-  rightSection,
+  caretIcon,
   as = "label",
   className,
   style,
@@ -270,16 +290,27 @@ export const Select = ({
   inputColor,
   inputBorder,
   inputBgColor,
+  size,
+  shadow,
   disabled = false,
   loading = false,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
+  const expanded = expandStyleProps(rest);
+  const dimKeys = ["width","height","minWidth","maxWidth","minHeight","maxHeight"];
+  const inputDims = {};
   const mergedStyle = {
-    ...expandStyleProps(rest),
+    ...expanded,
     ...(style || {}),
     ...(containerProps.style || {}),
   };
+  dimKeys.forEach((k) => {
+    if (mergedStyle[k] !== undefined) {
+      inputDims[k] = mergedStyle[k];
+      delete mergedStyle[k];
+    }
+  });
   if (hidden === true && mergedStyle.display === undefined)
     mergedStyle.display = "none";
   const rootClass = [
@@ -297,6 +328,15 @@ export const Select = ({
     className: _omitClass,
     ...containerRest
   } = containerProps;
+  const sizeMap = {
+    xs: { padding: "4px 28px 4px 8px", fontSize: "12px" },
+    sm: { padding: "6px 28px 6px 10px", fontSize: "13px" },
+    md: { padding: "8px 28px 8px 10px", fontSize: "14px" },
+    lg: { padding: "10px 32px 10px 12px", fontSize: "16px" },
+    xl: { padding: "12px 36px 12px 14px", fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
+  const [sel, setSel] = useState(multiple ? [] : "");
   return (
     <Component
       className={`${rootClass} sb-field--select`.trim()}
@@ -306,39 +346,35 @@ export const Select = ({
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
       <div
-        className={`sb-input-wrap ${leftSection ? "has-left" : ""} ${
-          rightSection ? "has-right" : ""
-        }`.trim()}
+        className="sb-input-wrap"
+        style={inputDims}
       >
-        {leftSection ? (
-          <span
-            className="sb-field__section sb-field__section--left"
-            aria-hidden
-          >
-            {leftSection}
-          </span>
-        ) : null}
         <select
-          className={`sb-input ${leftSection ? "has-left-section" : ""} ${
-            rightSection ? "has-right-section" : ""
-          }`.trim()}
+          className={`sb-input ${caretIcon ? "has-right-section" : ""}`.trim()}
           multiple={multiple}
-          value={value}
+          value={sel}
           disabled={disabled}
           onChange={(e) => {
             if (multiple) {
               const v = Array.from(e.target.selectedOptions).map(
                 (o) => o.value
               );
+              setSel(v);
               onChange?.(v);
             } else {
-              onChange?.(e.target.value);
+              const v = e.target.value;
+              setSel(v);
+              onChange?.(v);
             }
           }}
           style={{
             ...(selectProps?.style || {}),
             ...(inputColor !== undefined ? { color: inputColor } : {}),
             ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
+            ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+            ...(size && sizeMap[size] ? sizeMap[size] : {}),
+            ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+            ...inputDims,
           }}
           {...selectProps}
         >
@@ -351,12 +387,9 @@ export const Select = ({
             </option>
           ))}
         </select>
-        {rightSection ? (
-          <span
-            className="sb-field__section sb-field__section--right"
-            aria-hidden
-          >
-            {rightSection}
+        {caretIcon ? (
+          <span className="sb-field__section sb-field__section--right" aria-hidden>
+            {caretIcon}
           </span>
         ) : null}
       </div>
@@ -373,7 +406,6 @@ export const Select = ({
 
 Select.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
@@ -385,11 +417,12 @@ Select.propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.string,
   helper: PropTypes.string,
-  leftSection: PropTypes.node,
-  rightSection: PropTypes.node,
+  caretIcon: PropTypes.node,
   inputColor: PropTypes.string,
   inputBorder: PropTypes.string,
   inputBgColor: PropTypes.string,
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
 };
@@ -792,18 +825,31 @@ export const MultiSelect = ({
   className,
   style,
   hidden,
-  inputColor,
   inputBorder,
   inputBgColor,
+  menuBgColor,
+  menuTextColor,
+  menuBorderColor,
+  leftOptionSectionIcon,
+  rightOptionSectionIcon,
   leftSection,
   rightSection,
   caretDown,
   caretUp,
+  chipRadius,
+  chipBgColor,
+  chipTextColor,
+  chipBorderColor,
+  chipRemovable = true,
   loading = false,
+  size,
+  shadow,
+  searchable = false,
   ...rest
 }) => {
   const rootRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     function handleDocumentClick(e) {
@@ -831,10 +877,41 @@ export const MultiSelect = ({
   }
 
   const selectedOptions = options.filter((o) => value.includes(o.value));
+  const visibleOptions = (() => {
+    const selectedSet = new Set(Array.isArray(value) ? value : []);
+    let base = options;
+    if (searchable && query) {
+      const q = String(query).toLowerCase();
+      base = base.filter(
+        (opt) =>
+          opt.label?.toLowerCase().includes(q) ||
+          String(opt.value).toLowerCase().includes(q)
+      );
+    }
+    // hide already selected options from dropdown list
+    return base.filter((opt) => !selectedSet.has(opt.value));
+  })();
 
   const Component = resolveElementType(as, "label");
-  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  const expanded = expandStyleProps(rest);
+  const dimKeys = ["width","height","minWidth","maxWidth","minHeight","maxHeight"];
+  const triggerDims = {};
+  const merged = { ...expanded, ...(style || {}) };
+  dimKeys.forEach((k) => {
+    if (merged[k] !== undefined) {
+      triggerDims[k] = merged[k];
+      delete merged[k];
+    }
+  });
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { padding: "4px 28px 4px 8px", fontSize: "12px" },
+    sm: { padding: "6px 28px 6px 10px", fontSize: "13px" },
+    md: { padding: "8px 28px 8px 10px", fontSize: "14px" },
+    lg: { padding: "10px 32px 10px 12px", fontSize: "16px" },
+    xl: { padding: "12px 36px 12px 14px", fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   return (
     <Component
       ref={rootRef}
@@ -843,7 +920,7 @@ export const MultiSelect = ({
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className={`sb-ms ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}>
+      <div className={`sb-ms ${disabled ? "is-disabled" : ""}`.trim()}>
         <button
           type="button"
           className={`sb-ms-trigger ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}
@@ -853,9 +930,11 @@ export const MultiSelect = ({
           aria-expanded={open}
           style={{
             ...(rest?.styleForTrigger || {}),
-            ...(inputColor !== undefined ? { color: inputColor } : {}),
             ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
             ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+            ...(size && sizeMap[size] ? sizeMap[size] : {}),
+            ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+            ...triggerDims,
           }}
         >
           {leftSection ? (
@@ -867,19 +946,40 @@ export const MultiSelect = ({
             <span className="sb-ms-placeholder">{placeholder}</span>
           ) : (
             selectedOptions.map((opt) => (
-              <span key={opt.value} className="sb-ms-chip">
+              <span
+                key={opt.value}
+                className="sb-ms-chip"
+                style={{
+                  ...(chipBgColor !== undefined ? { background: chipBgColor } : {}),
+                  ...(chipTextColor !== undefined ? { color: chipTextColor } : {}),
+                  ...(chipBorderColor !== undefined ? { border: `1px solid ${chipBorderColor}` } : {}),
+                  ...(chipRadius !== undefined
+                    ? {
+                        borderRadius:
+                          typeof chipRadius === "string" &&
+                          new Set(["none", "sm", "md", "lg", "pill", "full"]).has(
+                            String(chipRadius)
+                          )
+                            ? `var(--sb-radius-${chipRadius})`
+                            : chipRadius,
+                      }
+                    : {}),
+                }}
+              >
                 <span className="sb-ms-chip__label">{opt.label}</span>
-                <button
-                  type="button"
-                  className="sb-ms-chip__x"
-                  aria-label={`Remove ${opt.label}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeValue(opt.value);
-                  }}
-                >
-                  ×
-                </button>
+                {chipRemovable ? (
+                  <button
+                    type="button"
+                    className="sb-ms-chip__x"
+                    aria-label={`Remove ${opt.label}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeValue(opt.value);
+                    }}
+                  >
+                    ×
+                  </button>
+                ) : null}
               </span>
             ))
           )}
@@ -898,12 +998,35 @@ export const MultiSelect = ({
             className="sb-ms-menu"
             role="listbox"
             aria-multiselectable="true"
+            style={{
+              ...(menuBgColor !== undefined ? { background: menuBgColor } : {}),
+              ...(menuTextColor !== undefined ? { color: menuTextColor } : {}),
+              ...(menuBorderColor !== undefined ? { borderColor: menuBorderColor } : {}),
+            }}
             onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
             }}
           >
-            {options.map((opt) => (
+            {searchable ? (
+              <div style={{ padding: 6 }}>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search…"
+                  style={{
+                    width: "94%",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: 6,
+                    padding: "6px 8px",
+                    outline: 0,
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                />
+              </div>
+            ) : null}
+            {visibleOptions.map((opt) => (
               <div
                 key={opt.value}
                 className="sb-ms-item"
@@ -915,7 +1038,27 @@ export const MultiSelect = ({
                   toggleValue(opt.value);
                 }}
               >
+                {leftOptionSectionIcon ? (
+                  <span
+                    className="sb-field__section sb-field__section--left"
+                    aria-hidden
+                  >
+                    {typeof leftOptionSectionIcon === "function"
+                      ? leftOptionSectionIcon(opt)
+                      : leftOptionSectionIcon}
+                  </span>
+                ) : null}
                 <span>{opt.label}</span>
+                {rightOptionSectionIcon ? (
+                  <span
+                    className="sb-field__section sb-field__section--right"
+                    aria-hidden
+                  >
+                    {typeof rightOptionSectionIcon === "function"
+                      ? rightOptionSectionIcon(opt)
+                      : rightOptionSectionIcon}
+                  </span>
+                ) : null}
               </div>
             ))}
           </div>
@@ -949,6 +1092,13 @@ export const SingleSelect = ({
   inputBgColor,
   leftSection,
   rightSection,
+  menuBgColor,
+  menuTextColor,
+  menuBorderColor,
+  leftOptionSectionIcon,
+  rightOptionSectionIcon,
+  size,
+  shadow,
   caretDown,
   caretUp,
   loading = false,
@@ -975,8 +1125,25 @@ export const SingleSelect = ({
   }
 
   const Component = resolveElementType(as, "label");
-  const merged = { ...expandStyleProps(rest), ...(style || {}) };
+  const expanded = expandStyleProps(rest);
+  const dimKeys = ["width","height","minWidth","maxWidth","minHeight","maxHeight"];
+  const triggerDims = {};
+  const merged = { ...expanded, ...(style || {}) };
+  dimKeys.forEach((k) => {
+    if (merged[k] !== undefined) {
+      triggerDims[k] = merged[k];
+      delete merged[k];
+    }
+  });
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { padding: "4px 28px 4px 8px", fontSize: "12px" },
+    sm: { padding: "6px 28px 6px 10px", fontSize: "13px" },
+    md: { padding: "8px 28px 8px 10px", fontSize: "14px" },
+    lg: { padding: "10px 32px 10px 12px", fontSize: "16px" },
+    xl: { padding: "12px 36px 12px 14px", fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   return (
     <Component
       ref={rootRef}
@@ -985,7 +1152,7 @@ export const SingleSelect = ({
       {...rest}
     >
       {label ? <span className="sb-field__label">{label}</span> : null}
-      <div className={`sb-ms ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}>
+      <div className={`sb-ms ${disabled ? "is-disabled" : ""}`.trim()}>
         <button
           type="button"
           className={`sb-ms-trigger ${leftSection ? "has-left" : ""} ${rightSection ? "has-right" : ""}`.trim()}
@@ -998,6 +1165,9 @@ export const SingleSelect = ({
             ...(inputColor !== undefined ? { color: inputColor } : {}),
             ...(inputBorder !== undefined ? { borderColor: inputBorder } : {}),
             ...(inputBgColor !== undefined ? { backgroundColor: inputBgColor } : {}),
+            ...(size && sizeMap[size] ? sizeMap[size] : {}),
+            ...(shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : {}),
+            ...triggerDims,
           }}
         >
           {leftSection ? (
@@ -1025,6 +1195,11 @@ export const SingleSelect = ({
             className="sb-ms-menu"
             role="listbox"
             aria-multiselectable="false"
+            style={{
+              ...(menuBgColor !== undefined ? { background: menuBgColor } : {}),
+              ...(menuTextColor !== undefined ? { color: menuTextColor } : {}),
+              ...(menuBorderColor !== undefined ? { borderColor: menuBorderColor } : {}),
+            }}
             onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -1042,7 +1217,17 @@ export const SingleSelect = ({
                   selectValue(opt.value);
                 }}
               >
+                {leftOptionSectionIcon ? (
+                  <span aria-hidden className="sb-field__section sb-field__section--left">
+                    {typeof leftOptionSectionIcon === "function" ? leftOptionSectionIcon(opt) : leftOptionSectionIcon}
+                  </span>
+                ) : null}
                 <span>{opt.label}</span>
+                {rightOptionSectionIcon ? (
+                  <span aria-hidden className="sb-field__section sb-field__section--right">
+                    {typeof rightOptionSectionIcon === "function" ? rightOptionSectionIcon(opt) : rightOptionSectionIcon}
+                  </span>
+                ) : null}
               </div>
             ))}
           </div>
@@ -1075,6 +1260,13 @@ SingleSelect.propTypes = {
   inputColor: PropTypes.string,
   inputBorder: PropTypes.string,
   inputBgColor: PropTypes.string,
+  menuBgColor: PropTypes.string,
+  menuTextColor: PropTypes.string,
+  menuBorderColor: PropTypes.string,
+  leftOptionSectionIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  rightOptionSectionIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
   leftSection: PropTypes.node,
   rightSection: PropTypes.node,
   caretDown: PropTypes.node,

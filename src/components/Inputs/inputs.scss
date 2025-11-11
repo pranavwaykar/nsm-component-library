@@ -76,6 +76,11 @@
   animation: sbspin 700ms linear infinite;
   will-change: transform;
 }
+.sb-input-spinner--center {
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+}
 .sb-field__section {
   position: absolute;
   top: 50%;

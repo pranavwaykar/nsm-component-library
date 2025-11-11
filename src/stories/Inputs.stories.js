@@ -66,15 +66,14 @@ export const Text = {
 export const Area = {
   name: "TextArea",
   render: (args) => {
-    const [v, setV] = useState(args.value ?? args.text ?? "");
+    const [v, setV] = useState(args.text ?? "");
     React.useEffect(() => {
-      setV(args.value ?? args.text ?? "");
-    }, [args.value, args.text]);
-    return React.createElement(TextArea, { ...args, value: v, onChange: setV });
+      setV(args.text ?? "");
+    }, [args.text]);
+    return React.createElement(TextArea, { ...args, text: v, onChange: setV });
   },
   args: {
     label: "Bio",
-    value: "",
     text: "",
     placeholder: "Write something…",
     rows: 4,
@@ -87,16 +86,12 @@ export const Area = {
 export const SelectSingle = {
   name: "Select",
   render: (args) => {
-    const [v, setV] = useState(args.value);
-    return React.createElement(SingleSelect, {
-      ...args,
-      value: v,
-      onChange: setV,
-    });
+    const [v, setV] = useState(args.value ?? "");
+    React.useEffect(() => { setV(args.value ?? ""); }, [args.value]);
+    return React.createElement(SingleSelect, { ...args, value: v, onChange: setV });
   },
   args: {
     label: "Role",
-    value: "",
     placeholder: "Choose…",
     options: [
       { value: "admin", label: "Admin" },
@@ -105,6 +100,16 @@ export const SelectSingle = {
     ],
     id: "select-1",
     "data-testid": "select",
+  },
+  argTypes: {
+    value: { table: { disable: true } },
+    text: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    rightSection: { table: { disable: true } },
+    caretIcon: { table: { disable: true } },
+    menuBgColor: { control: "color" },
+    menuTextColor: { control: "color" },
+    menuBorderColor: { control: "color" },
   },
 };
 
@@ -129,6 +134,18 @@ export const SelectMulti = {
     ],
     id: "ms-1",
     "data-testid": "ms",
+  },
+  argTypes: {
+    menuBgColor: { control: "color" },
+    menuTextColor: { control: "color" },
+    menuBorderColor: { control: "color" },
+    chipBgColor: { control: "color" },
+    chipTextColor: { control: "color" },
+    chipBorderColor: { control: "color" },
+    chipRadius: { control: "text" },
+    chipRemovable: { control: "boolean" },
+    inputColor: { table: { disable: true } },
+    searchable: { control: "boolean" },
   },
 };
 

@@ -82,6 +82,8 @@ body {
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,.0);
+  z-index: 10;
+  pointer-events: none;
 }
 .is-loading::before {
   content: "";
@@ -96,6 +98,8 @@ body {
   border: 3px solid rgba(0,0,0,.2);
   border-top-color: rgba(0,0,0,.6);
   animation: sbspin 700ms linear infinite;
+  z-index: 11;
+  pointer-events: none;
 }
 @keyframes sbspin {
   from { transform: rotate(0deg); }

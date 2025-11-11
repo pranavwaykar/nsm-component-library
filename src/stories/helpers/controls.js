@@ -1,5 +1,8 @@
 export const universalArgTypes = {
-  as: { control: "text" },
+  as: {
+    control: "select",
+    options: ["label", "div", "span", "p", "section", "fieldset"],
+  },
   className: { control: "text" },
   id: { control: "text" },
   role: { control: "text" },
