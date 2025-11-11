@@ -7,8 +7,6 @@ import { expandStyleProps } from '../../utils/styleSystem';
 export const Image = ({
   src,
   alt,
-  width,
-  height,
   fit = 'cover',
   radius = 'md',
   fallback,
@@ -29,19 +27,31 @@ export const Image = ({
   useEffect(() => {
     const node = containerRef.current;
     if (!node) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
+    const makeRootMargin = (rm) => {
+      if (typeof rm === 'number') return `${rm}px`;
+      const s = String(rm).trim();
+      if (/^-?\d+(\.\d+)?(px|%)$/.test(s)) return s;
+      // during typing (e.g., "2"), coerce to px; if empty/invalid, default
+      if (/^-?\d+(\.\d+)?$/.test(s)) return `${s}px`;
+      return '200px';
+    };
+    const opts = { root: null, rootMargin: makeRootMargin(rootMargin), threshold };
+    let observer;
+    try {
+      observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
             observer.disconnect();
           }
         });
-      },
-      { root: null, rootMargin, threshold }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+      }, opts);
+      observer.observe(node);
+    } catch (_) {
+      // Fallback: if IntersectionObserver fails, load immediately
+      setIsVisible(true);
+    }
+    return () => observer && observer.disconnect();
   }, [rootMargin, threshold]);
 
   useEffect(() => {
@@ -52,12 +62,23 @@ export const Image = ({
   const classNames = [
     'sb-image',
     `sb-image--radius-${radius}`,
+    // variants and states
+    rest.variant ? `sb-image--variant-${rest.variant}` : null,
+    rest.size ? `sb-image--size-${rest.size}` : null,
+    rest.disabled ? 'is-disabled' : null,
+    rest.loading ? 'is-loading' : null,
     loaded ? 'is-loaded' : null,
     hasError ? 'is-error' : null,
     className,
   ].filter(Boolean).join(' ');
 
-  const mergedStyle = { ...expandStyleProps({ width, height, ...rest }), ...(style || {}) };
+  const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  // shadow prop support
+  if (rest.shadow) {
+    const map = { none: '0', sm: '1', md: '3', lg: '5' };
+    const key = map[String(rest.shadow)];
+    if (key && !mergedStyle.boxShadow) mergedStyle.boxShadow = `var(--sb-shadow-${key})`;
+  }
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
 
   const Container = as || 'div';
@@ -71,7 +92,7 @@ export const Image = ({
         <img
           src={src}
           alt={alt}
-          style={{ objectFit: fit, width: '100%', height: '100%' }}
+          style={{ objectFit: fit, width: '100%', height: '100%', display: 'block' }}
           onLoad={() => setLoaded(true)}
           onError={() => setHasError(true)}
         />

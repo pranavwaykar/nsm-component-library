@@ -1,5 +1,6 @@
 export const universalArgTypes = {
   as: { control: "text" },
+  className: { control: "text" },
   id: { control: "text" },
   role: { control: "text" },
   tabIndex: { control: "number" },
@@ -322,7 +323,6 @@ export const visualCommonArgTypes = {
   variant: { control: "select", options: ["solid", "outline", "ghost", "link"] },
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
   radius: { control: "text" },
-  elevation: { control: "select", options: [0, 1, 2, 3, 4, 5] },
   shadow: { control: "select", options: ["none", "sm", "md", "lg"] },
   tone: { control: "select", options: ["default", "subtle", "strong"] },
   disabled: { control: "boolean" },

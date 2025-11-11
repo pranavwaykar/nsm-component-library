@@ -11,9 +11,9 @@ export default {
       source: {
         language: "jsx",
         code:
-`<Card title="Card Title">
-  <p>This is a generic container. Place any JSX inside.</p>
-</Card>`,
+          `<Card title="Card Title">
+            <p>This is a generic container. Place any JSX inside.</p>
+          </Card>`,
       },
       description: {
         component:
@@ -21,10 +21,12 @@ export default {
       },
     },
   },
-  args: { title: "Card Title", padding: 16 },
+  args: { title: "Card Title", showHeader: true, padding: 16 },
   argTypes: {
     ...commonArgTypes,
     padding: { table: { disable: true } },
+    showHeader: { control: "boolean" },
+    header: { control: "text" },
     title: { control: "text" },
   },
 };

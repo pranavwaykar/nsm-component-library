@@ -60,6 +60,12 @@ export const Badge = forwardRef(
     ].filter(Boolean).join(" ");
 
     const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+    // map shadow prop (none|sm|md|lg) to design token if class not present
+    if (shadow) {
+      const map = { none: '0', sm: '1', md: '3', lg: '5' };
+      const key = map[String(shadow)];
+      if (key && !mergedStyle.boxShadow) mergedStyle.boxShadow = `var(--sb-shadow-${key})`;
+    }
     if (draggable && mergedStyle.cursor === undefined && !disabled && !loading) mergedStyle.cursor = 'grab';
     if (typeof radius === "number") mergedStyle.borderRadius = radius;
     if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';

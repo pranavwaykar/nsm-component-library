@@ -20,6 +20,7 @@ export default {
     separator: { control: 'text' },
     tone: { table: { disable: true } },
     colorScheme: { table: { disable: true } },
+    onItemClick: { action: 'onItemClick' },
   },
 };
 

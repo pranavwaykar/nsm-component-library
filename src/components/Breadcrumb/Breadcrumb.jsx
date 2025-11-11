@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../../index.scss';
 import './Breadcrumb.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
@@ -87,5 +88,17 @@ const Breadcrumb = ({
 };
 
 export default Breadcrumb;
+
+Breadcrumb.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.node),
+  separator: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  onItemClick: PropTypes.func,
+  variant: PropTypes.oneOf(['solid','ghost']),
+  size: PropTypes.oneOf(['sm','md','lg']),
+  elevation: PropTypes.oneOf([0,1,2,3,4,5]),
+  shadow: PropTypes.oneOf(['none','sm','md','lg']),
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+};
 
 
