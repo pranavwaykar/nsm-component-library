@@ -240,7 +240,6 @@ export const styleSystemArgTypes = {
       "hidden",
     ],
   },
-  rounded: { control: "text" },
   borderRadius: { control: "text" },
   outline: { control: "text" },
   outlineOffset: { control: "text" },

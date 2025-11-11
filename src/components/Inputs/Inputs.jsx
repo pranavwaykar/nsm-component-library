@@ -438,20 +438,41 @@ export const Checkbox = ({
   hidden,
   disabled = false,
   loading = false,
+  rightSection,
+  size,
+  shadow,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { fontSize: "12px" },
+    sm: { fontSize: "13px" },
+    md: { fontSize: "14px" },
+    lg: { fontSize: "16px" },
+    xl: { fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   return (
-    <Component className={`sb-check ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
+    <Component
+      className={`sb-check ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
+      style={{ ...merged, ...(size && sizeMap[size] ? sizeMap[size] : {}) }}
+      {...rest}
+    >
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
         disabled={disabled}
+        style={shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : undefined}
       />
       <span>{label}</span>
+      {rightSection ? (
+        <span className="sb-field__section sb-field__section--right" aria-hidden>
+          {rightSection}
+        </span>
+      ) : null}
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
       ) : null}
@@ -470,6 +491,9 @@ Checkbox.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.string,
   helper: PropTypes.string,
+  rightSection: PropTypes.node,
+  size: PropTypes.oneOf(["xs","sm","md","lg","xl"]),
+  shadow: PropTypes.oneOf(["none","sm","md","lg"]),
 };
 
 export const Toggle = ({
@@ -483,23 +507,43 @@ export const Toggle = ({
   hidden,
   disabled = false,
   loading = false,
+  rightSection,
+  size,
+  shadow,
   ...rest
 }) => {
   const Component = resolveElementType(as, "label");
   const merged = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && merged.display === undefined) merged.display = "none";
+  const sizeMap = {
+    xs: { fontSize: "12px" },
+    sm: { fontSize: "13px" },
+    md: { fontSize: "14px" },
+    lg: { fontSize: "16px" },
+    xl: { fontSize: "18px" },
+  };
+  const shadowKey = shadow ? ({ none: "0", sm: "1", md: "3", lg: "5" }[String(shadow)] || null) : null;
   return (
-    <Component className={`sb-toggle ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()} style={merged} {...rest}>
+    <Component
+      className={`sb-toggle ${disabled ? "is-disabled" : ""} ${loading ? "is-loading" : ""}`.trim()}
+      style={{ ...merged, ...(size && sizeMap[size] ? sizeMap[size] : {}) }}
+      {...rest}
+    >
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
         disabled={disabled}
       />
-      <span className="sb-toggle__track">
+      <span className="sb-toggle__track" style={shadowKey ? { boxShadow: `var(--sb-shadow-${shadowKey})` } : undefined}>
         <span className="sb-toggle__thumb" />
       </span>
       {label ? <span className="sb-toggle__label">{label}</span> : null}
+      {rightSection ? (
+        <span className="sb-field__section sb-field__section--right" aria-hidden>
+          {rightSection}
+        </span>
+      ) : null}
       {isRenderable(helper) ? (
         <span className="sb-field__help">{helper}</span>
       ) : null}
@@ -834,8 +878,7 @@ export const MultiSelect = ({
   rightOptionSectionIcon,
   leftSection,
   rightSection,
-  caretDown,
-  caretUp,
+  // caret props removed
   chipRadius,
   chipBgColor,
   chipTextColor,
@@ -988,9 +1031,7 @@ export const MultiSelect = ({
               {rightSection}
             </span>
           ) : null}
-          <span className="sb-ms-caret" style={{ right: rightSection ? 34 : 10 }} aria-hidden>
-            {open ? (caretUp ?? "▴") : (caretDown ?? "▾")}
-          </span>
+          <span className="sb-ms-caret" style={{ right: rightSection ? 34 : 10 }} aria-hidden>▾</span>
         </button>
 
         {open ? (
@@ -1099,8 +1140,6 @@ export const SingleSelect = ({
   rightOptionSectionIcon,
   size,
   shadow,
-  caretDown,
-  caretUp,
   loading = false,
   ...rest
 }) => {
@@ -1185,9 +1224,7 @@ export const SingleSelect = ({
               {rightSection}
             </span>
           ) : null}
-          <span className="sb-ms-caret" style={{ right: rightSection ? 34 : 10 }} aria-hidden>
-            {open ? (caretUp ?? "▴") : (caretDown ?? "▾")}
-          </span>
+          <span className="sb-ms-caret" style={{ right: rightSection ? 34 : 10 }} aria-hidden>▾</span>
         </button>
 
         {open ? (
@@ -1269,8 +1306,6 @@ SingleSelect.propTypes = {
   shadow: PropTypes.oneOf(["none","sm","md","lg"]),
   leftSection: PropTypes.node,
   rightSection: PropTypes.node,
-  caretDown: PropTypes.node,
-  caretUp: PropTypes.node,
   loading: PropTypes.bool,
 };
 

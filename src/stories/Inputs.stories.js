@@ -165,6 +165,20 @@ export const Check = {
     id: "check-1",
     "data-testid": "check",
   },
+  argTypes: {
+    text: { table: { disable: true } },
+    placeholder: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    inputBorder: { table: { disable: true } },
+    inputBgColor: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    w: { table: { disable: true } },
+    h: { table: { disable: true } },
+    minW: { table: { disable: true } },
+    maxW: { table: { disable: true } },
+    minH: { table: { disable: true } },
+    maxH: { table: { disable: true } },
+  },
 };
 
 export const ToggleSwitch = {
@@ -178,6 +192,20 @@ export const ToggleSwitch = {
     checked: false,
     id: "toggle-1",
     "data-testid": "toggle",
+  },
+  argTypes: {
+    text: { table: { disable: true } },
+    placeholder: { table: { disable: true } },
+    inputColor: { table: { disable: true } },
+    inputBorder: { table: { disable: true } },
+    inputBgColor: { table: { disable: true } },
+    leftSection: { table: { disable: true } },
+    w: { table: { disable: true } },
+    h: { table: { disable: true } },
+    minW: { table: { disable: true } },
+    maxW: { table: { disable: true } },
+    minH: { table: { disable: true } },
+    maxH: { table: { disable: true } },
   },
 };
 

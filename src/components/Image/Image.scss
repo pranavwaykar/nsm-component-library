@@ -6,7 +6,7 @@
 .sb-image.is-loading { opacity: .7; }
 
 .sb-image__fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: var(--sb-font-size-sm); }
-.sb-image__error { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #fee2e2; color: #b91c1c; }
+.sb-image__error { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #fee2e2;     color: #ff0000;}
 .sb-image__spinner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
 .sb-image__spinner::after { content: ""; width: 28px; height: 28px; border-radius: 50%; border: 3px solid rgba(255,255,255,.6); border-top-color: rgba(255,255,255,1); animation: sbspin 700ms linear infinite; }
 @keyframes sbspin { to { transform: rotate(360deg); } }

@@ -94,6 +94,14 @@
 .sb-field__section--right {
   right: 10px;
 }
+
+/* Inline right icon for checkbox and toggle (not absolutely positioned) */
+.sb-check .sb-field__section--right,
+.sb-toggle .sb-field__section--right {
+  position: static;
+  transform: none;
+  margin-left: 8px;
+}
 .sb-input.has-left-section {
   padding-left: 32px;
 }
