@@ -28,7 +28,6 @@ const UserControlsPopup = ({
   switchTrackColor,
   switchCheckedColor,
   // dimensions
-  popupWidth,
   avatarSize,
   nameFontSize,
   mailFontSize,
@@ -37,6 +36,8 @@ const UserControlsPopup = ({
   switchWidth,
   switchHeight,
   switchThumbSize,
+  onAvatarClick,
+  onLanguageRowClick,
   as,
   className,
   style,
@@ -56,7 +57,6 @@ const UserControlsPopup = ({
   if (popupBgColor) mergedStyle.background = popupBgColor;
   if (popupBorderColor) mergedStyle.borderColor = popupBorderColor;
   if (popupTextColor) mergedStyle.color = popupTextColor;
-  if (popupWidth) mergedStyle.width = popupWidth;
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   const classes = ['user-controls', loading ? 'is-loading' : '', disabled ? 'is-disabled' : '', className].filter(Boolean).join(' ');
   const sliderStyle = {
@@ -67,13 +67,13 @@ const UserControlsPopup = ({
   return (
     <Component className={classes} style={mergedStyle} {...rest}>
       <div className="uc-user" style={headerBorderColor ? { borderBottomColor: headerBorderColor } : undefined}>
-        <div className="avatar" style={{ ...(avatarBgColor ? { background: avatarBgColor } : {}), ...(avatarSize ? { width: avatarSize, height: avatarSize } : {}) }} />
+        <div className="avatar" onClick={onAvatarClick} style={{ ...(avatarBgColor ? { background: avatarBgColor } : {}), ...(avatarSize ? { width: avatarSize, height: avatarSize } : {}) }} />
         <div className="info">
           <div className="name" style={{ ...(nameColor ? { color: nameColor } : {}), ...(nameFontSize ? { fontSize: nameFontSize } : {}) }}>{name}</div>
           <div className="mail" style={{ ...(mailColor ? { color: mailColor } : {}), ...(mailFontSize ? { fontSize: mailFontSize } : {}) }}>{email}</div>
         </div>
       </div>
-      <div className="uc-row" onClick={() => setLangOpen(!langOpen)} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>
+      <div className="uc-row" onClick={(e) => { setLangOpen(!langOpen); onLanguageRowClick?.(e); }} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>
         <div className="label"><i className="fi fi-rr-language" style={{marginRight:8}}/>Language</div>
         <div className="chev">›</div>
       </div>

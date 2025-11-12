@@ -55,7 +55,7 @@ export const Default = {
     subBorderColor: '#e5e7eb',
     switchTrackColor: '#e2e8f0',
     switchCheckedColor: '#1f94ff',
-    popupWidth: '260px',
+    w: '260px',
     avatarSize: '40px',
     nameFontSize: '14px',
     mailFontSize: '12px',

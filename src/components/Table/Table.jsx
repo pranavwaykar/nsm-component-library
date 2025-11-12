@@ -79,6 +79,7 @@ export const Table = forwardRef(({
   initialSort,
   expandable = false,
   renderExpandedRow,
+  renderSubRow,
   rowActions,
   responsive = true,
   showIndex = false,
@@ -208,12 +209,16 @@ export const Table = forwardRef(({
   const rootStyle = { ...expandStyleProps({ ...rest, color: textColor, bg, bgColor, borderColor }), ...(style || {}) };
   if (typeof radius === 'number') rootStyle.borderRadius = radius;
   if (typeof radius === 'string') rootStyle.borderRadius = `var(--sb-radius-${radius})`;
-  if (typeof elevation === 'number') rootStyle.boxShadow = `var(--sb-shadow-${Math.max(0, Math.min(5, elevation))})`;
-  if (shadow) {
-    const map = { none: '0', sm: '1', md: '3', lg: '5' };
-    const key = map[String(shadow)] || null;
-    if (key) rootStyle.boxShadow = `var(--sb-shadow-${key})`;
-  }
+  // move shadow to table element, not root
+  const tableShadow = (() => {
+    if (shadow) {
+      const map = { none: '0', sm: '1', md: '3', lg: '5' };
+      const key = map[String(shadow)] || null;
+      return key ? `var(--sb-shadow-${key})` : undefined;
+    }
+    if (typeof elevation === 'number') return `var(--sb-shadow-${Math.max(0, Math.min(5, elevation))})`;
+    return undefined;
+  })();
   const resolvedBg = bg ?? bgColor ?? rootStyle.background;
   if (resolvedBg) rootStyle['--sb-table-bg'] = resolvedBg;
   const resolvedFg = textColor ?? rootStyle.color;
@@ -279,7 +284,7 @@ export const Table = forwardRef(({
           ) : null}
         </div>
       ) : null}
-      <table className={`sb-table sb-table--${variant} sb-table--${size} sb-table--scheme-${colorScheme} ${useStriped ? 'is-striped' : ''} ${useBordered ? 'is-bordered' : ''} ${useHover ? 'is-hoverable' : ''}`} style={tableStyle}>
+      <table className={`sb-table sb-table--${variant} sb-table--${size} sb-table--scheme-${colorScheme} ${useStriped ? 'is-striped' : ''} ${useBordered ? 'is-bordered' : ''} ${useHover ? 'is-hoverable' : ''}`} style={{ ...tableStyle, ...(tableShadow ? { boxShadow: tableShadow } : {}) }}>
         <thead className={stickyHeader ? 'is-sticky' : undefined}>
           <tr>
             {selectable && (

@@ -57,6 +57,10 @@ export default {
     cellPaddingY: { control: 'text' },
     headerFontSize: { control: 'text' },
     cellFontSize: { control: 'text' },
+    variant: {table: {disable: true}},
+    size: {table: {disable: true}},
+    elevation: {table: {disable: true}},
+    bgColor: {table: {disable: true}},
   }
 };
 
