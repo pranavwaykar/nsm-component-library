@@ -20,6 +20,13 @@
     display: flex;
     flex-direction: column;
   }
+/* Disabled/loading state: fade content and block interactions, but keep overlay active for outside-click close */
+.sb-modal.is-disabled .sb-modal__content,
+.sb-modal.is-loading .sb-modal__content {
+  opacity: .6;
+  pointer-events: none;
+  user-select: none;
+}
   
   .sb-modal__header {
     display: flex;
@@ -50,7 +57,12 @@
     border-top: 1px solid #e5e7eb;
     display: flex;
     gap: 8px;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sb-modal__footer-right {
+    margin-left: auto;
   }
   
   .sb-confirm__msg {

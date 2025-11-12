@@ -376,6 +376,7 @@ export const DateRangePicker = {
     presetButtonTextColor: { control: "color" },
     prevArrowColor: { control: "color" },
     nextArrowColor: { control: "color" },
+    menuPlacement: { control: "select", options: ["bottom-left","bottom-right","top-left","top-right"] },
     menuW: { control: "text" },
     menuH: { control: "text" },
     menuMinW: { control: "text" },
