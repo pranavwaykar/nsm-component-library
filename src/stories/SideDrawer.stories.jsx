@@ -30,7 +30,6 @@ export default {
     draggable: { table: { disable: true } },
     size: { table: { disable: true } },
     variant: { table: { disable: true } },
-    loading: { table: { disable: true } },
   },
 };
 
