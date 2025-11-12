@@ -12,13 +12,32 @@ export default {
     layout: 'centered',
     docs: { source: { language: 'jsx', code: '<UserContactCard user={{ firstname: "Pranav", lastname: "Waykar", email: "test@example.com" }} />' } },
   },
-  argTypes: { ...commonArgTypes },
+  argTypes: {
+    ...commonArgTypes,
+    cardBgColor: { control: 'color' },
+    cardBorderColor: { control: 'color' },
+    nameColor: { control: 'color' },
+    iconColor: { control: 'color' },
+    teamsIconColor: { control: 'color' },
+  },
 };
 
 export const Default = {
   name: 'Default',
-  render: () => React.createElement('div', { style: { width: 380 } },
-    React.createElement(UserContactCard, { user: { firstname: 'Pranav', lastname: 'Waykar', email: 'test@example.com' }, as: 'div', id: 'ucc-1', 'data-testid': 'ucc', m: '0' })
+  args: {
+    user: { firstname: 'Pranav', lastname: 'Waykar', email: 'test@example.com' },
+    shadow: 'none',
+    loading: false,
+    disabled: false,
+    cardBgColor: '#ffffff',
+    cardBorderColor: '#e5e7eb',
+    nameColor: '#0f172a',
+    iconColor: '#0f172a',
+    teamsIconColor: '#5b5fc7',
+    as: 'div', id: 'ucc-1', 'data-testid': 'ucc', m: '0'
+  },
+  render: (args) => React.createElement('div', { style: { width: 380 } },
+    React.createElement(UserContactCard, { ...args })
   ),
 };
 

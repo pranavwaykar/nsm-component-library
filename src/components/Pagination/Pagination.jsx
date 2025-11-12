@@ -12,6 +12,20 @@ export const Pagination = ({
   onPageChange,
   onPageSizeChange,
   disabled = false,
+  shadow,
+  loading = false,
+  // colors
+  pagerLabelColor,
+  pagerSelectTextColor,
+  pagerSelectBgColor,
+  pagerSelectBorderColor,
+  pagerButtonTextColor,
+  pagerButtonBgColor,
+  pagerButtonBorderColor,
+  pagerActiveButtonTextColor,
+  pagerActiveButtonBgColor,
+  pagerActiveButtonBorderColor,
+  pagerStatusTextColor,
   as,
   className,
   role = 'navigation',
@@ -39,18 +53,42 @@ export const Pagination = ({
 
   const Root = as || 'nav';
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (shadow) {
+    const smap = { none: '0', sm: '1', md: '3', lg: '5' };
+    const key = smap[String(shadow)] || null;
+    if (key) mergedStyle.boxShadow = `var(--sb-shadow-${key})`;
+    if (shadow === 'none') mergedStyle.boxShadow = 'var(--sb-shadow-0)';
+  }
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
+  const selectStyle = {
+    color: pagerSelectTextColor,
+    background: pagerSelectBgColor,
+    borderColor: pagerSelectBorderColor,
+  };
+  const labelStyle = { color: pagerLabelColor };
+  const statusStyle = { color: pagerStatusTextColor };
+  const btnStyle = {
+    color: pagerButtonTextColor,
+    background: pagerButtonBgColor,
+    borderColor: pagerButtonBorderColor,
+  };
+  const activeBtnStyle = {
+    color: pagerActiveButtonTextColor,
+    background: pagerActiveButtonBgColor,
+    borderColor: pagerActiveButtonBorderColor,
+  };
   return (
-    <Root className={`sb-pagination ${className || ''}`.trim()} role={role} aria-label="Pagination" style={mergedStyle} {...rest}>
+    <Root className={`sb-pagination ${loading ? 'is-loading' : ''} ${disabled ? 'is-disabled' : ''} ${className || ''}`.trim()} role={role} aria-label="Pagination" style={mergedStyle} {...rest}>
       <div className="sb-pagination__sizes">
         <label>
-          <span className="sb-pagination__label">Rows per page:</span>
+          <span className="sb-pagination__label" style={labelStyle}>Rows per page:</span>
           <select
             className="sb-pagination__select"
             value={String(pageSize)}
             onChange={(e) => onPageSizeChange?.(Number(e.target.value))}
             disabled={disabled}
             aria-label="Rows per page"
+            style={selectStyle}
           >
             {pageSizeOptions.map((n) => (
               <option key={n} value={String(n)}>{n}</option>
@@ -66,6 +104,7 @@ export const Pagination = ({
           onClick={() => goto(1)}
           disabled={!canPrev}
           aria-label="First page"
+          style={btnStyle}
         >«</button>
         <button
           type="button"
@@ -73,6 +112,7 @@ export const Pagination = ({
           onClick={() => goto(currentPage - 1)}
           disabled={!canPrev}
           aria-label="Previous page"
+          style={btnStyle}
         >‹</button>
 
         <ul className="sb-pagination__list">
@@ -84,6 +124,7 @@ export const Pagination = ({
                 aria-current={p === currentPage ? 'page' : undefined}
                 onClick={() => goto(p)}
                 disabled={disabled}
+                style={p === currentPage ? activeBtnStyle : btnStyle}
               >{p}</button>
             </li>
           ))}
@@ -95,6 +136,7 @@ export const Pagination = ({
           onClick={() => goto(currentPage + 1)}
           disabled={!canNext}
           aria-label="Next page"
+          style={btnStyle}
         >›</button>
         <button
           type="button"
@@ -102,10 +144,11 @@ export const Pagination = ({
           onClick={() => goto(totalPages)}
           disabled={!canNext}
           aria-label="Last page"
+          style={btnStyle}
         >»</button>
       </div>
 
-      <div className="sb-pagination__status" aria-live="polite">
+      <div className="sb-pagination__status" aria-live="polite" style={statusStyle}>
         Page {currentPage} of {totalPages}
       </div>
     </Root>

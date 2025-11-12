@@ -17,6 +17,52 @@ export default {
   argTypes: {
     primaryOnClick: { action: 'primaryOnClick' },
     secondaryOnClick: { action: 'secondaryOnClick' },
+    // visibility toggles
+    showArt: { control: 'boolean' },
+    showCode: { control: 'boolean' },
+    showTitle: { control: 'boolean' },
+    showDescription: { control: 'boolean' },
+    showPrimary: { control: 'boolean' },
+    showSecondary: { control: 'boolean' },
+    // content controls
+    code: { control: 'text', description: 'Content shown in the big code area (accepts string/number/node via args)' },
+    title: { control: 'text' },
+    description: { control: 'text' },
+    ctaLabel: { control: 'text' },
+    secondaryLabel: { control: 'text' },
+    // per-section style controls (separate color, font, width, height)
+    codeColor: { control: 'color' },
+    codeFontFamily: { control: 'text' },
+    codeFontSize: { control: 'text' },
+    codeWidth: { control: 'text' },
+    codeHeight: { control: 'text' },
+    titleColor: { control: 'color' },
+    titleFontFamily: { control: 'text' },
+    titleFontSize: { control: 'text' },
+    titleWidth: { control: 'text' },
+    titleHeight: { control: 'text' },
+    descriptionColor: { control: 'color' },
+    descriptionFontFamily: { control: 'text' },
+    descriptionFontSize: { control: 'text' },
+    descriptionWidth: { control: 'text' },
+    descriptionHeight: { control: 'text' },
+    // action section style overrides
+    actionsStyle: { control: 'object' },
+    primaryButtonStyle: { control: 'object' },
+    secondaryButtonStyle: { control: 'object' },
+    // color props for art and buttons
+    artBgStartColor: { control: 'color' },
+    artBgEndColor: { control: 'color' },
+    artBorderColor: { control: 'color' },
+    artBlockAColor: { control: 'color' },
+    artBlockBColor: { control: 'color' },
+    artBlockCColor: { control: 'color' },
+    primaryButtonTextColor: { control: 'color' },
+    primaryButtonBgColor: { control: 'color' },
+    primaryButtonBorderColor: { control: 'color' },
+    secondaryButtonTextColor: { control: 'color' },
+    secondaryButtonBgColor: { control: 'color' },
+    secondaryButtonBorderColor: { control: 'color' },
     ...commonArgTypes,
   },
 };
@@ -24,10 +70,34 @@ export default {
 export const Default = {
   name: 'Default',
   args: {
+    code: '404',
     title: 'Page not found',
     description: "The page you are looking for doesn't exist or has been moved.",
     ctaLabel: 'Go Home',
     secondaryLabel: 'Contact support',
+    showArt: true,
+    showCode: true,
+    showTitle: true,
+    showDescription: true,
+    showPrimary: true,
+    showSecondary: true,
+  },
+  argTypes: {
+    loading: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+  }
+};
+
+export const CustomContent = {
+  name: 'Custom content (nodes & numbers)',
+  args: {
+    code: '👻',
+    title: 'Boo! Nothing here.',
+    description: 12345,
+    ctaLabel: 'Take me back',
+    secondaryLabel: 'Report issue',
+    showArt: false,
   },
 };
 

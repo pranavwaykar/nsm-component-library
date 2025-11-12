@@ -44,6 +44,13 @@ export default {
     maxHeight: { control: 'text' },
     bgColor: { control: 'color' },
     borderColor: { control: 'color' },
+    headerBgColor: { control: 'color' },
+    rowBgColor: { control: 'color' },
+    rowAltBgColor: { control: 'color' },
+    rowHoverBgColor: { control: 'color' },
+    subrowBgColor: { control: 'color' },
+    menuBgColor: { control: 'color' },
+    mutedTextColor: { control: 'color' },
   }
 };
 
@@ -83,6 +90,13 @@ export const Basic = {
     maxHeight: 'auto',
     bgColor: '#ffffff',
     borderColor: '#e5e7eb',
+    headerBgColor: '#f8fafc',
+    rowBgColor: '#ffffff',
+    rowAltBgColor: '#fbfdff',
+    rowHoverBgColor: '#f6fbff',
+    subrowBgColor: '#f9fafb',
+    menuBgColor: '#ffffff',
+    mutedTextColor: '#6b7280',
   },
   render: (args) => React.createElement(Table, { ...args }),
 };

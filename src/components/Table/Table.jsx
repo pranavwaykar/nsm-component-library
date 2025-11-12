@@ -46,6 +46,14 @@ export const Table = forwardRef(({
   radius,
   elevation,
   shadow,
+  disabled = false,
+  headerBgColor,
+  rowBgColor,
+  rowAltBgColor,
+  rowHoverBgColor,
+  subrowBgColor,
+  menuBgColor,
+  mutedTextColor,
   style,
   bg,
   bgColor,
@@ -205,6 +213,13 @@ export const Table = forwardRef(({
   const resolvedFg = textColor ?? rootStyle.color;
   if (resolvedFg) rootStyle['--sb-table-fg'] = resolvedFg;
   if (borderColor) rootStyle['--sb-table-border'] = borderColor;
+  if (headerBgColor) rootStyle['--sb-table-head-bg'] = headerBgColor;
+  if (rowBgColor) rootStyle['--sb-table-row-bg'] = rowBgColor;
+  if (rowAltBgColor) rootStyle['--sb-table-row-alt-bg'] = rowAltBgColor;
+  if (rowHoverBgColor) rootStyle['--sb-table-row-hover-bg'] = rowHoverBgColor;
+  if (subrowBgColor) rootStyle['--sb-table-subrow-bg'] = subrowBgColor;
+  if (menuBgColor) rootStyle['--sb-table-menu-bg'] = menuBgColor;
+  if (mutedTextColor) rootStyle['--sb-table-muted'] = mutedTextColor;
 
   const hasOptionsMenu = (() => {
     if (typeof optionsMenu === 'boolean') return optionsMenu;
@@ -212,7 +227,7 @@ export const Table = forwardRef(({
   })();
 
   return (
-    <Root ref={ref} className={`${responsive ? 'sb-table__wrap' : ''} ${className || ''}`.trim()} id={id} role={role} style={{ ...(maxHeight ? { maxHeight, overflow: 'auto' } : {}), ...rootStyle }} {...rest}>
+    <Root ref={ref} className={`${responsive ? 'sb-table__wrap' : ''} ${loading ? '' : ''} ${disabled ? 'is-disabled' : ''} ${className || ''}`.trim()} id={id} role={role} style={{ ...(maxHeight ? { maxHeight, overflow: 'auto' } : {}), ...rootStyle }} {...rest}>
       {(filterable || showColumnControls || toolbarRight) ? (
         <div className="sb-table__toolbar">
           <div className="sb-table__toolbar-left">

@@ -18,6 +18,23 @@ const SideMenuBar = ({
   notificationCount = '99+',
   avatarSrc = '',
   logo = null,
+  shadow,
+  loading = false,
+  disabled = false,
+  // colors
+  sideMenuBgColor,
+  sideMenuTextColor,
+  logoMarkBackground,
+  menuItemBgColor,
+  menuItemActiveBgColor,
+  menuItemIconBgColor,
+  menuItemLabelColor,
+  menuItemCountBgColor,
+  menuItemCountTextColor,
+  notifyBgColor,
+  notifyTextColor,
+  avatarBgColor,
+  avatarBorderColor,
   as,
   className,
   style = {},
@@ -26,12 +43,20 @@ const SideMenuBar = ({
 }) => {
   const Component = as || 'aside';
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (sideMenuBgColor) mergedStyle.background = sideMenuBgColor;
+  if (sideMenuTextColor) mergedStyle.color = sideMenuTextColor;
+  if (shadow) {
+    const smap = { none: '0', sm: '1', md: '3', lg: '5' };
+    const key = smap[String(shadow)] || null;
+    if (key) mergedStyle.boxShadow = `var(--sb-shadow-${key})`;
+    if (shadow === 'none') mergedStyle.boxShadow = 'var(--sb-shadow-0)';
+  }
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
-  const classes = ['side-menubar', className].filter(Boolean).join(' ');
+  const classes = ['side-menubar', loading ? 'is-loading' : '', disabled ? 'is-disabled' : '', className].filter(Boolean).join(' ');
   return (
     <Component className={classes} style={mergedStyle} {...rest}>
       <button className="logo" type="button" onClick={onLogoClick} aria-label="App Home">
-        {logo || <div className="logo-mark" />}
+        {logo || <div className="logo-mark" style={logoMarkBackground ? { background: logoMarkBackground } : undefined} />}
       </button>
       <nav className="menu" aria-label="Main">
         {menus.map((m, i) => (
@@ -41,23 +66,24 @@ const SideMenuBar = ({
             className={`menu-item ${i === activeIndex ? 'is-active' : ''} ${m?.onClick ? 'is-clickable' : ''}`}
             onClick={() => onMenuClick(m, i)}
             aria-current={i === activeIndex ? 'page' : undefined}
+            style={{ background: i === activeIndex ? menuItemActiveBgColor || menuItemBgColor : menuItemBgColor }}
           >
-            <div className="icon">{m.icon || null}</div>
-            <div className="label">{m.label}</div>
+            <div className="icon" style={menuItemIconBgColor ? { background: menuItemIconBgColor } : undefined}>{m.icon || null}</div>
+            <div className="label" style={menuItemLabelColor ? { color: menuItemLabelColor } : undefined}>{m.label}</div>
             {typeof m.count === 'number' && m.count > 0 ? (
-              <span className="count" aria-label={`${m.count} items`}>{m.count > 99 ? '99+' : m.count}</span>
+              <span className="count" aria-label={`${m.count} items`} style={{ background: menuItemCountBgColor, color: menuItemCountTextColor }}>{m.count > 99 ? '99+' : m.count}</span>
             ) : null}
           </button>
         ))}
       </nav>
       <div className="bottom">
-        <div className="notify" aria-label="notifications">{notificationCount}</div>
+        <div className="notify" aria-label="notifications" style={{ background: notifyBgColor, color: notifyTextColor }}>{notificationCount}</div>
         {avatarSrc ? (
-          <button type="button" className="avatar btn" onClick={onProfileClick} aria-label="Profile">
+          <button type="button" className="avatar btn" onClick={onProfileClick} aria-label="Profile" style={{ background: avatarBgColor, borderColor: avatarBorderColor }}>
             <img src={avatarSrc} alt="profile" />
           </button>
         ) : (
-          <button type="button" className="avatar" onClick={onProfileClick} aria-label="Profile" />
+          <button type="button" className="avatar" onClick={onProfileClick} aria-label="Profile" style={{ background: avatarBgColor, borderColor: avatarBorderColor }} />
         )}
       </div>
     </Component>

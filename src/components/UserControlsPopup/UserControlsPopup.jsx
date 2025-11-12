@@ -11,6 +11,22 @@ const UserControlsPopup = ({
   onLogout = () => {},
   onConsent = () => {},
   onToggleEditMode = () => {},
+  shadow,
+  loading = false,
+  disabled = false,
+  // colors
+  popupBgColor,
+  popupBorderColor,
+  popupTextColor,
+  headerBorderColor,
+  avatarBgColor,
+  nameColor,
+  mailColor,
+  rowBorderColor,
+  subBgColor,
+  subBorderColor,
+  switchTrackColor,
+  switchCheckedColor,
   as,
   className,
   style,
@@ -21,39 +37,48 @@ const UserControlsPopup = ({
   const [editMode, setEditMode] = useState(false);
   const Component = as || 'div';
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (shadow) {
+    const smap = { none: '0', sm: '1', md: '3', lg: '5' };
+    const key = smap[String(shadow)] || null;
+    if (key) mergedStyle.boxShadow = `var(--sb-shadow-${key})`;
+    if (shadow === 'none') mergedStyle.boxShadow = 'var(--sb-shadow-0)';
+  }
+  if (popupBgColor) mergedStyle.background = popupBgColor;
+  if (popupBorderColor) mergedStyle.borderColor = popupBorderColor;
+  if (popupTextColor) mergedStyle.color = popupTextColor;
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
-  const classes = ['user-controls', className].filter(Boolean).join(' ');
+  const classes = ['user-controls', loading ? 'is-loading' : '', disabled ? 'is-disabled' : '', className].filter(Boolean).join(' ');
   return (
     <Component className={classes} style={mergedStyle} {...rest}>
-      <div className="uc-user">
-        <div className="avatar" />
+      <div className="uc-user" style={headerBorderColor ? { borderBottomColor: headerBorderColor } : undefined}>
+        <div className="avatar" style={avatarBgColor ? { background: avatarBgColor } : undefined} />
         <div className="info">
-          <div className="name">{name}</div>
-          <div className="mail">{email}</div>
+          <div className="name" style={nameColor ? { color: nameColor } : undefined}>{name}</div>
+          <div className="mail" style={mailColor ? { color: mailColor } : undefined}>{email}</div>
         </div>
       </div>
-      <div className="uc-row" onClick={() => setLangOpen(!langOpen)}>
+      <div className="uc-row" onClick={() => setLangOpen(!langOpen)} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
         <div className="label"><i className="fi fi-rr-language" style={{marginRight:8}}/>Language</div>
         <div className="chev">›</div>
       </div>
       {langOpen && (
-        <div className="uc-sub">
+        <div className="uc-sub" style={{ ...(subBgColor ? { background: subBgColor } : {}), ...(subBorderColor ? { borderColor: subBorderColor } : {}) }}>
           {languages.map((l, idx) => (
-            <div key={idx} className="uc-sub-row" onClick={() => { setLangOpen(false); onLanguageSelect(l); }}>{l}</div>
+            <div key={idx} className="uc-sub-row" onClick={() => { setLangOpen(false); onLanguageSelect(l); }} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>{l}</div>
           ))}
         </div>
       )}
-      <div className="uc-row">
+      <div className="uc-row" style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
         <div className="label">Edit Mode</div>
         <label className="switch">
-          <input type="checkbox" checked={editMode} onChange={() => { setEditMode(!editMode); onToggleEditMode(!editMode); }} />
-          <span className="slider" />
+          <input type="checkbox" checked={editMode} onChange={() => { setEditMode(!editMode); onToggleEditMode(!editMode); }} disabled={disabled} />
+          <span className="slider" style={{ background: editMode ? (switchCheckedColor || switchTrackColor) : switchTrackColor }} />
         </label>
       </div>
-      <div className="uc-row" onClick={onConsent}>
+      <div className="uc-row" onClick={onConsent} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
         <div className="label">Consent Text</div>
       </div>
-      <div className="uc-row" onClick={onLogout}>
+      <div className="uc-row" onClick={onLogout} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
         <div className="label"><i className="fi fi-rr-exit" style={{marginRight:8}}/>Logout</div>
       </div>
     </Component>
