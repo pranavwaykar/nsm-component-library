@@ -1,5 +1,10 @@
 
 
+.sb-progress { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+.sb-progress.is-horizontal { align-items: stretch; }
+.sb-progress__label { font-size: 12px; color: inherit; }
+.sb-progress__row { display: inline-flex; align-items: center; gap: 8px; }
+
 .sb-progressbar {
   width: 240px;
   height: 8px;

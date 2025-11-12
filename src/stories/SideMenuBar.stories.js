@@ -41,6 +41,7 @@ export default {
     avatarBorderColor: { control: 'color' },
     notifyFontSize: { control: 'text' },
     avatarSize: { control: 'text' },
+    draggable: { table: { disable: true } },
   },
 };
 

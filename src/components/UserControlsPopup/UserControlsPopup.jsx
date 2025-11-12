@@ -59,6 +59,11 @@ const UserControlsPopup = ({
   if (popupWidth) mergedStyle.width = popupWidth;
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   const classes = ['user-controls', loading ? 'is-loading' : '', disabled ? 'is-disabled' : '', className].filter(Boolean).join(' ');
+  const sliderStyle = {
+    background: editMode ? (switchCheckedColor || switchTrackColor) : switchTrackColor,
+    ...(switchWidth ? { width: switchWidth } : {}),
+    ...(switchHeight ? { height: switchHeight } : {}),
+  };
   return (
     <Component className={classes} style={mergedStyle} {...rest}>
       <div className="uc-user" style={headerBorderColor ? { borderBottomColor: headerBorderColor } : undefined}>
@@ -83,9 +88,7 @@ const UserControlsPopup = ({
         <div className="label">Edit Mode</div>
         <label className="switch">
           <input type="checkbox" checked={editMode} onChange={() => { setEditMode(!editMode); onToggleEditMode(!editMode); }} disabled={disabled} />
-          <span className="slider" style={{ background: editMode ? (switchCheckedColor || switchTrackColor) : switchTrackColor, ...(switchWidth ? { width: switchWidth } : {}), ...(switchHeight ? { height: switchHeight } : {} }}>
-            {/* thumb is via :before in CSS; approximate size via inline style when provided */}
-          </span>
+          <span className="slider" style={sliderStyle} />
         </label>
       </div>
       <div className="uc-row" onClick={onConsent} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>

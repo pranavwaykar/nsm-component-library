@@ -11,10 +11,13 @@ export default {
     ...commonArgTypes,
     opened: { control: 'boolean' },
     position: { control: 'select', options: ['left','right'] },
-    width: { control: 'number' },
     title: { control: 'text' },
     overlayColor: { control: 'color' },
+    overlayOpacity: { control: 'text' },
+    overlayBlur: { control: 'text' },
     panelBgColor: { control: 'color' },
+    panelRadius: { control: 'text' },
+    panelMinWidth: { control: 'text' },
     headerBgColor: { control: 'color' },
     headerBorderColor: { control: 'color' },
     titleColor: { control: 'color' },
@@ -22,52 +25,44 @@ export default {
     headerPadding: { control: 'text' },
     contentPadding: { control: 'text' },
     titleFontSize: { control: 'text' },
+    titleFontWeight: { control: 'text' },
     closeButtonSize: { control: 'text' },
+    draggable: { table: { disable: true } },
+    size: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    loading: { table: { disable: true } },
   },
 };
 
-export const Basic = () => {
-  const [opened, setOpened] = useState(true);
-  return (
-    <div style={{ height: 400, width: 600, position: 'relative', border: '1px dashed #e6ebf2' }}>
-      <button onClick={() => setOpened(true)}>Open Drawer</button>
-      <SideDrawer opened={opened} onClose={() => setOpened(false)} title="Details">
-        <Card title="Section" padding={12}>
-          <div>Any content can go here. Use this as a shell for detail panels.</div>
-        </Card>
-      </SideDrawer>
-    </div>
-  );
-};
-
-export const WithControls = {
-  name: 'With Controls',
+export const Default = {
+  name: 'Side Drawer',
   args: {
     opened: true,
     position: 'right',
-    width: 360,
     title: 'Details',
     shadow: 'none',
     loading: false,
     disabled: false,
     overlayColor: 'rgba(0,0,0,.35)',
+    overlayOpacity: undefined,
+    overlayBlur: undefined,
     panelBgColor: '#ffffff',
+    panelRadius: undefined,
+    panelMinWidth: '320px',
     headerBgColor: undefined,
     headerBorderColor: '#e6ebf2',
     titleColor: undefined,
+    titleFontWeight: undefined,
     closeButtonColor: undefined,
     headerPadding: '12px 16px',
     contentPadding: '16px',
     titleFontSize: '14px',
     closeButtonSize: '22px',
+    content: 'This is Drawer Content Which Is Replaceable',
   },
   render: (args) => (
     <div style={{ height: 400, width: 600, position: 'relative', border: '1px dashed #e6ebf2' }}>
-      <SideDrawer {...args}>
-        <Card title="Section" padding={12}>
-          <div>Any content can go here. Use this as a shell for detail panels.</div>
-        </Card>
-      </SideDrawer>
+      <SideDrawer {...args} />
     </div>
   ),
 };
