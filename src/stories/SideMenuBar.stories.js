@@ -59,12 +59,15 @@ export const Default = {
   name: 'Default',
   args: {
     activeIndex: 0,
-    menus: [
-      { label: 'Home', count: 0 },
-      { label: 'Tasks', count: 12 },
-      { label: 'Reports', count: 2 },
-    ],
-    notificationCount: '9+',
+    data: {
+      logo: null,
+      items: [
+        { label: 'Home' },
+        { label: 'Tasks' },
+        { label: 'Reports' },
+      ],
+      bottom: { notificationCount: '9+', avatarSrc: '' },
+    },
     sideMenuBgColor: '#032a77',
     sideMenuTextColor: '#ffffff',
     logoMarkBackground: 'linear-gradient(180deg,#1d4ed8,#0f172a)',
@@ -99,17 +102,27 @@ export const Default = {
     avatarSize: '44px',
     as: 'aside', id: 'smb-1', 'data-testid': 'smb', m: '0'
   },
+  argTypes: {
+    onMenuClick: { action: 'menuClick' },
+    onLogoClick: { action: 'logoClick' },
+    onProfileClick: { action: 'profileClick' },
+    onNotificationClick: { action: 'notificationClick' },
+  },
   parameters: {
     docs: {
       source: {
         language: 'jsx',
         code: `<SideMenuBar
   activeIndex={0}
-  menus={[ { label: 'Home', count: 0 }, { label: 'Tasks', count: 12 }, { label: 'Reports', count: 2 } ]}
-  notificationCount="9+"
+  data={{
+    logo: null,
+    items: [{ label: 'Home' }, { label: 'Tasks' }, { label: 'Reports' }],
+    bottom: { notificationCount: '9+', avatarSrc: '' }
+  }}
   onLogoClick={() => {}}
   onProfileClick={() => {}}
-  onMenuClick={(menu, index) => {}}
+  onNotificationClick={() => {}}
+  onMenuClick={(item, index) => {}}
 />`,
       },
     },

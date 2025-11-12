@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import '../../index.scss';
 import './SideMenuBar.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
@@ -11,13 +11,16 @@ const defaultMenus = [
 
 const SideMenuBar = ({
   data,
+  // legacy props (kept for compat; prefer `data`)
   menus = defaultMenus,
-  activeIndex = 0,
+  activeIndex,
   onMenuClick = () => {},
   onLogoClick = () => {},
   onProfileClick = () => {},
+  onNotificationClick = () => {},
   notificationCount = '99+',
   avatarSrc = '',
+  avatar, // optional node override for avatar
   logo = null,
   shadow,
   loading = false,
@@ -63,18 +66,21 @@ const SideMenuBar = ({
   ...rest
 }) => {
   // Structured data support
-  let resolvedLogo = logo;
-  let resolvedMenus = menus;
-  let resolvedNotify = notificationCount;
-  let resolvedAvatar = avatarSrc;
-  if (data && typeof data === 'object') {
-    if ('logo' in data) resolvedLogo = data.logo;
-    if (Array.isArray(data.items)) resolvedMenus = data.items;
-    if (data.bottom) {
-      if ('notificationCount' in data.bottom) resolvedNotify = data.bottom.notificationCount;
-      if ('avatarSrc' in data.bottom) resolvedAvatar = data.bottom.avatarSrc;
-    }
-  }
+  const {
+    logo: dataLogo,
+    items: dataItems,
+    bottom: dataBottom,
+  } = (data && typeof data === 'object') ? data : {};
+  const resolvedLogo = dataLogo !== undefined ? dataLogo : logo;
+  const resolvedMenus = useMemo(() => (Array.isArray(dataItems) ? dataItems : menus) || [], [dataItems, menus]);
+  const resolvedNotify = (dataBottom && dataBottom.notificationCount !== undefined) ? dataBottom.notificationCount : notificationCount;
+  const resolvedAvatar = (dataBottom && dataBottom.avatarSrc !== undefined) ? dataBottom.avatarSrc : (avatarSrc || null);
+  const avatarNode = avatar || null;
+
+  // Active item handling (controlled or uncontrolled)
+  const [internalActive, setInternalActive] = useState(0);
+  const currentActive = activeIndex !== undefined ? activeIndex : internalActive;
+
   const Component = as || 'aside';
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
   if (sideMenuBgColor) mergedStyle.background = sideMenuBgColor;
@@ -105,9 +111,15 @@ const SideMenuBar = ({
           <button
             key={i}
             type="button"
-            className={`menu-item ${i === activeIndex ? 'is-active' : ''} ${m?.onClick ? 'is-clickable' : ''}`}
-            onClick={(e) => { if (typeof m.onClick === 'function') m.onClick(m, i, e); onMenuClick(m, i, e); }}
-            aria-current={i === activeIndex ? 'page' : undefined}
+            className={`menu-item ${i === currentActive ? 'is-active' : ''} ${m?.onClick ? 'is-clickable' : ''}`}
+            onClick={(e) => {
+              if (disabled) return;
+              // Update active when uncontrolled
+              if (activeIndex === undefined) setInternalActive(i);
+              if (typeof m.onClick === 'function') m.onClick(m, i, e);
+              onMenuClick(m, i, e);
+            }}
+            aria-current={i === currentActive ? 'page' : undefined}
             style={{
               background: i === activeIndex ? (menuItemActiveBgColor || menuItemBgColor) : menuItemBgColor,
               ...(menuItemPaddingY ? { paddingTop: menuItemPaddingY, paddingBottom: menuItemPaddingY } : {}),
@@ -118,15 +130,20 @@ const SideMenuBar = ({
           >
             <div className="icon" style={{ ...(menuItemIconBgColor ? { background: menuItemIconBgColor } : {}), ...(menuIconSize ? { width: menuIconSize, height: menuIconSize } : {}) }}>{m.icon || null}</div>
             <div className="label" style={{ ...(menuItemLabelColor ? { color: menuItemLabelColor } : {}), ...(menuLabelFontSize ? { fontSize: menuLabelFontSize } : {}), ...(menuLabelFontWeight ? { fontWeight: menuLabelFontWeight } : {}) }}>{m.label}</div>
-            {typeof m.count === 'number' && m.count > 0 ? (
-              <span className="count" aria-label={`${m.count} items`} style={{ background: menuItemCountBgColor, color: menuItemCountTextColor, ...(countBadgeHeight ? { height: countBadgeHeight } : {}), ...(countBadgeMinWidth ? { minWidth: countBadgeMinWidth } : {}), ...(countBadgeFontSize ? { fontSize: countBadgeFontSize } : {}) }}>{m.count > 99 ? '99+' : m.count}</span>
-            ) : null}
+            {/* per design: no per-item counts; reserved for notify */}
           </button>
         ))}
       </nav>
       <div className="bottom">
-        <div className="notify" aria-label="notifications" style={{ background: notifyBgColor, color: notifyTextColor, ...(notifyFontSize ? { fontSize: notifyFontSize } : {}), ...(notifyPaddingX ? { paddingLeft: notifyPaddingX, paddingRight: notifyPaddingX } : {}), ...(notifyPaddingY ? { paddingTop: notifyPaddingY, paddingBottom: notifyPaddingY } : {}) }}>{resolvedNotify}</div>
-        {resolvedAvatar ? (
+        <button type="button" className="notify" aria-label="notifications" onClick={onNotificationClick} style={{ background: notifyBgColor, color: notifyTextColor, ...(notifyFontSize ? { fontSize: notifyFontSize } : {}), ...(notifyPaddingX ? { paddingLeft: notifyPaddingX, paddingRight: notifyPaddingX } : {}), ...(notifyPaddingY ? { paddingTop: notifyPaddingY, paddingBottom: notifyPaddingY } : {}), display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2Zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2Z"/></svg>
+          <span>{(Number(resolvedNotify) || resolvedNotify) ?? ''}</span>
+        </button>
+        {avatarNode ? (
+          <div className="avatar btn" onClick={onProfileClick} role="button" aria-label="Profile" style={{ ...(avatarSize ? { width: avatarSize, height: avatarSize } : {}) }}>
+            {avatarNode}
+          </div>
+        ) : resolvedAvatar ? (
           <button type="button" className="avatar btn" onClick={onProfileClick} aria-label="Profile" style={{ background: avatarBgColor, borderColor: avatarBorderColor, ...(avatarSize ? { width: avatarSize, height: avatarSize } : {}) }}>
             <img src={resolvedAvatar} alt="profile" />
           </button>
