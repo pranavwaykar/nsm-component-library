@@ -54,6 +54,12 @@ export const Table = forwardRef(({
   subrowBgColor,
   menuBgColor,
   mutedTextColor,
+  headerPaddingX,
+  headerPaddingY,
+  cellPaddingX,
+  cellPaddingY,
+  headerFontSize,
+  cellFontSize,
   style,
   bg,
   bgColor,
@@ -220,6 +226,12 @@ export const Table = forwardRef(({
   if (subrowBgColor) rootStyle['--sb-table-subrow-bg'] = subrowBgColor;
   if (menuBgColor) rootStyle['--sb-table-menu-bg'] = menuBgColor;
   if (mutedTextColor) rootStyle['--sb-table-muted'] = mutedTextColor;
+  if (headerPaddingX) rootStyle['--sb-th-px'] = headerPaddingX;
+  if (headerPaddingY) rootStyle['--sb-th-py'] = headerPaddingY;
+  if (cellPaddingX) rootStyle['--sb-td-px'] = cellPaddingX;
+  if (cellPaddingY) rootStyle['--sb-td-py'] = cellPaddingY;
+  if (headerFontSize) rootStyle['--sb-th-fs'] = headerFontSize;
+  if (cellFontSize) rootStyle['--sb-td-fs'] = cellFontSize;
 
   const hasOptionsMenu = (() => {
     if (typeof optionsMenu === 'boolean') return optionsMenu;

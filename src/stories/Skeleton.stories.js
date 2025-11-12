@@ -16,6 +16,7 @@ export default {
     skeletonStartColor: { control: 'color' },
     skeletonMidColor: { control: 'color' },
     skeletonEndColor: { control: 'color' },
+    skeletonRadius: { control: 'text' },
   }
 };
 

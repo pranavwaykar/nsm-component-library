@@ -18,6 +18,8 @@ export default {
     indeterminate: { control: 'boolean' },
     barTrackColor: { control: 'color' },
     barFillColor: { control: 'color' },
+    barWidth: { control: 'text' },
+    barHeight: { control: 'text' },
     ringBgColor: { control: 'color' },
     ringFgColor: { control: 'color' },
   }
@@ -25,7 +27,7 @@ export default {
 
 export const Bar = {
   name: 'Progress Bar',
-  args: { value: 40, max: 100, indeterminate: false, label: 'Uploading', id: 'pbar-1', 'data-testid': 'pbar', m: '0', w: 240, h: 8, barTrackColor: '#f3f4f6', barFillColor: '#3b82f6' },
+  args: { value: 40, max: 100, indeterminate: false, label: 'Uploading', id: 'pbar-1', 'data-testid': 'pbar', m: '0', barWidth: '240px', barHeight: '8px', barTrackColor: '#f3f4f6', barFillColor: '#3b82f6' },
   render: (args) => React.createElement(ProgressBar, { ...args }),
 };
 

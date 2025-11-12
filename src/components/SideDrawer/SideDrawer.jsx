@@ -2,7 +2,7 @@ import React from 'react';
 import './SideDrawer.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
 
-const SideDrawer = ({ opened = false, onClose = () => {}, position = 'right', width = 360, title, children, shadow, loading = false, disabled = false, overlayColor, panelBgColor, headerBgColor, headerBorderColor, titleColor, closeButtonColor, className, style, hidden, ...rest }) => {
+const SideDrawer = ({ opened = false, onClose = () => {}, position = 'right', width = 360, title, children, shadow, loading = false, disabled = false, overlayColor, panelBgColor, headerBgColor, headerBorderColor, titleColor, closeButtonColor, headerPadding, contentPadding, titleFontSize, closeButtonSize, className, style, hidden, ...rest }) => {
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   let panelStyle = { width };
@@ -15,9 +15,11 @@ const SideDrawer = ({ opened = false, onClose = () => {}, position = 'right', wi
   const headerStyle = {
     background: headerBgColor,
     borderBottomColor: headerBorderColor,
+    ...(headerPadding ? { padding: headerPadding } : {}),
   };
-  const titleStyle = { color: titleColor };
-  const closeStyle = { color: closeButtonColor };
+  const titleStyle = { color: titleColor, ...(titleFontSize ? { fontSize: titleFontSize } : {}) };
+  const closeStyle = { color: closeButtonColor, ...(closeButtonSize ? { fontSize: closeButtonSize } : {}) };
+  const contentStyle = contentPadding ? { padding: contentPadding } : undefined;
   return (
     <div className={`sd-root ${opened ? 'opened' : ''} ${loading ? 'is-loading' : ''} ${disabled ? 'is-disabled' : ''} ${className || ''}`.trim()} style={mergedStyle} {...rest}>
       <div className="sd-overlay" onClick={() => { if (!disabled) onClose(); }} style={overlayColor ? { background: overlayColor } : undefined} />
@@ -28,7 +30,7 @@ const SideDrawer = ({ opened = false, onClose = () => {}, position = 'right', wi
             ×
           </button>
         </div>
-        <div className="sd-content">{children}</div>
+        <div className="sd-content" style={contentStyle}>{children}</div>
       </div>
     </div>
   );

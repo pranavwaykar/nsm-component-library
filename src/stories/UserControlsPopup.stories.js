@@ -26,6 +26,14 @@ export default {
     subBorderColor: { control: 'color' },
     switchTrackColor: { control: 'color' },
     switchCheckedColor: { control: 'color' },
+    popupWidth: { control: 'text' },
+    avatarSize: { control: 'text' },
+    nameFontSize: { control: 'text' },
+    mailFontSize: { control: 'text' },
+    rowHeight: { control: 'text' },
+    subWidth: { control: 'text' },
+    switchWidth: { control: 'text' },
+    switchHeight: { control: 'text' },
   },
 };
 
@@ -47,6 +55,14 @@ export const Default = {
     subBorderColor: '#e5e7eb',
     switchTrackColor: '#e2e8f0',
     switchCheckedColor: '#1f94ff',
+    popupWidth: '260px',
+    avatarSize: '40px',
+    nameFontSize: '14px',
+    mailFontSize: '12px',
+    rowHeight: '44px',
+    subWidth: '220px',
+    switchWidth: '36px',
+    switchHeight: '20px',
   },
   parameters: {
     docs: {

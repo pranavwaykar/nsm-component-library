@@ -26,6 +26,19 @@ export const PageNotFound = ({
   secondaryButtonTextColor,
   secondaryButtonBgColor,
   secondaryButtonBorderColor,
+  // dimensions
+  artWidth,
+  artHeight,
+  artBlockAWidth,
+  artBlockAHeight,
+  artBlockBWidth,
+  artBlockBHeight,
+  artBlockCSize,
+  actionsGap,
+  primaryButtonWidth,
+  primaryButtonHeight,
+  secondaryButtonWidth,
+  secondaryButtonHeight,
   // visibility toggles
   showArt = true,
   showCode = true,
@@ -111,19 +124,36 @@ export const PageNotFound = ({
       ? `linear-gradient(180deg, ${artBgStartColor || '#f7fafc'}, ${artBgEndColor || '#eef3f8'})`
       : undefined,
     boxShadow: artBorderColor ? `inset 0 0 0 1px ${artBorderColor}` : undefined,
+    width: artWidth,
+    height: artHeight,
   });
-  const blockAStyle = artBlockAColor ? { background: artBlockAColor } : undefined;
-  const blockBStyle = artBlockBColor ? { background: artBlockBColor } : undefined;
-  const blockCStyle = artBlockCColor ? { background: artBlockCColor } : undefined;
+  const blockAStyle = {
+    ...(artBlockAColor ? { background: artBlockAColor } : {}),
+    ...(artBlockAWidth ? { width: artBlockAWidth } : {}),
+    ...(artBlockAHeight ? { height: artBlockAHeight } : {}),
+  };
+  const blockBStyle = {
+    ...(artBlockBColor ? { background: artBlockBColor } : {}),
+    ...(artBlockBWidth ? { width: artBlockBWidth } : {}),
+    ...(artBlockBHeight ? { height: artBlockBHeight } : {}),
+  };
+  const blockCStyle = {
+    ...(artBlockCColor ? { background: artBlockCColor } : {}),
+    ...(artBlockCSize ? { width: artBlockCSize, height: artBlockCSize } : {}),
+  };
   const primaryBtnInline = merge(primaryButtonStyle, {
     color: primaryButtonTextColor,
     background: primaryButtonBgColor,
     borderColor: primaryButtonBorderColor,
+    width: primaryButtonWidth,
+    height: primaryButtonHeight,
   });
   const secondaryBtnInline = merge(secondaryButtonStyle, {
     color: secondaryButtonTextColor,
     background: secondaryButtonBgColor,
     borderColor: secondaryButtonBorderColor,
+    width: secondaryButtonWidth,
+    height: secondaryButtonHeight,
   });
   return (
     <Root className={`sb-pnf ${loading ? 'is-loading' : ''} ${disabled ? 'is-disabled' : ''} ${className || ''}`.trim()} style={mergedStyle} {...rest}>
@@ -144,7 +174,7 @@ export const PageNotFound = ({
         <div className={`sb-pnf__desc ${descriptionClassName || ''}`.trim()} style={descriptionInline}>{description}</div>
       )}
       {(showPrimary || showSecondary) && (
-        <div className={`sb-pnf__actions ${actionsClassName || ''}`.trim()} style={actionsStyle}>
+        <div className={`sb-pnf__actions ${actionsClassName || ''}`.trim()} style={merge(actionsStyle, actionsGap ? { gap: actionsGap } : undefined)}>
           {showPrimary && (
             <button
               type="button"

@@ -19,6 +19,10 @@ export default {
     headerBorderColor: { control: 'color' },
     titleColor: { control: 'color' },
     closeButtonColor: { control: 'color' },
+    headerPadding: { control: 'text' },
+    contentPadding: { control: 'text' },
+    titleFontSize: { control: 'text' },
+    closeButtonSize: { control: 'text' },
   },
 };
 
@@ -52,6 +56,10 @@ export const WithControls = {
     headerBorderColor: '#e6ebf2',
     titleColor: undefined,
     closeButtonColor: undefined,
+    headerPadding: '12px 16px',
+    contentPadding: '16px',
+    titleFontSize: '14px',
+    closeButtonSize: '22px',
   },
   render: (args) => (
     <div style={{ height: 400, width: 600, position: 'relative', border: '1px dashed #e6ebf2' }}>

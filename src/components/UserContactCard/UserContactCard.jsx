@@ -5,7 +5,7 @@ import Avatar from '../../muamelat/common/Avatar';
 import { openMail, openTeams } from '../../muamelat/common/utils';
 import { expandStyleProps } from '../../utils/styleSystem';
 
-const UserContactCard = ({ user = {}, shadow, loading = false, disabled = false, cardBgColor, cardBorderColor, nameColor, iconColor, teamsIconColor, as, className, style, hidden, ...rest }) => {
+const UserContactCard = ({ user = {}, shadow, loading = false, disabled = false, cardBgColor, cardBorderColor, cardPadding, cardMaxWidth, nameColor, nameFontSize, iconColor, teamsIconColor, iconsFontSize, avatarSize, as, className, style, hidden, ...rest }) => {
   const fullName = `${user?.firstname ?? ''} ${user?.lastname ?? ''}`.trim();
   const Component = as || 'div';
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
@@ -17,18 +17,20 @@ const UserContactCard = ({ user = {}, shadow, loading = false, disabled = false,
   }
   if (cardBgColor) mergedStyle.background = cardBgColor;
   if (cardBorderColor) mergedStyle.borderColor = cardBorderColor;
+  if (cardPadding) mergedStyle.padding = cardPadding;
+  if (cardMaxWidth) mergedStyle.maxWidth = cardMaxWidth;
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   const classes = ['user-contact-card-comp', loading ? 'is-loading' : '', disabled ? 'is-disabled' : '', className].filter(Boolean).join(' ');
   return (
     <Component className={classes} style={mergedStyle} {...rest}>
-      <Avatar type="mini2" img={user?.avatar} name={fullName} />
-      <div className="uccc-name" title={fullName} style={nameColor ? { color: nameColor } : undefined}>{fullName || 'Unknown User'}</div>
+      <Avatar type="mini2" img={user?.avatar} name={fullName} style={avatarSize ? { width: avatarSize, height: avatarSize, fontSize: Number.parseFloat(avatarSize) / 2 || undefined } : undefined} />
+      <div className="uccc-name" title={fullName} style={{ ...(nameColor ? { color: nameColor } : {}), ...(nameFontSize ? { fontSize: nameFontSize } : {}) }}>{fullName || 'Unknown User'}</div>
       <div className="uccc-icons">
         <button className="uccc-icon" aria-label="email" onClick={() => openMail(user?.email)} style={iconColor ? { color: iconColor } : undefined}>
-          <i className="fi fi-rr-envelope" />
+          <i className="fi fi-rr-envelope" style={iconsFontSize ? { fontSize: iconsFontSize } : undefined} />
         </button>
         <button className="uccc-icon teams" aria-label="teams" onClick={() => openTeams(user?.email)} style={{ ...(iconColor ? { color: iconColor } : {}), ...(teamsIconColor ? { color: teamsIconColor } : {}) }}>
-          <i className="fi fi-rr-users" />
+          <i className="fi fi-rr-users" style={iconsFontSize ? { fontSize: iconsFontSize } : undefined} />
         </button>
       </div>
     </Component>

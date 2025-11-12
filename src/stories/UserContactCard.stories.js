@@ -17,8 +17,13 @@ export default {
     cardBgColor: { control: 'color' },
     cardBorderColor: { control: 'color' },
     nameColor: { control: 'color' },
+    nameFontSize: { control: 'text' },
     iconColor: { control: 'color' },
     teamsIconColor: { control: 'color' },
+    iconsFontSize: { control: 'text' },
+    cardPadding: { control: 'text' },
+    cardMaxWidth: { control: 'text' },
+    avatarSize: { control: 'text' },
   },
 };
 
@@ -32,8 +37,13 @@ export const Default = {
     cardBgColor: '#ffffff',
     cardBorderColor: '#e5e7eb',
     nameColor: '#0f172a',
+    nameFontSize: '13px',
     iconColor: '#0f172a',
     teamsIconColor: '#5b5fc7',
+    iconsFontSize: '18px',
+    cardPadding: '8px 10px',
+    cardMaxWidth: '280px',
+    avatarSize: '24px',
     as: 'div', id: 'ucc-1', 'data-testid': 'ucc', m: '0'
   },
   render: (args) => React.createElement('div', { style: { width: 380 } },

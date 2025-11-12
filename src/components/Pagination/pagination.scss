@@ -3,9 +3,70 @@
 .sb-pagination__label { margin-right: 6px; font-size: var(--sb-font-size-base); color: #6b7280; }
 .sb-pagination__select { border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 8px; background: #fff; }
 
+.sb-pagerselect { position: relative; display: inline-flex; align-items: center; }
+.sb-pagerselect__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  min-width: 56px;
+  height: 36px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #111827;
+  font-size: var(--sb-font-size-base);
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.sb-pagerselect__btn:hover { background: var(--sb-pagerselect-hover-bg, #f9fafb); border-color: #cbd5e1; }
+.sb-pagerselect__chev { opacity: .6; }
+.sb-pagerselect__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  background: #fff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(16,24,40,.12);
+  padding: 6px;
+  z-index: 30;
+  max-height: 240px;
+  overflow: auto;
+  width: 95px;
+}
+.sb-pagerselect__opt {
+  padding: 10px 12px;
+  min-height: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color .05s ease, color .05s ease;
+}
+.sb-pagerselect__opt:hover { background: #f3f4f6; }
+.sb-pagerselect__opt.is-active { background: #111827; color: #fff; }
+
 .sb-pagination__controls { display: flex; align-items: center; gap: 6px; order: 2; }
 .sb-pagination__list { display: flex; list-style: none; padding: 0; margin: 0 6px; gap: 6px; }
-.sb-pagination__btn { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; cursor: pointer; }
+.sb-pagination__btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.sb-pagination__btn:not(:disabled):hover {
+  background: var(--sb-pager-btn-hover-bg, #f9fafb);
+  border-color: var(--sb-pager-btn-hover-border, #cbd5e1);
+  color: var(--sb-pager-btn-hover-color, inherit);
+}
 .sb-pagination__btn.is-active { background: #111827; color: #fff; border-color: #111827; }
 .sb-pagination__btn:disabled { opacity: .5; cursor: not-allowed; }
 

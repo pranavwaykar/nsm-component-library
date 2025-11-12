@@ -41,12 +41,14 @@
   top: 0;
   background: var(--sb-table-head-bg, var(--sb-table-bg, #fff));
   text-align: left;
-  padding: 10px 12px;
+  padding: var(--sb-th-py, 10px) var(--sb-th-px, 12px);
+  font-size: var(--sb-th-fs, var(--sb-font-size-base));
   border-bottom: 1px solid #e5e7eb;
 }
 .sb-table tbody tr:hover td { background: var(--sb-table-row-hover-bg, #f9fafb); }
 .sb-table tbody td {
-  padding: 14px 16px;
+  padding: var(--sb-td-py, 14px) var(--sb-td-px, 16px);
+  font-size: var(--sb-td-fs, var(--sb-font-size-base));
   border-bottom: 1px solid #f1f5f9;
   background: var(--sb-table-row-bg, var(--sb-table-bg, #fff));
   vertical-align: middle;

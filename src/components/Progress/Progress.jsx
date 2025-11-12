@@ -4,7 +4,7 @@ import '../../index.scss';
 import './Progress.scss';
 import { expandStyleProps } from '../../utils/styleSystem';
 
-export const ProgressBar = forwardRef(({ value, max = 100, indeterminate = false, label, shadow, loading = false, disabled = false, barTrackColor, barFillColor, as, style, hidden, ...rest }, ref) => {
+export const ProgressBar = forwardRef(({ value, max = 100, indeterminate = false, label, shadow, loading = false, disabled = false, barTrackColor, barFillColor, barWidth, barHeight, as, style, hidden, ...rest }, ref) => {
   const pct = Math.max(0, Math.min(100, (Number(value) / Number(max)) * 100));
   const Component = as || 'div';
   const mergedStyle = { ...expandStyleProps(rest), ...(style || {}) };
@@ -15,6 +15,8 @@ export const ProgressBar = forwardRef(({ value, max = 100, indeterminate = false
     if (shadow === 'none') mergedStyle.boxShadow = 'var(--sb-shadow-0)';
   }
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
+  if (barWidth) mergedStyle.width = barWidth;
+  if (barHeight) mergedStyle.height = barHeight;
   const bgStyle = barTrackColor ? { background: barTrackColor } : undefined;
   const fillStyle = indeterminate
     ? undefined

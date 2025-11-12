@@ -27,6 +27,16 @@ const UserControlsPopup = ({
   subBorderColor,
   switchTrackColor,
   switchCheckedColor,
+  // dimensions
+  popupWidth,
+  avatarSize,
+  nameFontSize,
+  mailFontSize,
+  rowHeight,
+  subWidth,
+  switchWidth,
+  switchHeight,
+  switchThumbSize,
   as,
   className,
   style,
@@ -46,39 +56,42 @@ const UserControlsPopup = ({
   if (popupBgColor) mergedStyle.background = popupBgColor;
   if (popupBorderColor) mergedStyle.borderColor = popupBorderColor;
   if (popupTextColor) mergedStyle.color = popupTextColor;
+  if (popupWidth) mergedStyle.width = popupWidth;
   if (hidden === true && mergedStyle.display === undefined) mergedStyle.display = 'none';
   const classes = ['user-controls', loading ? 'is-loading' : '', disabled ? 'is-disabled' : '', className].filter(Boolean).join(' ');
   return (
     <Component className={classes} style={mergedStyle} {...rest}>
       <div className="uc-user" style={headerBorderColor ? { borderBottomColor: headerBorderColor } : undefined}>
-        <div className="avatar" style={avatarBgColor ? { background: avatarBgColor } : undefined} />
+        <div className="avatar" style={{ ...(avatarBgColor ? { background: avatarBgColor } : {}), ...(avatarSize ? { width: avatarSize, height: avatarSize } : {}) }} />
         <div className="info">
-          <div className="name" style={nameColor ? { color: nameColor } : undefined}>{name}</div>
-          <div className="mail" style={mailColor ? { color: mailColor } : undefined}>{email}</div>
+          <div className="name" style={{ ...(nameColor ? { color: nameColor } : {}), ...(nameFontSize ? { fontSize: nameFontSize } : {}) }}>{name}</div>
+          <div className="mail" style={{ ...(mailColor ? { color: mailColor } : {}), ...(mailFontSize ? { fontSize: mailFontSize } : {}) }}>{email}</div>
         </div>
       </div>
-      <div className="uc-row" onClick={() => setLangOpen(!langOpen)} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
+      <div className="uc-row" onClick={() => setLangOpen(!langOpen)} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>
         <div className="label"><i className="fi fi-rr-language" style={{marginRight:8}}/>Language</div>
         <div className="chev">›</div>
       </div>
       {langOpen && (
-        <div className="uc-sub" style={{ ...(subBgColor ? { background: subBgColor } : {}), ...(subBorderColor ? { borderColor: subBorderColor } : {}) }}>
+        <div className="uc-sub" style={{ ...(subBgColor ? { background: subBgColor } : {}), ...(subBorderColor ? { borderColor: subBorderColor } : {}), ...(subWidth ? { width: subWidth } : {}) }}>
           {languages.map((l, idx) => (
-            <div key={idx} className="uc-sub-row" onClick={() => { setLangOpen(false); onLanguageSelect(l); }} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>{l}</div>
+            <div key={idx} className="uc-sub-row" onClick={() => { setLangOpen(false); onLanguageSelect(l); }} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>{l}</div>
           ))}
         </div>
       )}
-      <div className="uc-row" style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
+      <div className="uc-row" style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>
         <div className="label">Edit Mode</div>
         <label className="switch">
           <input type="checkbox" checked={editMode} onChange={() => { setEditMode(!editMode); onToggleEditMode(!editMode); }} disabled={disabled} />
-          <span className="slider" style={{ background: editMode ? (switchCheckedColor || switchTrackColor) : switchTrackColor }} />
+          <span className="slider" style={{ background: editMode ? (switchCheckedColor || switchTrackColor) : switchTrackColor, ...(switchWidth ? { width: switchWidth } : {}), ...(switchHeight ? { height: switchHeight } : {} }}>
+            {/* thumb is via :before in CSS; approximate size via inline style when provided */}
+          </span>
         </label>
       </div>
-      <div className="uc-row" onClick={onConsent} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
+      <div className="uc-row" onClick={onConsent} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>
         <div className="label">Consent Text</div>
       </div>
-      <div className="uc-row" onClick={onLogout} style={rowBorderColor ? { borderBottomColor: rowBorderColor } : undefined}>
+      <div className="uc-row" onClick={onLogout} style={{ ...(rowBorderColor ? { borderBottomColor: rowBorderColor } : {}), ...(rowHeight ? { height: rowHeight } : {}) }}>
         <div className="label"><i className="fi fi-rr-exit" style={{marginRight:8}}/>Logout</div>
       </div>
     </Component>

@@ -51,6 +51,12 @@ export default {
     subrowBgColor: { control: 'color' },
     menuBgColor: { control: 'color' },
     mutedTextColor: { control: 'color' },
+    headerPaddingX: { control: 'text' },
+    headerPaddingY: { control: 'text' },
+    cellPaddingX: { control: 'text' },
+    cellPaddingY: { control: 'text' },
+    headerFontSize: { control: 'text' },
+    cellFontSize: { control: 'text' },
   }
 };
 
@@ -97,6 +103,12 @@ export const Basic = {
     subrowBgColor: '#f9fafb',
     menuBgColor: '#ffffff',
     mutedTextColor: '#6b7280',
+    headerPaddingX: '12px',
+    headerPaddingY: '10px',
+    cellPaddingX: '16px',
+    cellPaddingY: '14px',
+    headerFontSize: '14px',
+    cellFontSize: '14px',
   },
   render: (args) => React.createElement(Table, { ...args }),
 };

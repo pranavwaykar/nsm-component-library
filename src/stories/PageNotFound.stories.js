@@ -50,6 +50,19 @@ export default {
     actionsStyle: { control: 'object' },
     primaryButtonStyle: { control: 'object' },
     secondaryButtonStyle: { control: 'object' },
+    // dimensions
+    artWidth: { control: 'text' },
+    artHeight: { control: 'text' },
+    artBlockAWidth: { control: 'text' },
+    artBlockAHeight: { control: 'text' },
+    artBlockBWidth: { control: 'text' },
+    artBlockBHeight: { control: 'text' },
+    artBlockCSize: { control: 'text' },
+    actionsGap: { control: 'text' },
+    primaryButtonWidth: { control: 'text' },
+    primaryButtonHeight: { control: 'text' },
+    secondaryButtonWidth: { control: 'text' },
+    secondaryButtonHeight: { control: 'text' },
     // color props for art and buttons
     artBgStartColor: { control: 'color' },
     artBgEndColor: { control: 'color' },
@@ -87,18 +100,6 @@ export const Default = {
     variant: { table: { disable: true } },
     size: { table: { disable: true } },
   }
-};
-
-export const CustomContent = {
-  name: 'Custom content (nodes & numbers)',
-  args: {
-    code: '👻',
-    title: 'Boo! Nothing here.',
-    description: 12345,
-    ctaLabel: 'Take me back',
-    secondaryLabel: 'Report issue',
-    showArt: false,
-  },
 };
 
 
