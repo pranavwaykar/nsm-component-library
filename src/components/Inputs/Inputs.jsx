@@ -1591,6 +1591,12 @@ function addMonths(d, delta) {
   return new Date(d.getFullYear(), d.getMonth() + delta, 1);
 }
 
+function addDays(d, delta) {
+  const x = new Date(d);
+  x.setDate(x.getDate() + delta);
+  return x;
+}
+
 function daysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
@@ -1957,6 +1963,24 @@ export const DateRange = ({
     setYearView(nextStart.getFullYear());
   }
 
+  function shiftDay(delta) {
+    if (disabled || granularity !== "day") return;
+    if (startDate && endDate) {
+      const ns = addDays(startDate, delta);
+      const ne = addDays(endDate, delta);
+      onChange?.({ start: toIso(ns), end: toIso(ne) });
+    } else if (startDate && !endDate) {
+      const ns = addDays(startDate, delta);
+      onChange?.({ start: toIso(ns), end: "" });
+    } else if (!startDate && endDate) {
+      const ne = addDays(endDate, delta);
+      onChange?.({ start: "", end: toIso(ne) });
+    } else {
+      const today = addDays(new Date(), delta);
+      onChange?.({ start: toIso(today), end: "" });
+    }
+  }
+
   return (
     <Component
       ref={rootRef}
@@ -1983,9 +2007,10 @@ export const DateRange = ({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              shiftMonth(-1);
+              if (granularity === "month") shiftMonth(-1);
+              else shiftDay(-1);
             }}
-            disabled={disabled || granularity !== "month"}
+            disabled={disabled}
             style={{ ...(prevArrowColor ? { color: prevArrowColor } : {}) }}
           >
             <i className="fi fi-rr-angle-small-left" />
@@ -2009,9 +2034,10 @@ export const DateRange = ({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              shiftMonth(1);
+              if (granularity === "month") shiftMonth(1);
+              else shiftDay(1);
             }}
-            disabled={disabled || granularity !== "month"}
+            disabled={disabled}
             style={{ ...(nextArrowColor ? { color: nextArrowColor } : {}) }}
           >
             <i className="fi fi-rr-angle-small-right" />
