@@ -43,7 +43,7 @@ const LawyerJudicialBarChart = ({
     },
     data,
   };
-  return <Chart as={as} style={style} hidden={hidden} type={type} dataSource={ds} w={w} h={h} {...rest} />;
+  return <Chart as={as} style={style} hidden={hidden} type={type} data={ds} w={w} h={h} {...rest} />;
 };
 
 export default LawyerJudicialBarChart;

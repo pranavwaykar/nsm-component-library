@@ -8,6 +8,7 @@ import { expandStyleProps } from '../../utils/styleSystem';
 
 const DocumentFlowChart = ({
   chartData = mockData,
+  data,
   id = 'DOCUMENTFLOWCHART',
   color = '#092370',
   baseInterval = { timeUnit: 'hour', count: 1 },
@@ -20,6 +21,7 @@ const DocumentFlowChart = ({
   chartBgColor,
   baseFontFamily,
   baseFontSize,
+  baseFontColor,
   // clicks
   onBarClick,
   as,
@@ -48,6 +50,7 @@ const DocumentFlowChart = ({
     if (key) hostStyle.boxShadow = `var(--sb-shadow-${key})`;
     if (shadow === 'none') hostStyle.boxShadow = 'var(--sb-shadow-0)';
   }
+  const effectiveData = chartData ?? data;
   React.useLayoutEffect(() => {
     const root = am5.Root.new(id);
     root.setThemes([am5themes_Animated.new(root)]);
@@ -84,6 +87,13 @@ const DocumentFlowChart = ({
         }),
       }),
     );
+    // Apply base font styles to axis labels
+    const labelStyles = {};
+    if (baseFontFamily) labelStyles.fontFamily = baseFontFamily;
+    if (baseFontSize) labelStyles.fontSize = baseFontSize;
+    if (baseFontColor) labelStyles.fill = am5.color(typeof baseFontColor === 'string' ? baseFontColor : String(baseFontColor));
+    yAxis.get('renderer').labels.template.setAll(labelStyles);
+    xAxis.get('renderer').labels.template.setAll(labelStyles);
 
     const series = chart.series.push(
       am5xy.ColumnSeries.new(root, {
@@ -98,7 +108,7 @@ const DocumentFlowChart = ({
 
     const colorStr = (typeof color === 'string' && color.trim()) ? color : '#2a9cff';
     const barColor = am5.color(colorStr);
-    const data = (chartData || []).map((item) => {
+    const data = (effectiveData || []).map((item) => {
       const [sYear, sMonth, sDay] = (item.fromDate || item.date).split('-');
       const start = new Date(sYear, sMonth - 1, sDay).setHours(0, 0, 0, 0);
       const end = new Date(sYear, sMonth - 1, sDay).setHours(23, 0, 0, 0);
@@ -151,7 +161,7 @@ const DocumentFlowChart = ({
     series.appear();
     chart.appear(1000, 100);
     return () => root.dispose();
-  }, [chartData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText, onBarClick]);
+  }, [effectiveData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText, onBarClick, baseFontFamily, baseFontSize, baseFontColor]);
 
   return (
     <Container id={`${id}-wrap`} className={`documentflowchart-container ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden} {...(customProps || {})}>

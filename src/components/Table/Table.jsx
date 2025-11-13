@@ -16,6 +16,7 @@ export const Table = forwardRef(({
   // core
   columns,
   data,
+  value,
   rowKey = 'id',
   // UX
   loading = false,

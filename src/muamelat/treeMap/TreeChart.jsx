@@ -21,6 +21,7 @@ const TreeChart = ({
   chartBgColor,
   baseFontFamily,
   baseFontSize,
+  baseFontColor,
   as,
   style,
   hidden,
@@ -79,7 +80,10 @@ const TreeChart = ({
       maxWidth: labelMaxWidth,
       ellipsis: '...',
       paddingLeft: 6,
-      paddingRight: 6
+      paddingRight: 6,
+      ...(baseFontFamily ? { fontFamily: baseFontFamily } : {}),
+      ...(baseFontSize ? { fontSize: baseFontSize } : {}),
+      ...(baseFontColor ? { fill: am5.color(baseFontColor) } : {}),
     } : { visible: false });
 
     series.rectangles.template.setAll({

@@ -17,7 +17,7 @@ const FetchChart = ({ chartType, endpoint, method = 'GET', headers, params, tran
     return <div style={{ padding: 12, fontSize: 12 }}>Loading chart…</div>;
   }
 
-  return <Chart as={as} style={style} hidden={hidden} type={chartType} dataSource={dataSource} {...rest} />;
+  return <Chart as={as} style={style} hidden={hidden} type={chartType} data={dataSource} {...rest} />;
 };
 
 export default FetchChart;

@@ -55,10 +55,11 @@ export default {
 
 export const Bar = {
   name: 'Bar',
-  args: { dataSource: mockBarData },
+  args: { data: mockBarData, value: '-' },
   argTypes: {
     // Only show relevant Fusion color/font controls + size
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     w: { control: { type: 'range', min: 300, max: 1800, step: 10 } },
     h: { control: { type: 'range', min: 200, max: 1000, step: 10 } },
     baseFontFamily: { control: 'text' },
@@ -100,9 +101,10 @@ export const Bar = {
 
 export const Doughnut = {
   name: 'Doughnut',
-  args: { dataSource: mockDoughnutData },
+  args: { data: mockDoughnutData, value: '-' },
   argTypes: {
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -129,9 +131,10 @@ export const Doughnut = {
 
 export const StackedColumn = {
   name: 'Stacked Column',
-  args: { dataSource: mockStackedData },
+  args: { data: mockStackedData, value: '-' },
   argTypes: {
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -158,9 +161,10 @@ export const StackedColumn = {
 
 export const Line = {
   name: 'Line',
-  args: { dataSource: mockLineData },
+  args: { data: mockLineData, value: '-' },
   argTypes: {
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -187,9 +191,10 @@ export const Line = {
 
 export const Heatmap = {
   name: 'Heatmap',
-  args: { dataSource: mockHeatmapData },
+  args: { data: mockHeatmapData, value: '-' },
   argTypes: {
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -217,9 +222,10 @@ export const Heatmap = {
 
 export const Area = {
   name: 'Area',
-  args: { dataSource: mockAreaData },
+  args: { data: mockAreaData, value: '-' },
   argTypes: {
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -274,9 +280,10 @@ export const Area = {
 
 export const Bubble = {
   name: 'Bubble',
-  args: { dataSource: mockBubbleData },
+  args: { data: mockBubbleData, value: '-' },
   argTypes: {
-    dataSource: { control: 'object' },
+    data: { control: 'object' },
+    value: { control: 'text' },
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -308,7 +315,7 @@ export const DocumentFlow = {
     id: 'documentflow-root',
     w: 1200,
     h: 480,
-    chartData: documentFlowMock,
+    data: documentFlowMock,
     color: '#092370',
     baseInterval: { timeUnit: 'hour', count: 1 },
     xMinGridDistance: 70,
@@ -323,6 +330,10 @@ export const DocumentFlow = {
     h: { control: { type: 'range', min: 320, max: 800, step: 20 } },
     chartData: { control: 'object' },
     color: { control: 'color' },
+    chartBgColor: { control: 'color' },
+    baseFontFamily: { control: 'text' },
+    baseFontSize: { control: 'text' },
+    baseFontColor: { control: 'color' },
     'baseInterval.timeUnit': { name: 'baseInterval.timeUnit', control: { type: 'select' }, options: ['millisecond','second','minute','hour','day','week','month','year'] },
     'baseInterval.count': { name: 'baseInterval.count', control: { type: 'number', min: 1, step: 1 } },
     xMinGridDistance: { control: { type: 'number', min: 0, step: 1 } },
@@ -361,6 +372,7 @@ export const TreeMap = {
     w: 1200,
     h: 480,
     data: treeMapMock,
+    chartBgColor: '#ffffff',
     downDepth: 1,
     upDepth: 0,
     initialDepth: 1,
@@ -376,6 +388,10 @@ export const TreeMap = {
     w: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
     h: { control: { type: 'range', min: 320, max: 800, step: 20 } },
     data: { control: 'object' },
+    chartBgColor: { control: 'color' },
+    baseFontFamily: { control: 'text' },
+    baseFontSize: { control: 'text' },
+    baseFontColor: { control: 'color' },
     downDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },
     upDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },
     initialDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },

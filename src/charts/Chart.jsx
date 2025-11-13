@@ -16,6 +16,7 @@ const Chart = forwardRef(({
   style,
   hidden,
   type,
+  data,
   dataSource,
   events,
   shadow,
@@ -52,6 +53,7 @@ const Chart = forwardRef(({
   onChartClick,
   onDataPointClick,
   onLegendClick,
+  value,
   customProps,
   id,
   className,
@@ -75,7 +77,8 @@ const Chart = forwardRef(({
   }
 
   const mergedDataSource = useMemo(() => {
-    const ds = dataSource ? JSON.parse(JSON.stringify(dataSource)) : { chart: {} };
+    const input = data ?? dataSource;
+    const ds = input ? JSON.parse(JSON.stringify(input)) : { chart: {} };
     ds.chart = ds.chart || {};
     if (chartBgColor) ds.chart.bgColor = chartBgColor;
     if (canvasBgColor) ds.chart.canvasBgColor = canvasBgColor;
@@ -126,6 +129,7 @@ const Chart = forwardRef(({
     ds.chart.usePlotGradientColor = ds.chart.usePlotGradientColor ?? '0';
     return ds;
   }, [
+    data,
     dataSource,
     chartBgColor,
     canvasBgColor,

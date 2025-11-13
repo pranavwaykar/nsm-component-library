@@ -31,7 +31,8 @@ export default {
 export const Default = {
   name: 'Default',
   args: {
-    user: { firstname: 'Pranav', lastname: 'Waykar', email: 'test@example.com' },
+    data: { firstname: 'Pranav', lastname: 'Waykar', email: 'test@example.com' },
+    value: '-',
     shadow: 'none',
     loading: false,
     disabled: false,

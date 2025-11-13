@@ -70,6 +70,7 @@ export const Basic = {
   args: {
     columns,
     data,
+    value: '-',
     extraColumnsPlacement: 'end',
     extraColumns: [],
     page: 1,
