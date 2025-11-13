@@ -224,7 +224,7 @@ export const Table = forwardRef(({
   const resolvedFg = textColor ?? rootStyle.color;
   if (resolvedFg) rootStyle['--sb-table-fg'] = resolvedFg;
   if (borderColor) rootStyle['--sb-table-border'] = borderColor;
-  if (headerBgColor) rootStyle['--sb-table-head-bg'] = headerBgColor;
+  if (headerBgColor) rootStyle['--sb-table__th'] = headerBgColor;
   if (rowBgColor) rootStyle['--sb-table-row-bg'] = rowBgColor;
   if (rowAltBgColor) rootStyle['--sb-table-row-alt-bg'] = rowAltBgColor;
   if (rowHoverBgColor) rootStyle['--sb-table-row-hover-bg'] = rowHoverBgColor;
@@ -298,7 +298,7 @@ export const Table = forwardRef(({
               const isActive = sortBy === col.accessor;
               const dir = isActive ? sortDir : 'neutral';
               return (
-                <th key={col.accessor} style={{ ...(col.style || {}), ...(col.width ? { width: col.width } : {}) , fontWeight: col.isBold ? 600 : undefined }}>
+                <th key={col.accessor} className={`sb-table__th ${col.className || ''}`} style={{ ...(col.style || {}), ...(col.width ? { width: col.width } : {}) , fontWeight: col.isBold ? 600 : undefined }}>
                   <button type="button" className={`sb-table__thbtn ${isActive ? 'is-active' : ''}`} onClick={() => toggleSort(col.accessor)} disabled={!sortable}>
                     <span>{col.header}</span>
                     <span className={`sb-sort-icon ${dir}`} aria-hidden>

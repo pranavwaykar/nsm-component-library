@@ -6,6 +6,7 @@ import { commonArgTypes } from './helpers/controls';
 export default {
   title: 'Side Drawer Component',
   component: SideDrawer,
+  tags: ['autodocs'],
   parameters: { layout: 'centered' },
   argTypes: {
     ...commonArgTypes,

@@ -61,6 +61,7 @@ export default {
     size: {table: {disable: true}},
     elevation: {table: {disable: true}},
     bgColor: {table: {disable: true}},
+    headerBgColor: {table: {disable: true}},
   }
 };
 

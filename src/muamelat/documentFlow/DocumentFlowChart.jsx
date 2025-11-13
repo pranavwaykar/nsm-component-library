@@ -15,6 +15,13 @@ const DocumentFlowChart = ({
   xOpposite = true,
   yMinGridDistance = 30,
   tooltipText = '{category}',
+  // appearance
+  shadow,
+  chartBgColor,
+  baseFontFamily,
+  baseFontSize,
+  // clicks
+  onBarClick,
   as,
   style,
   hidden,
@@ -30,7 +37,17 @@ const DocumentFlowChart = ({
 }) => {
   const Container = as || 'div';
   const containerStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (chartBgColor) containerStyle.background = chartBgColor;
+  if (baseFontFamily) containerStyle.fontFamily = baseFontFamily;
+  if (baseFontSize) containerStyle.fontSize = baseFontSize;
   if (hidden === true && containerStyle.display === undefined) containerStyle.display = 'none';
+  const hostStyle = {};
+  if (shadow) {
+    const smap = { none: '0', sm: '1', md: '3', lg: '5' };
+    const key = smap[String(shadow)] || null;
+    if (key) hostStyle.boxShadow = `var(--sb-shadow-${key})`;
+    if (shadow === 'none') hostStyle.boxShadow = 'var(--sb-shadow-0)';
+  }
   React.useLayoutEffect(() => {
     const root = am5.Root.new(id);
     root.setThemes([am5themes_Animated.new(root)]);
@@ -104,6 +121,9 @@ const DocumentFlowChart = ({
       tooltipX: am5.percent(50),
       tooltipY: am5.percent(100),
     });
+    if (onBarClick) {
+      series.columns.template.events.on('click', (ev) => onBarClick(ev?.target?.dataItem?.dataContext));
+    }
     const tt = series.get('tooltip');
     if (tt) {
       tt.label.setAll({
@@ -131,11 +151,11 @@ const DocumentFlowChart = ({
     series.appear();
     chart.appear(1000, 100);
     return () => root.dispose();
-  }, [chartData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText]);
+  }, [chartData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText, onBarClick]);
 
   return (
     <Container id={`${id}-wrap`} className={`documentflowchart-container ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden} {...(customProps || {})}>
-      <div id={id} style={{ width: '100%', height: '100%' }} />
+      <div id={id} style={{ width: '100%', height: '100%', ...hostStyle }} />
     </Container>
   );
 };

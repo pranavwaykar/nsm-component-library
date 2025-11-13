@@ -24,6 +24,7 @@ export default {
     cardPadding: { control: 'text' },
     cardMaxWidth: { control: 'text' },
     avatarSize: { control: 'text' },
+    size: { table: { disable: true } },
   },
 };
 
@@ -42,7 +43,7 @@ export const Default = {
     teamsIconColor: '#5b5fc7',
     iconsFontSize: '18px',
     cardPadding: '8px 10px',
-    cardMaxWidth: '280px',
+    // cardMaxWidth: '280px',
     avatarSize: '24px',
     as: 'div', id: 'ucc-1', 'data-testid': 'ucc', m: '0'
   },

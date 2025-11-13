@@ -33,6 +33,8 @@ export default {
     threshold: { control: 'number' },
     fallback: { control: false, table: { type: { summary: 'ReactNode' }, defaultValue: { summary: 'Loading…' } } },
     errorFallback: { control: false, table: { type: { summary: 'ReactNode' } } },
+    variant: { table: { disable: true } },
+    tone: { table: { disable: true } },
   },
   args: {},
 };
@@ -41,7 +43,7 @@ export const Primary = {
   name: 'Image',
   args: {
     as: 'div', id: 'image-1', 'data-testid': 'image', tabIndex: 0, dir: 'ltr', hidden: false,
-    src: "/src/assetshfsvj/avif-test-image.avif",
+    src: sampleImage,
     alt: 'Sample',
     fit: 'cover',
     fallback: 'Loading…',

@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from './Chart';
 import { useChartData } from './useChartData';
 
-const FetchChart = ({ chartType, width = '100%', height = '100%', endpoint, method = 'GET', headers, params, transform, deps, as, style, hidden, ...rest }) => {
+const FetchChart = ({ chartType, endpoint, method = 'GET', headers, params, transform, deps, as, style, hidden, ...rest }) => {
   const { loading, error, dataSource } = useChartData({ endpoint, method, headers, params, transform, deps });
 
   if (error) {
@@ -17,7 +17,7 @@ const FetchChart = ({ chartType, width = '100%', height = '100%', endpoint, meth
     return <div style={{ padding: 12, fontSize: 12 }}>Loading chart…</div>;
   }
 
-  return <Chart as={as} style={style} hidden={hidden} type={chartType} width={width} height={height} dataSource={dataSource} {...rest} />;
+  return <Chart as={as} style={style} hidden={hidden} type={chartType} dataSource={dataSource} {...rest} />;
 };
 
 export default FetchChart;

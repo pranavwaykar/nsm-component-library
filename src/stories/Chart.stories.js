@@ -18,200 +18,270 @@ export default {
     layout: 'centered',
     docs: {
       disable: false,
-      description: { component: 'Chart is a thin wrapper around FusionCharts configured for this library. It accepts `type`, `width`, `height`, `dataSource`, and forwards the full universal/style prop set to a wrapping container so charts can participate in responsive/Flex/Grid layouts. Licensing is initialized once per app.' },
+      description: { component: 'Chart is a thin wrapper around FusionCharts configured for this library. Use `type`, `dataSource`, and style-system sizing (`w`/`h`, padding/margin) on the container. Per-part colors/fonts can be set via props (e.g., `chartBgColor`, `canvasBgColor`, `baseFontFamily`, `baseFontSize`, `baseFontColor`, `captionFontSize`, `captionFontColor`, `subCaptionFontSize`, `subCaptionFontColor`, `paletteColors`). Shadow applies to the chart host.' },
     },
   },
-  argTypes: { ...commonArgTypes },
-  args: { as: 'div', id: 'chart-1', 'data-testid': 'chart', m: '0' },
+  argTypes: {
+    ...commonArgTypes,
+    width: { table: { disable: true } },
+    height: { table: { disable: true } },
+    w: { control: { type: 'range', min: 300, max: 1800, step: 10 } },
+    h: { control: { type: 'range', min: 200, max: 1000, step: 10 } },
+    chartBgColor: { control: 'color' },
+    baseFontFamily: { control: 'text' },
+    baseFontSize: { control: 'text' },
+    baseFontColor: { control: 'color' },
+    // captionFontFamily: { control: 'text' },
+    // captionFontSize: { control: 'text' },
+    // captionFontColor: { control: 'color' },
+    // subCaptionFontFamily: { control: 'text' },
+    // subCaptionFontSize: { control: 'text' },
+    // subCaptionFontColor: { control: 'color' },
+    labelFontColor: { control: 'color' },
+    valueFontColor: { control: 'color' },
+    legendFontFamily: { control: 'text' },
+    legendFontSize: { control: 'text' },
+    legendFontColor: { control: 'color' },
+    toolTipBgColor: { control: 'color' },
+    toolTipBorderColor: { control: 'color' },
+    toolTipColor: { control: 'color' },
+    paletteColors: { control: 'text' },
+    onChartClick: { action: 'chartClick' },
+    onDataPointClick: { action: 'dataPoint' },
+    // onLegendClick: { action: 'legendClick' },
+  },
+  args: { as: 'div', id: 'chart-1', 'data-testid': 'chart', m: '0', w: 900, h: 500 },
 };
 
 export const Bar = {
   name: 'Bar',
-  args: { width: 900, height: 500, dataSource: mockBarData },
+  args: { dataSource: mockBarData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'bar2d',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'bar2d' }),
     ),
 };
 
 export const Doughnut = {
   name: 'Doughnut',
-  args: { width: 900, height: 520, dataSource: mockDoughnutData },
+  args: { dataSource: mockDoughnutData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'doughnut2d',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'doughnut2d' }),
     ),
 };
 
 export const StackedColumn = {
   name: 'Stacked Column',
-  args: { width: 1000, height: 520, dataSource: mockStackedData },
+  args: { dataSource: mockStackedData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'scrollstackedcolumn2d',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'scrollstackedcolumn2d' }),
     ),
 };
 
 export const Line = {
   name: 'Line',
-  args: { width: 900, height: 520, dataSource: mockLineData },
+  args: { dataSource: mockLineData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'msline',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'msline' }),
     ),
 };
 
 export const Heatmap = {
   name: 'Heatmap',
-  args: { width: 1000, height: 520, dataSource: mockHeatmapData },
+  args: { dataSource: mockHeatmapData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'heatmap',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'heatmap' }),
     ),
 };
 
 
 export const Area = {
   name: 'Area',
-  args: { width: 900, height: 480, dataSource: mockAreaData },
+  args: { dataSource: mockAreaData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'area2d',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'area2d' }),
     ),
 };
 
-export const Pareto = {
-  name: 'Pareto',
-  args: { width: 900, height: 480, dataSource: mockParetoData },
-  argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
-    dataSource: { control: 'object' },
-  },
-  render: ({ width, height, dataSource }) =>
-    React.createElement(
-      'div',
-      { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'pareto2d',
-        width,
-        height,
-        dataSource,
-      }),
-    ),
-};
+// export const Pareto = {
+//   name: 'Pareto',
+//   args: { dataSource: mockParetoData },
+//   argTypes: {
+//     dataSource: { control: 'object' },
+//   },
+//   render: (args) =>
+//     React.createElement(
+//       'div',
+//       { className: 'sb-chart-host' },
+//       React.createElement(Chart, { ...args, type: 'pareto2d' }),
+//     ),
+// };
 
-export const Radar = {
-  name: 'Radar',
-  args: { width: 900, height: 520, dataSource: mockRadarData },
-  argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
-    dataSource: { control: 'object' },
-  },
-  render: ({ width, height, dataSource }) =>
-    React.createElement(
-      'div',
-      { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'radar',
-        width,
-        height,
-        dataSource,
-      }),
-    ),
-};
+// export const Radar = {
+//   name: 'Radar',
+//   args: { dataSource: mockRadarData },
+//   argTypes: {
+//     dataSource: { control: 'object' },
+//   },
+//   render: (args) =>
+//     React.createElement(
+//       'div',
+//       { className: 'sb-chart-host' },
+//       React.createElement(Chart, { ...args, type: 'radar' }),
+//     ),
+// };
 
 export const Bubble = {
   name: 'Bubble',
-  args: { width: 900, height: 520, dataSource: mockBubbleData },
+  args: { dataSource: mockBubbleData },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1600, step: 20 } },
-    height: { control: { type: 'range', min: 240, max: 900, step: 20 } },
     dataSource: { control: 'object' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
-  render: ({ width, height, dataSource }) =>
+  render: (args) =>
     React.createElement(
       'div',
       { className: 'sb-chart-host' },
-      React.createElement(Chart, {
-        type: 'bubble',
-        width,
-        height,
-        dataSource,
-      }),
+      React.createElement(Chart, { ...args, type: 'bubble' }),
     ),
 };
 
@@ -220,8 +290,8 @@ export const DocumentFlow = {
   name: 'Document Flow',
   args: {
     id: 'documentflow-root',
-    width: 1200,
-    height: 480,
+    w: 1200,
+    h: 480,
     chartData: documentFlowMock,
     color: '#092370',
     baseInterval: { timeUnit: 'hour', count: 1 },
@@ -231,8 +301,10 @@ export const DocumentFlow = {
     tooltipText: '{category}',
   },
   argTypes: {
-    width: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
-    height: { control: { type: 'range', min: 320, max: 800, step: 20 } },
+    width: { table: { disable: true } },
+    height: { table: { disable: true } },
+    w: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
+    h: { control: { type: 'range', min: 320, max: 800, step: 20 } },
     chartData: { control: 'object' },
     color: { control: 'color' },
     'baseInterval.timeUnit': { name: 'baseInterval.timeUnit', control: { type: 'select' }, options: ['millisecond','second','minute','hour','day','week','month','year'] },
@@ -241,22 +313,37 @@ export const DocumentFlow = {
     xOpposite: { control: 'boolean' },
     yMinGridDistance: { control: { type: 'number', min: 0, step: 1 } },
     tooltipText: { control: 'text' },
+    color: { table: { disable: true } },
+    background: { table: { disable: true } },
+    backgroundColor: { table: { disable: true } },
+    bgClip: { table: { disable: true } },
+    bgRepeat: { table: { disable: true } },
+    bgPos: { table: { disable: true } },
+    bgAttachment: { table: { disable: true } },
+    mixBlendMode: { table: { disable: true } },
+    filter: { table: { disable: true } },
+    backdropFilter: { table: { disable: true } },
+    userSelect: { table: { disable: true } },
+    touchAction: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    cursor: { table: { disable: true } },
   },
   render: (args) => {
-    const { width, height, ...rest } = args;
+    const { w, h, ...rest } = args;
     const baseInterval = {
       timeUnit: args['baseInterval.timeUnit'] || args.baseInterval?.timeUnit || 'hour',
       count: args['baseInterval.count'] || args.baseInterval?.count || 1,
     };
-    return React.createElement(DocumentFlowChart, { ...rest, baseInterval, style: { width, height } });
+    return React.createElement(DocumentFlowChart, { ...rest, baseInterval, w, h });
   },
 };
 
 export const TreeMap = {
   name: 'Tree Map',
   args: {
-    width: 1200,
-    height: 480,
+    w: 1200,
+    h: 480,
     data: treeMapMock,
     downDepth: 1,
     upDepth: 0,
@@ -268,8 +355,10 @@ export const TreeMap = {
     tooltipText: '{category}: [bold]{sum}[/]',
   },
   argTypes: {
-    width: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
-    height: { control: { type: 'range', min: 320, max: 800, step: 20 } },
+    width: { table: { disable: true } },
+    height: { table: { disable: true } },
+    w: { control: { type: 'range', min: 600, max: 1600, step: 50 } },
+    h: { control: { type: 'range', min: 320, max: 800, step: 20 } },
     data: { control: 'object' },
     downDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },
     upDepth: { control: { type: 'number', min: 0, max: 3, step: 1 } },
@@ -280,14 +369,14 @@ export const TreeMap = {
     labelMaxWidth: { control: { type: 'range', min: 50, max: 300, step: 5 } },
     tooltipText: { control: 'text' },
   },
-  render: ({ width, height, ...rest }) => React.createElement(TreeChart, { ...rest, style: { width, height } }),
+  render: ({ w, h, ...rest }) => React.createElement(TreeChart, { ...rest, w, h }),
 };
 
 export const JudicialBar = {
   name: 'Lawyer Judicial Bar',
   args: {
-    width: 800,
-    height: 400,
+    w: 800,
+    h: 400,
     type: 'bar2d',
     caption: 'Lawyer Judicial Bar Chart',
     xAxisName: 'Category',
@@ -296,8 +385,10 @@ export const JudicialBar = {
     paletteColors: '',
   },
   argTypes: {
-    width: { control: { type: 'range', min: 400, max: 1200, step: 20 } },
-    height: { control: { type: 'range', min: 300, max: 700, step: 20 } },
+    width: { table: { disable: true } },
+    height: { table: { disable: true } },
+    w: { control: { type: 'range', min: 400, max: 1200, step: 20 } },
+    h: { control: { type: 'range', min: 300, max: 700, step: 20 } },
     type: { control: { type: 'select' }, options: ['bar2d','column2d','bar3d','column3d','msbar2d','mscolumn2d'] },
     caption: { control: 'text' },
     xAxisName: { control: 'text' },
@@ -305,23 +396,77 @@ export const JudicialBar = {
     showValues: { control: 'boolean' },
     paletteColors: { control: 'text' },
   },
-  render: ({ width, height, ...rest }) => React.createElement(LawyerJudicialBarChart, { width: String(width), height: String(height), ...rest, style: { width } }),
+  render: (args) => React.createElement(LawyerJudicialBarChart, { ...args }),
 };
 
 export const CalendarChart = {
   name: 'Calendar',
-  args: { width: 1400, height: 700 },
+  args: { w: 1400, h: 700 },
   argTypes: {
-    width: { control: { type: 'range', min: 1000, max: 1800, step: 50 } },
-    height: { control: { type: 'range', min: 480, max: 1000, step: 20 } },
+    width: { table: { disable: true } },
+    height: { table: { disable: true } },
+    w: { control: { type: 'range', min: 1000, max: 1800, step: 50 } },
+    h: { control: { type: 'range', min: 480, max: 1000, step: 20 } },
+    calendarBgColor: { control: 'color' },
+    calendarTextColor: { control: 'color' },
+    calendarFontFamily: { control: 'text' },
+    calendarFontSize: { control: 'text' },
+    headerBgColor: { control: 'color' },
+    prmCalendarHeaderTextColor: { control: 'color' },
+    // weekday header row
+    daysHeaderBgColor: { control: 'color' },
+    daysHeaderFontFamily: { control: 'text' },
+    daysHeaderFontSize: { control: 'text' },
+    daysHeaderFontWeight: { control: 'text' },
+    // day cells
+    dayCellBgColor: { control: 'color' },
+    dayCellDisabledBgColor: { control: 'color' },
+    dayCellBorderColor: { control: 'color' },
+    todayBgColor: { control: 'color' },
+    todayBorderColor: { control: 'color' },
+    todayTextColor: { control: 'color' },
+    // numbers and task text
+    dayNumberFontSize: { control: 'text' },
+    dayNumberColor: { control: 'color' },
+    taskFontSize: { control: 'text' },
+    taskTextColor: { control: 'color' },
+    moreIndicatorTextColor: { control: 'color' },
+    // popover
+    popoverFontSize: { control: 'text' },
+    popoverLabelColor: { control: 'color' },
+    popoverValueColor: { control: 'color' },
+    // task chip and popover container
+    taskChipBgColor: { control: 'color' },
+    taskChipTextColor: { control: 'color' },
+    popoverBgColor: { control: 'color' },
+    popoverBorderColor: { control: 'color' },
+    onDayClick: { action: 'dayClick' },
+    backgroundColor: { table: { disable: true } },
+    color: { table: { disable: true } },
+    chartBgColor: { table: { disable: true } },
+    shadow: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    size: { table: { disable: true } },
+    headerBgColor: { table: { disable: true } },
+    headerTextColor: { table: { disable: true } },
+    labelFontColor: { table: { disable: true } },
+    valueFontColor: { table: { disable: true } },
+    legendFontFamily: { table: { disable: true } },
+    legendFontSize: { table: { disable: true } },
+    legendFontColor: { table: { disable: true } },
+    toolTipBgColor: { table: { disable: true } },
+    toolTipBorderColor: { table: { disable: true } },
+    toolTipColor: { table: { disable: true } },
+    paletteColors: { table: { disable: true } },
+    calendarTextColor: { table: { disable: true } },
   },
-  render: ({ width, height, ...rest }) =>
+  render: ({ w, h, ...rest }) =>
     React.createElement(
       'div',
       { style: { display: 'flex', justifyContent: 'center', width: '100%' } },
       React.createElement(
         'div',
-        { style: { width, minHeight: height } },
+        { style: { width: w, minHeight: h } },
         React.createElement(Calendar, { ...rest }),
       )
     ),

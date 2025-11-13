@@ -16,6 +16,11 @@ const TreeChart = ({
   showLabels = true,
   labelMaxWidth = 125,
   tooltipText = '{category}: [bold]{sum}[/]',
+  // appearance
+  shadow,
+  chartBgColor,
+  baseFontFamily,
+  baseFontSize,
   as,
   style,
   hidden,
@@ -35,7 +40,17 @@ const TreeChart = ({
   const bodyRef = React.useRef(null);
   const Container = as || 'div';
   const containerStyle = { ...expandStyleProps(rest), ...(style || {}) };
+  if (chartBgColor) containerStyle.background = chartBgColor;
+  if (baseFontFamily) containerStyle.fontFamily = baseFontFamily;
+  if (baseFontSize) containerStyle.fontSize = baseFontSize;
   if (hidden === true && containerStyle.display === undefined) containerStyle.display = 'none';
+  const hostStyle = {};
+  if (shadow) {
+    const smap = { none: '0', sm: '1', md: '3', lg: '5' };
+    const key = smap[String(shadow)] || null;
+    if (key) hostStyle.boxShadow = `var(--sb-shadow-${key})`;
+    if (shadow === 'none') hostStyle.boxShadow = 'var(--sb-shadow-0)';
+  }
 
   React.useEffect(() => {
     if (rootRef.current) rootRef.current.dispose();
@@ -89,7 +104,7 @@ const TreeChart = ({
   return (
     <Container id={id} className={`treechart ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden} {...(customProps || {})}>
       <div className="t-body">
-        <div className="tb-inset" ref={bodyRef} style={{ width: '100%', height: '100%' }} />
+        <div className="tb-inset" ref={bodyRef} style={{ width: '100%', height: '100%', ...hostStyle }} />
       </div>
     </Container>
   );

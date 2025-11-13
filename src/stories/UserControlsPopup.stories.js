@@ -34,6 +34,8 @@ export default {
     subWidth: { control: 'text' },
     switchWidth: { control: 'text' },
     switchHeight: { control: 'text' },
+    size: { table: { disable: true } },
+    variant: { table: { disable: true } },
   },
 };
 

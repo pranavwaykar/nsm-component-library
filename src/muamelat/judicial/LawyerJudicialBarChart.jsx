@@ -18,8 +18,8 @@ const defaultDs = {
 };
 
 const LawyerJudicialBarChart = ({
-  width = '100%',
-  height = '400',
+  w,
+  h,
   type = 'bar2d',
   caption = defaultDs.chart.caption,
   xAxisName = defaultDs.chart.xAxisName,
@@ -43,7 +43,7 @@ const LawyerJudicialBarChart = ({
     },
     data,
   };
-  return <Chart as={as} style={style} hidden={hidden} type={type} width={width} height={height} dataSource={ds} {...rest} />;
+  return <Chart as={as} style={style} hidden={hidden} type={type} dataSource={ds} w={w} h={h} {...rest} />;
 };
 
 export default LawyerJudicialBarChart;

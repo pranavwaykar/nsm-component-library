@@ -5,6 +5,7 @@ import { commonArgTypes } from "./helpers/controls";
 export default {
   title: "Card Component",
   component: Card,
+  tags: ['autodocs'],
   parameters: {
     layout: "centered",
     docs: {
