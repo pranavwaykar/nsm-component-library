@@ -121,7 +121,7 @@ const SideMenuBar = ({
             }}
             aria-current={i === currentActive ? 'page' : undefined}
             style={{
-              background: i === activeIndex ? (menuItemActiveBgColor || menuItemBgColor) : menuItemBgColor,
+              background: i === currentActive ? (menuItemActiveBgColor || menuItemBgColor) : menuItemBgColor,
               ...(menuItemPaddingY ? { paddingTop: menuItemPaddingY, paddingBottom: menuItemPaddingY } : {}),
               ...(menuItemPaddingX ? { paddingLeft: menuItemPaddingX, paddingRight: menuItemPaddingX } : {}),
               ...(menuItemGap ? { gap: menuItemGap } : {}),

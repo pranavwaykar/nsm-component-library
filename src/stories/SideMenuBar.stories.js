@@ -58,7 +58,6 @@ export default {
 export const Default = {
   name: 'Default',
   args: {
-    activeIndex: 0,
     data: {
       logo: null,
       items: [
