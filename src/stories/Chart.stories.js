@@ -57,7 +57,23 @@ export const Bar = {
   name: 'Bar',
   args: { dataSource: mockBarData },
   argTypes: {
+    // Only show relevant Fusion color/font controls + size
     dataSource: { control: 'object' },
+    w: { control: { type: 'range', min: 300, max: 1800, step: 10 } },
+    h: { control: { type: 'range', min: 200, max: 1000, step: 10 } },
+    baseFontFamily: { control: 'text' },
+    baseFontSize: { control: 'text' },
+    baseFontColor: { control: 'color' },
+    labelFontColor: { control: 'color' },
+    valueFontColor: { control: 'color' },
+    legendFontFamily: { control: 'text' },
+    legendFontSize: { control: 'text' },
+    legendFontColor: { control: 'color' },
+    toolTipBgColor: { control: 'color' },
+    toolTipBorderColor: { control: 'color' },
+    toolTipColor: { control: 'color' },
+    paletteColors: { control: 'text' },
+    // hide unrelated controls for this story
     color: { table: { disable: true } },
     background: { table: { disable: true } },
     backgroundColor: { table: { disable: true } },
@@ -459,6 +475,8 @@ export const CalendarChart = {
     toolTipColor: { table: { disable: true } },
     paletteColors: { table: { disable: true } },
     calendarTextColor: { table: { disable: true } },
+    disabled: { table: { disable: true } },
+    loading: { table: { disable: true } },
   },
   render: ({ w, h, ...rest }) =>
     React.createElement(

@@ -125,7 +125,27 @@ const Chart = forwardRef(({
     // favor responsive sizing
     ds.chart.usePlotGradientColor = ds.chart.usePlotGradientColor ?? '0';
     return ds;
-  }, [dataSource, chartBgColor, canvasBgColor, baseFontFamily, baseFontSize, baseFontColor, captionFontSize, captionFontColor, subCaptionFontSize, subCaptionFontColor,  paletteColors]);
+  }, [
+    dataSource,
+    chartBgColor,
+    canvasBgColor,
+    baseFontFamily,
+    baseFontSize,
+    baseFontColor,
+    captionFontSize,
+    captionFontColor,
+    subCaptionFontSize,
+    subCaptionFontColor,
+    labelFontColor,
+    valueFontColor,
+    legendFontFamily,
+    legendFontSize,
+    legendFontColor,
+    toolTipBgColor,
+    toolTipBorderColor,
+    toolTipColor,
+    paletteColors,
+  ]);
 
   const mergedEvents = useMemo(() => {
     const ev = { ...(events || {}) };
