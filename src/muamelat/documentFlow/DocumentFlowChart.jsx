@@ -11,19 +11,24 @@ const DocumentFlowChart = ({
   data,
   id = 'DOCUMENTFLOWCHART',
   color = '#092370',
+  paletteColors,
   baseInterval = { timeUnit: 'hour', count: 1 },
   xMinGridDistance = 70,
   xOpposite = true,
   yMinGridDistance = 30,
   tooltipText = '{category}',
-  // appearance
   shadow,
   chartBgColor,
   baseFontFamily,
   baseFontSize,
   baseFontColor,
-  // clicks
+  labelFontSize,
+  labelFontColor,
+  toolTipBgColor,
+  toolTipBorderColor,
+  toolTipColor,
   onBarClick,
+  onDataPointClick,
   as,
   style,
   hidden,
@@ -90,8 +95,8 @@ const DocumentFlowChart = ({
     // Apply base font styles to axis labels
     const labelStyles = {};
     if (baseFontFamily) labelStyles.fontFamily = baseFontFamily;
-    if (baseFontSize) labelStyles.fontSize = baseFontSize;
-    if (baseFontColor) labelStyles.fill = am5.color(typeof baseFontColor === 'string' ? baseFontColor : String(baseFontColor));
+    if (labelFontSize || baseFontSize) labelStyles.fontSize = labelFontSize || baseFontSize;
+    if (labelFontColor || baseFontColor) labelStyles.fill = am5.color(typeof (labelFontColor || baseFontColor) === 'string' ? (labelFontColor || baseFontColor) : String(labelFontColor || baseFontColor));
     yAxis.get('renderer').labels.template.setAll(labelStyles);
     xAxis.get('renderer').labels.template.setAll(labelStyles);
 
@@ -106,17 +111,26 @@ const DocumentFlowChart = ({
       }),
     );
 
-    const colorStr = (typeof color === 'string' && color.trim()) ? color : '#2a9cff';
-    const barColor = am5.color(colorStr);
+    // Resolve palette colors (FusionCharts parity)
+    const resolvePalette = (p) => {
+      if (!p) return [];
+      if (Array.isArray(p)) return p.filter(Boolean);
+      if (typeof p === 'string') return p.split(',').map((c) => c.trim()).filter(Boolean);
+      return [];
+    };
+    const palette = resolvePalette(paletteColors);
+    const singleColor = (typeof color === 'string' && color.trim()) ? color : '#2a9cff';
     const data = (effectiveData || []).map((item) => {
       const [sYear, sMonth, sDay] = (item.fromDate || item.date).split('-');
       const start = new Date(sYear, sMonth - 1, sDay).setHours(0, 0, 0, 0);
       const end = new Date(sYear, sMonth - 1, sDay).setHours(23, 0, 0, 0);
+      const idx = (effectiveData || []).indexOf(item);
+      const palColor = palette.length ? palette[idx % palette.length] : null;
       return {
         category: `${item.name} (${item.count})`,
         start,
         end,
-        columnSettings: { fill: barColor },
+        columnSettings: { fill: am5.color(palColor || singleColor) },
       };
     });
 
@@ -131,14 +145,18 @@ const DocumentFlowChart = ({
       tooltipX: am5.percent(50),
       tooltipY: am5.percent(100),
     });
-    if (onBarClick) {
-      series.columns.template.events.on('click', (ev) => onBarClick(ev?.target?.dataItem?.dataContext));
+    if (onBarClick || onDataPointClick) {
+      series.columns.template.events.on('click', (ev) => {
+        const ctx = ev?.target?.dataItem?.dataContext;
+        if (onBarClick) onBarClick(ctx);
+        if (onDataPointClick) onDataPointClick(ctx);
+      });
     }
     const tt = series.get('tooltip');
     if (tt) {
       tt.label.setAll({
-        fontSize: 12,
-        fill: am5.color(0xffffff),
+        ...(baseFontSize ? { fontSize: baseFontSize } : {}),
+        ...(toolTipColor ? { fill: am5.color(toolTipColor) } : { fill: am5.color(0xffffff) }),
         maxWidth: 180,
         oversizedBehavior: 'wrap',
         paddingTop: 6,
@@ -149,9 +167,9 @@ const DocumentFlowChart = ({
       });
       tt.set('pointerOrientation', 'vertical');
       tt.get('background')?.setAll({
-        fill: am5.color(0x2563eb),
+        ...(toolTipBgColor ? { fill: am5.color(toolTipBgColor) } : { fill: am5.color(0x2563eb) }),
         fillOpacity: 0.95,
-        stroke: am5.color(0x1e40af),
+        ...(toolTipBorderColor ? { stroke: am5.color(toolTipBorderColor) } : { stroke: am5.color(0x1e40af) }),
         strokeOpacity: 1,
         cornerRadius: 8,
       });
@@ -161,7 +179,28 @@ const DocumentFlowChart = ({
     series.appear();
     chart.appear(1000, 100);
     return () => root.dispose();
-  }, [effectiveData, id, color, baseInterval.timeUnit, baseInterval.count, xMinGridDistance, xOpposite, yMinGridDistance, tooltipText, onBarClick, baseFontFamily, baseFontSize, baseFontColor]);
+  }, [
+    effectiveData,
+    id,
+    color,
+    paletteColors,
+    baseInterval.timeUnit,
+    baseInterval.count,
+    xMinGridDistance,
+    xOpposite,
+    yMinGridDistance,
+    tooltipText,
+    onBarClick,
+    onDataPointClick,
+    baseFontFamily,
+    baseFontSize,
+    baseFontColor,
+    labelFontSize,
+    labelFontColor,
+    toolTipBgColor,
+    toolTipBorderColor,
+    toolTipColor,
+  ]);
 
   return (
     <Container id={`${id}-wrap`} className={`documentflowchart-container ${className || ''}`.trim()} style={containerStyle} role={role} tabIndex={tabIndex} title={title} draggable={draggable} dir={dir} lang={lang} hidden={hidden} {...(customProps || {})}>

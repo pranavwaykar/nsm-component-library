@@ -77,6 +77,7 @@ const Breadcrumb = ({
             onKeyDown={handleKey}
             role={clickable ? 'button' : undefined}
             tabIndex={clickable ? 0 : undefined}
+            style={ color ? { color } : undefined }
           >
             {item}
             {!isLast && <span className="sep">{separator}</span>}
