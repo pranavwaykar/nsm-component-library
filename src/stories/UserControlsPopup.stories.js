@@ -14,6 +14,7 @@ export default {
   },
   argTypes: {
     ...commonArgTypes,
+    data: { control: 'object' },
     popupBgColor: { control: 'color' },
     popupBorderColor: { control: 'color' },
     popupTextColor: { control: 'color' },
@@ -42,9 +43,12 @@ export default {
 export const Default = {
   name: 'Default',
   args: {
-    name: 'John Doe',
-    email: 'john@example.com',
-    languages: ['Turkish','English'],
+    data: {
+      user: { name: 'John Doe', email: 'john@example.com', avatarSrc: undefined },
+      languages: { options: ['Turkish','English'] },
+      editMode: { value: false, loading: false },
+      labels: { language: 'Language', editMode: 'Edit Mode', consent: 'Consent Text', logout: 'Logout' },
+    },
     popupBgColor: '#ffffff',
     popupBorderColor: '#e5e7eb',
     popupTextColor: undefined,
@@ -71,9 +75,12 @@ export const Default = {
       source: {
         language: 'jsx',
         code: `<UserControlsPopup
-  name="John Doe"
-  email="john@example.com"
-  languages={[ 'Turkish', 'English' ]}
+  data={{
+    user: { name: 'John Doe', email: 'john@example.com', avatarSrc: undefined },
+    languages: { options: ['Turkish','English'] },
+    editMode: { value: false, loading: false },
+    labels: { language: 'Language', editMode: 'Edit Mode', consent: 'Consent Text', logout: 'Logout' }
+  }}
 />`,
       },
     },
