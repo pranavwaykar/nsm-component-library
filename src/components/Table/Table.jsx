@@ -66,17 +66,15 @@ export const Table = forwardRef(({
   bgColor,
   color: textColor,
   borderColor,
-  // column augmentation
   extraColumns = [],
-  extraColumnsPlacement = 'end', // 'start' | 'end' | number via per-item at/index
-  // toolbar injection
+  extraColumnsPlacement = 'end', 
   toolbarRight,
-  // expansion & row menu
-  expandedContent,
+  expandedFields,
+  expandedTitle,
+  expandedGridColumns = 3,
   rowMenu,
   onRowMenu,
   optionsMenu,
-  // existing features
   initialSort,
   expandable = false,
   renderExpandedRow,
@@ -84,12 +82,10 @@ export const Table = forwardRef(({
   rowActions,
   responsive = true,
   showIndex = false,
-  // pagination legacy props (kept for back-compat)
   page = 1,
   pageSize = 10,
   totalPages,
   onPageChange,
-  // polymorphic
   as,
   className,
   id,
@@ -112,9 +108,9 @@ export const Table = forwardRef(({
   const [sortDir, setSortDir] = useState(initialSort?.dir || 'asc');
   const [expanded, setExpanded] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
-  const [visibleCols, setVisibleCols] = useState(() => mergedColumns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false })));
+  const [visibleCols, setVisibleCols] = useState(() => mergedColumns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false, sortable: c.sortable === false ? false : true })));
   useEffect(() => {
-    setVisibleCols(mergedColumns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false })));
+    setVisibleCols(mergedColumns.map((c) => ({ ...c, hidden: c.hidden === true ? true : false, sortable: c.sortable === false ? false : true })));
   }, [mergedColumns]);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -156,8 +152,15 @@ export const Table = forwardRef(({
   const startIdx = (resolvedPage - 1) * resolvedPageSize;
   const pageRows = sorted.slice(startIdx, startIdx + resolvedPageSize);
 
+  function isColumnSortable(accessor) {
+    if (!sortable) return false;
+    const col = visibleCols.find((c) => c.accessor === accessor);
+    if (!col) return true;
+    return col.sortable !== false;
+  }
+
   function toggleSort(accessor) {
-    if (!sortable) return;
+    if (!isColumnSortable(accessor)) return;
     let nextBy = sortBy;
     let nextDir = sortDir;
     if (sortBy !== accessor) {
@@ -262,17 +265,33 @@ export const Table = forwardRef(({
                 <summary>Columns</summary>
                 <div>
                   {visibleCols.map((c, idx) => (
-                    <label key={c.accessor} style={{ display: 'block', fontSize: '12px', marginTop: 6 }}>
-                      <input
-                        type="checkbox"
-                        checked={!c.hidden}
-                        onChange={(e) => {
-                          const updated = visibleCols.map((col, i) => i === idx ? { ...col, hidden: !e.target.checked } : col);
-                          setVisibleCols(updated);
-                          onColumnsChange?.(updated);
-                        }}
-                      />{' '}{c.header}
-                    </label>
+                    <div key={c.accessor} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '12px', marginTop: 6 }}>
+                      <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        <input
+                          type="checkbox"
+                          checked={!c.hidden}
+                          onChange={(e) => {
+                            const updated = visibleCols.map((col, i) => i === idx ? { ...col, hidden: !e.target.checked } : col);
+                            setVisibleCols(updated);
+                            onColumnsChange?.(updated);
+                          }}
+                        />
+                        <span>{c.header}</span>
+                      </label>
+                      <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#64748b' }} title={!sortable ? 'Sorting disabled by prop' : undefined}>
+                        <input
+                          type="checkbox"
+                          checked={c.sortable !== false}
+                          disabled={!sortable}
+                          onChange={(e) => {
+                            const updated = visibleCols.map((col, i) => i === idx ? { ...col, sortable: e.target.checked } : col);
+                            setVisibleCols(updated);
+                            onColumnsChange?.(updated);
+                          }}
+                        />
+                        <span>sortable</span>
+                      </label>
+                    </div>
                   ))}
                 </div>
               </details>
@@ -300,7 +319,7 @@ export const Table = forwardRef(({
               const dir = isActive ? sortDir : 'neutral';
               return (
                 <th key={col.accessor} className={`sb-table__th ${col.className || ''}`} style={{ ...(col.style || {}), ...(col.width ? { width: col.width } : {}) , fontWeight: col.isBold ? 600 : undefined }}>
-                  <button type="button" className={`sb-table__thbtn ${isActive ? 'is-active' : ''}`} onClick={() => toggleSort(col.accessor)} disabled={!sortable}>
+                  <button type="button" className={`sb-table__thbtn ${isActive ? 'is-active' : ''}`} onClick={() => toggleSort(col.accessor)} disabled={!isColumnSortable(col.accessor)}>
                     <span>{col.header}</span>
                     <span className={`sb-sort-icon ${dir}`} aria-hidden>
                       <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -398,9 +417,34 @@ export const Table = forwardRef(({
                 </tr>
                 {expandable && isOpen && (
                   (() => {
-                    const renderer = renderExpandedRow || renderSubRow || expandedContent;
-                    if (!renderer) return null;
-                    const content = typeof renderer === 'function' ? renderer(row) : renderer;
+                    const renderer = renderExpandedRow || renderSubRow;
+                    let content = null;
+                    if (renderer) {
+                      content = typeof renderer === 'function' ? renderer(row) : renderer;
+                    } else if (Array.isArray(expandedFields) && expandedFields.length > 0) {
+                      content = (
+                        <div>
+                          {expandedTitle ? (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                              <div style={{ fontWeight: 600 }}>{typeof expandedTitle === 'function' ? expandedTitle(row) : expandedTitle}</div>
+                            </div>
+                          ) : null}
+                          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, expandedGridColumns)}, minmax(0,1fr))`, gap: 16 }}>
+                            {expandedFields.map((f, i) => {
+                              const val = f.accessor ? row[f.accessor] : undefined;
+                              const rendered = typeof f.render === 'function' ? f.render(val, row) : (val != null ? String(val) : '');
+                              return (
+                                <div key={i} style={{ minWidth: 0 }}>
+                                  <div style={{ fontSize: 12, color: '#64748b', marginBottom: 4 }}>{f.label ?? f.header ?? f.accessor}</div>
+                                  <div style={{ fontWeight: 500 }}>{rendered}</div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    }
+                    if (!content) return null;
                     const span = (visibleCols.filter((c) => !c.hidden).length)
                       + (expandable ? 1 : 0)
                       + (selectable ? 1 : 0)
@@ -476,6 +520,9 @@ Table.propTypes = {
   responsive: PropTypes.bool,
   renderSubRow: PropTypes.func,
   optionsMenu: PropTypes.bool,
+  expandedFields: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.node, header: PropTypes.node, accessor: PropTypes.string, render: PropTypes.func })),
+  expandedTitle: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  expandedGridColumns: PropTypes.number,
   page: PropTypes.number,
   pageSize: PropTypes.number,
   totalPages: PropTypes.number,

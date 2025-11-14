@@ -3,14 +3,167 @@ import '../index.scss';
 import { Table } from '../components/Table/Table';
 import { commonArgTypes } from './helpers/controls';
 
+const AvatarCell = (user) => {
+  if (!user) return '-';
+  const name = user.name || user.email || '—';
+  const src = user.avatar;
+  return React.createElement(
+    'span',
+    { style: { display: 'inline-flex', alignItems: 'center', gap: 8 } },
+    React.createElement('img', { alt: '', src, width: '24', height: '24', style: { borderRadius: '50%', objectFit: 'cover' } }),
+    React.createElement('span', null, name)
+  );
+};
+const fmtDate = (iso) => {
+  if (!iso) return '';
+  try {
+    const d = new Date(iso);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${dd}.${mm}.${yyyy}`;
+  } catch (e) { return String(iso); }
+};
+
 const columns = [
-  { header: 'Name', accessor: 'name' },
-  { header: 'Age', accessor: 'age' },
+  { header: 'Görev No', accessor: 'taskNo', width: 100 },
+  { header: 'Aşama/Klasör', accessor: 'stage' },
+  { header: 'Görev Tipi', accessor: 'type' },
+  { header: 'Ekip', accessor: 'team' },
+  { header: 'Görev Sorumlusu', accessor: 'assignee', render: (val) => AvatarCell(val), width: 220 },
+  { header: 'Başlangıç Tarihi', accessor: 'startDate', render: (v) => fmtDate(v), width: 160 },
+  { header: 'Bitiş Tarihi', accessor: 'endDate', render: (v) => fmtDate(v), width: 160 },
 ];
 const data = [
-  { id: 1, name: 'Alice', age: 30 },
-  { id: 2, name: 'Bob', age: 25 },
-  { id: 3, name: 'Carol', age: 35 },
+  {
+    id: 2301,
+    taskNo: 2301,
+    stage: 'Muhtelif Görev',
+    type: 'Araştırma',
+    team: 'Prajwal Test',
+    assignee: { name: 'Alan Walkar', email: 'alan@example.com', avatar: 'https://i.pravatar.cc/48?img=10' },
+    startDate: '2024-09-04',
+    endDate: '2024-09-05',
+    description: 'Lorem ipsum dolor sit amet.',
+    createdAt: '2024-09-27',
+    updatedAt: '2024-09-27',
+    createdBy: { name: 'Arone Stone', avatar: 'https://i.pravatar.cc/48?img=12' },
+    updatedBy: { name: 'Arone Stone', avatar: 'https://i.pravatar.cc/48?img=12' },
+    overdue: false,
+  },
+  {
+    id: 2302,
+    taskNo: 2302,
+    stage: 'Muhtelif Görev',
+    type: 'Araştırma',
+    team: 'Prajwal Test',
+    assignee: { name: 'Alan Walkar', email: 'alan@example.com', avatar: 'https://i.pravatar.cc/48?img=9' },
+    startDate: '2024-09-04',
+    endDate: '2024-09-05',
+    description: 'Daha fazla detay burada.',
+    createdAt: '2024-09-27',
+    updatedAt: '2024-09-27',
+    createdBy: { name: 'Alan Walkar', avatar: 'https://i.pravatar.cc/48?img=12' },
+    updatedBy: { name: 'Alan Walkar', avatar: 'https://i.pravatar.cc/48?img=12' },
+    overdue: false,
+  },
+  {
+    id: 2303,
+    taskNo: 2303,
+    stage: 'Muhtelif Görev',
+    type: 'Araştırma',
+    team: 'Prajwal Test',
+    assignee: { name: 'Harry Styles', email: 'harry@example.com', avatar: 'https://i.pravatar.cc/48?img=7' },
+    startDate: '2024-09-04',
+    endDate: '2024-09-05',
+    description: 'dfdasds',
+    createdAt: '2024-09-27',
+    updatedAt: '2024-09-27',
+    createdBy: { name: 'Harry Styles', avatar: 'https://i.pravatar.cc/48?img=12' },
+    updatedBy: { name: 'Harry Styles', avatar: 'https://i.pravatar.cc/48?img=12' },
+    overdue: true,
+  },
+  {
+    id: 2304,
+    taskNo: 2304,
+    stage: 'Planlama',
+    type: 'Analiz',
+    team: 'Frontend Team',
+    assignee: { name: 'Emma Watson', email: 'emma@example.com', avatar: 'https://i.pravatar.cc/48?img=8' },
+    startDate: '2024-09-06',
+    endDate: '2024-09-07',
+    description: 'User activity flow analysis',
+    createdAt: '2024-09-27',
+    updatedAt: '2024-09-27',
+    createdBy: { name: 'Emma Watson', avatar: 'https://i.pravatar.cc/48?img=14' },
+    updatedBy: { name: 'Emma Watson', avatar: 'https://i.pravatar.cc/48?img=14' },
+    overdue: false,
+  },
+  {
+    id: 2305,
+    taskNo: 2305,
+    stage: 'İşlem Bekleniyor',
+    type: 'Test',
+    team: 'QA Squad',
+    assignee: { name: 'Chris Evans', email: 'chris@example.com', avatar: 'https://i.pravatar.cc/48?img=15' },
+    startDate: '2024-09-02',
+    endDate: '2024-09-08',
+    description: 'Regression testing for release v2.1',
+    createdAt: '2024-09-28',
+    updatedAt: '2024-09-28',
+    createdBy: { name: 'Chris Evans', avatar: 'https://i.pravatar.cc/48?img=16' },
+    updatedBy: { name: 'Chris Evans', avatar: 'https://i.pravatar.cc/48?img=16' },
+    overdue: true,
+  },
+  {
+    id: 2306,
+    taskNo: 2306,
+    stage: 'Tamamlandı',
+    type: 'Geliştirme',
+    team: 'Backend Team',
+    assignee: { name: 'Olivia Rodrigo', email: 'olivia@example.com', avatar: 'https://i.pravatar.cc/48?img=23' },
+    startDate: '2024-09-01',
+    endDate: '2024-09-03',
+    description: 'API endpoint optimization',
+    createdAt: '2024-09-20',
+    updatedAt: '2024-09-22',
+    createdBy: { name: 'Olivia Rodrigo', avatar: 'https://i.pravatar.cc/48?img=24' },
+    updatedBy: { name: 'Olivia Rodrigo', avatar: 'https://i.pravatar.cc/48?img=24' },
+    overdue: false,
+  },
+  {
+    id: 2307,
+    taskNo: 2307,
+    stage: 'Muhtelif Görev',
+    type: 'Araştırma',
+    team: 'UX Team',
+    assignee: { name: 'Tom Holland', email: 'tom@example.com', avatar: 'https://i.pravatar.cc/48?img=31' },
+    startDate: '2024-09-09',
+    endDate: '2024-09-10',
+    description: 'Competitor analysis for new dashboard',
+    createdAt: '2024-09-29',
+    updatedAt: '2024-09-29',
+    createdBy: { name: 'Tom Holland', avatar: 'https://i.pravatar.cc/48?img=32' },
+    updatedBy: { name: 'Tom Holland', avatar: 'https://i.pravatar.cc/48?img=32' },
+    overdue: false,
+  },
+  {
+    id: 2308,
+    taskNo: 2308,
+    stage: 'Onay Bekliyor',
+    type: 'Dökümantasyon',
+    team: 'Doc Writers',
+    assignee: { name: 'Zendaya', email: 'zendaya@example.com', avatar: 'https://i.pravatar.cc/48?img=34' },
+    startDate: '2024-09-07',
+    endDate: '2024-09-09',
+    description: 'Preparing API usage documentation',
+    createdAt: '2024-09-25',
+    updatedAt: '2024-09-26',
+    createdBy: { name: 'Zendaya', avatar: 'https://i.pravatar.cc/48?img=36' },
+    updatedBy: { name: 'Zendaya', avatar: 'https://i.pravatar.cc/48?img=36' },
+    overdue: true,
+  }
+  
 ];
 
 export default {
@@ -36,7 +189,9 @@ export default {
     optionsMenu: { control: 'boolean' },
     extraColumns: { control: 'object', description: 'Extra columns to insert. Each item: { header, accessor, render?, at? } where at is number | "start" | "end".' },
     extraColumnsPlacement: { control: 'select', options: ['start','end'], description: 'Default placement when extra column item has no at.' },
-    expandedContent: { control: 'text', description: 'String or render function(row) returning content for expanded row.' },
+    expandedFields: { control: 'object', description: 'Array of { label, accessor, render? } used to render expanded content from row data.' },
+    expandedTitle: { control: 'text', description: 'Static title or function(row) => node for expanded header.' },
+    expandedGridColumns: { control: 'number', description: 'Columns in expanded details grid.' },
     rowMenu: { control: 'object' },
     onRowMenu: { action: 'rowMenu' },
     elevation: { control: 'select', options: [0,1,2,3,4,5] },
@@ -88,7 +243,26 @@ export const Basic = {
     filterable: true,
     selectable: true,
     expandable: true,
-    expandedContent: 'More details…',
+    expandedTitle: (row) => React.createElement(
+      'div',
+      { style: { display: 'flex', alignItems: 'center', gap: 8 } },
+      React.createElement('span', null, `${row.taskNo} - ${row.stage}`),
+      row.overdue
+        ? React.createElement('span', { style: { background: '#ef4444', color: '#fff', borderRadius: 6, padding: '2px 8px', fontSize: 12 } }, 'Süresi Geçen')
+        : null
+    ),
+    expandedFields: [
+      { label: 'Görev Tanımı', accessor: 'description' },
+      { label: 'Oluşturma Tarihi', accessor: 'createdAt', render: (v) => fmtDate(v) },
+      { label: 'Güncellenme Tarihi', accessor: 'updatedAt', render: (v) => fmtDate(v) },
+      { label: 'Başlangıç Tarihi', accessor: 'startDate', render: (v) => fmtDate(v) },
+      { label: 'Bitiş Tarihi', accessor: 'endDate', render: (v) => fmtDate(v) },
+      { label: 'Oluşturan Kullanıcı', accessor: 'createdBy', render: (u) => AvatarCell(u) },
+      { label: 'Güncelleyen Kullanıcı', accessor: 'updatedBy', render: (u) => AvatarCell(u) },
+      { label: 'Kullanıcılar/Ekipler', accessor: 'team' },
+      { label: 'Görev Tipi', accessor: 'type' },
+    ],
+    expandedGridColumns: 3,
     rowMenu: [
       { label: 'Edit', value: 'edit' },
       { label: 'Delete', value: 'delete' },
