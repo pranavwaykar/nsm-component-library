@@ -18,6 +18,16 @@ The library is documented and showcased using **Storybook**.
 
 ---
 
+
+## Screensnaps
+
+![WhatsApp Image 2025-12-27 at 4 43 00 PM (1)](https://github.com/user-attachments/assets/f30630e3-36d0-45d8-bec2-7d11e3741fff)
+![WhatsApp Image 2025-12-27 at 4 43 01 PM (1)](https://github.com/user-attachments/assets/caf99027-a839-41c0-8f34-1b5217f86298)
+![WhatsApp Image 2025-12-27 at 4 43 01 PM](https://github.com/user-attachments/assets/80fb8c22-a0ec-43b6-94fc-73a828d8788b)
+![WhatsApp Image 2025-12-27 at 4 43 00 PM](https://github.com/user-attachments/assets/b24952f3-9515-46ba-8ee6-2e689ca01c26)
+
+---
+
 ## 🧰 Tech Stack
 
 - **React**
