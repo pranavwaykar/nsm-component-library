@@ -20,7 +20,7 @@ The library is documented and showcased using **Storybook**.
 
 ## Screensnaps
 
-![img2473](https://github.com/user-attachments/assets/a1b00a49-2685-4d2e-ad8a-ad30563c820f)
+<img src="https://github.com/pranavwaykar/nsm-component-library/blob/main/src/assets/img111.jpeg" alt="Storybook" width="800" />
 
 ---
 
