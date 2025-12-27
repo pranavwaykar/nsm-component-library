@@ -1,4 +1,3 @@
-````md
 # React Component Library
 
 A reusable, scalable **React component library** built to ensure UI consistency, faster development, and improved collaboration across teams.  
@@ -232,5 +231,4 @@ For issues, feature requests, or questions:
 
 ```
 
-Just tell me 👍
-```
+
