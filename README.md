@@ -18,11 +18,9 @@ The library is documented and showcased using **Storybook**.
 
 ---
 
-
 ## Screensnaps
 
-![WhatsApp Image 2025-12-27 at 4 43 00 PM](https://github.com/user-attachments/assets/c991c2bb-3edf-4fc5-a8ae-a64e3ddd4ef1)
-
+![img2473](https://github.com/user-attachments/assets/a1b00a49-2685-4d2e-ad8a-ad30563c820f)
 
 ---
 
