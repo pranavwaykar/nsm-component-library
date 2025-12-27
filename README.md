@@ -20,9 +20,9 @@ The library is documented and showcased using **Storybook**.
 
 ## Screensnaps
 
-<img src="https://raw.githubusercontent.com/pranavwaykar/nsm-component-library/main/src/assets/img111.jpeg" alt="Storybook Preview" width="800" />
-<img src="https://raw.githubusercontent.com/pranavwaykar/nsm-component-library/main/src/assets/img112.jpeg" alt="Storybook Preview" width="800" />
-<img src="https://raw.githubusercontent.com/pranavwaykar/nsm-component-library/main/src/assets/img113.jpeg" alt="Storybook Preview" width="800" />
+![Storybook 1](./src/assets/img111.jpeg)
+![Storybook 2](./src/assets/img112.jpeg)
+![Storybook 3](./src/assets/img113.jpeg)
 
 ---
 
