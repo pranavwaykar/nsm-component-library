@@ -20,7 +20,9 @@ The library is documented and showcased using **Storybook**.
 ## Screensnaps
 
 ![Storybook 1](./src/assets/img111.jpeg)
+
 ![Storybook 2](./src/assets/img112.jpeg)
+
 ![Storybook 3](./src/assets/img113.jpeg)
 
 ---
